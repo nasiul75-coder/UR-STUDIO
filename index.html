@@ -254,12 +254,13 @@
 
                     <!-- Stats -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
-                        <div class="glass-panel p-6 rounded-xl flex items-center gap-5 border-t border-t-white/10">
+                        <div class="glass-panel p-6 rounded-xl flex items-center gap-5 border-t border-t-white/10 relative group">
                             <div class="w-12 h-12 rounded-full bg-blue-500/10 text-blue-400 flex items-center justify-center text-xl border border-blue-500/20"><i class="fa-solid fa-video"></i></div>
-                            <div class="overflow-hidden">
+                            <div class="overflow-hidden flex-1">
                                 <p class="text-[9px] text-gray-500 uppercase tracking-[0.2em] font-bold mb-1">Active Production</p>
                                 <p id="dash-stat-active" class="font-cinematic text-lg text-white font-bold truncate">Idle</p>
                             </div>
+                            <button id="btn-reset-project" onclick="forceResetProject()" class="absolute right-4 top-1/2 -translate-y-1/2 text-red-500 hover:text-red-400 hidden group-hover:block text-[10px] uppercase font-bold tracking-widest bg-red-500/10 px-3 py-1.5 rounded transition" title="Force Reset Stuck Project"><i class="fa-solid fa-trash mr-1"></i> Cancel</button>
                         </div>
                         <div class="glass-panel p-6 rounded-xl flex items-center gap-5 border-t border-t-white/10">
                             <div class="w-12 h-12 rounded-full bg-studio-gold/10 text-studio-gold flex items-center justify-center text-xl border border-studio-gold/20"><i class="fa-solid fa-ticket"></i></div>
@@ -636,6 +637,13 @@ Link in bio.</p>
             document.getElementById('top-funds').innerText = formatINR(state.funds);
             
             document.getElementById('dash-stat-active').innerText = state.activeProject ? state.activeProject.title : 'Idle';
+            
+            const resetBtn = document.getElementById('btn-reset-project');
+            if(resetBtn) {
+                if(state.activeProject) resetBtn.classList.remove('hidden');
+                else resetBtn.classList.add('hidden');
+            }
+
             document.getElementById('dash-stat-count').innerText = state.pastProjects.length;
             
             let unread = state.mails.filter(m=>!m.read).length;
@@ -736,9 +744,12 @@ Link in bio.</p>
             const m = state.mails.find(x=>x.id===id);
             if(state.funds < m.data.cost) return showToast("Insufficient Funds", "Error");
             state.funds -= m.data.cost;
+            
+            const genreData = GENRES[m.data.genre] || { days: 40, baseCost: 20000000 };
+            
             state.activeProject = { 
                 id: genId(), title: m.data.title, genre: m.data.genre, scriptCost: m.data.cost, prodCost: 0, 
-                hype: 15, daysTotal: GENRES[m.data.genre].days, daysElapsed: 0, phase: 'assembly',
+                hype: 15, daysTotal: genreData.days, daysElapsed: 0, phase: 'assembly',
                 poster: getAIPoster(m.data.title, m.data.genre)
             };
             state.mails = state.mails.filter(x=>x.type!=='script');
@@ -746,11 +757,21 @@ Link in bio.</p>
             saveGame(); updateUI(); switchTab('tab-production');
         };
 
+        window.forceResetProject = () => {
+            if(!confirm("Are you sure you want to cancel the active project? Invested funds will not be refunded.")) return;
+            state.activeProject = null;
+            if(prodTimer) clearInterval(prodTimer);
+            if(chartInstance) { chartInstance.destroy(); chartInstance = null; }
+            assemblyDraft = {dir:null, actor:null};
+            saveGame(); updateUI(); switchTab('tab-dashboard');
+            showToast("Project forcefully terminated.", "Warning");
+        };
+
         // --- PRODUCTION CORE (CRITICAL FIX) ---
         function renderProduction() {
             const c = document.getElementById('prod-container');
             const p = state.activeProject;
-            document.getElementById('prod-active-icon').className = p?.phase === 'filming' ? "fa-solid fa-circle text-studio-crimson text-[8px] animate-pulse shadow-[0_0_10px_rgba(158,27,50,0.8)]" : "hidden";
+            document.getElementById('prod-active-icon').className = p && p.phase === 'filming' ? "fa-solid fa-circle text-studio-crimson text-[8px] animate-pulse shadow-[0_0_10px_rgba(158,27,50,0.8)]" : "hidden";
 
             // FIXED BLANK SCREEN: Explicit beautifully styled empty state
             if(!p) {
@@ -764,10 +785,12 @@ Link in bio.</p>
                 return;
             }
 
-            if(p.phase === 'assembly') {
-                let est = GENRES[p.genre].baseCost + (assemblyDraft.dir?.fee||0) + (assemblyDraft.actor?.fee||0);
+            if(p.phase === 'assembly' || p.phase === 'casting') {
+                const genreData = GENRES[p.genre] || { days: 40, baseCost: 20000000 };
+                let est = genreData.baseCost + (assemblyDraft.dir?.fee||0) + (assemblyDraft.actor?.fee||0);
+                
                 c.innerHTML = `
-                    <div class="text-center mb-8 border-b border-white/10 pb-6"><h2 class="font-cinematic text-3xl font-bold text-white uppercase tracking-widest">${p.title}</h2><p class="text-studio-gold text-xs uppercase tracking-[0.2em] mt-2">${p.genre} • Pre-Production</p></div>
+                    <div class="text-center mb-8 border-b border-white/10 pb-6"><h2 class="font-cinematic text-3xl font-bold text-white uppercase tracking-widest">${p.title}</h2><p class="text-studio-gold text-xs uppercase tracking-[0.2em] mt-2">${p.genre} • Pre-Production (Casting)</p></div>
                     <div class="flex-1 overflow-y-auto space-y-8 custom-scrollbar pr-2 relative z-10">
                         <div>
                             <p class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] mb-4 text-center border-b border-white/5 pb-2 inline-block">Select Director</p>
@@ -810,6 +833,15 @@ Link in bio.</p>
             } else if(p.phase === 'theaters') {
                 c.innerHTML = `<div class="flex-1 flex flex-col relative z-10"><div class="text-center mb-6"><h2 class="font-cinematic text-3xl font-bold text-white uppercase tracking-widest">${p.title}</h2><p class="text-[10px] text-studio-gold uppercase tracking-[0.2em] font-bold mt-2">Theatrical Run</p></div><div class="chart-container flex-1 bg-black/40 rounded-2xl p-4 border border-white/5 backdrop-blur-md"><canvas id="boChart"></canvas></div><div class="mt-8 flex flex-col items-center"><p class="text-[10px] text-gray-500 font-bold uppercase tracking-[0.2em] mb-2">Total Gross Box Office</p><p id="bo-gross" class="text-5xl text-green-400 font-bold font-cinematic mb-6 drop-shadow-[0_0_20px_rgba(74,222,128,0.2)]">₹0</p><button id="btn-conclude" class="hidden bg-studio-gold hover:bg-white text-black px-10 py-4 rounded-xl font-bold uppercase tracking-[0.2em] transition shadow-[0_0_20px_rgba(212,175,55,0.3)] text-sm" onclick="finishTheaters()">Conclude Theatrical Run</button></div></div>`;
                 if(!chartInstance) setTimeout(runBO, 100);
+            } else {
+                // FALLBACK FOR CORRUPTED STATE
+                c.innerHTML = `
+                <div class="flex-1 flex flex-col items-center justify-center text-center h-full m-auto w-full">
+                    <i class="fa-solid fa-triangle-exclamation text-7xl text-studio-crimson mb-6 drop-shadow-md"></i>
+                    <h2 class="text-3xl font-cinematic text-gray-300 mb-3 tracking-widest uppercase font-bold">Corrupted Production Data</h2>
+                    <p class="text-gray-500 text-sm mb-8 max-w-md">An error occurred in the production phase. The active project data cannot be read correctly.</p>
+                    <button onclick="forceResetProject()" class="bg-studio-crimson text-white font-cinematic font-bold px-8 py-3 rounded-full uppercase tracking-widest hover:bg-red-700 transition shadow-[0_0_15px_rgba(158,27,50,0.3)]">Force Reset Project</button>
+                </div>`;
             }
         }
 
