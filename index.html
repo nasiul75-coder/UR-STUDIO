@@ -25,11 +25,11 @@
                     },
                     colors: {
                         studio: {
-                            bg: '#050505',
-                            panel: 'rgba(15, 15, 20, 0.7)',
-                            border: 'rgba(255, 255, 255, 0.08)',
-                            gold: '#D4AF37',
-                            crimson: '#DC143C',
+                            bg: '#020617', /* Slate 950 */
+                            panel: 'rgba(15, 23, 42, 0.7)', /* Slate 900 transparent */
+                            border: 'rgba(255, 255, 255, 0.1)',
+                            gold: '#fbbf24', /* Amber 400 */
+                            crimson: '#e11d48', /* Rose 600 */
                         },
                         linta: { bg: '#000000', border: '#262626', text: '#f5f5f5' },
                         yt: { bg: '#0f0f0f', border: '#272727', text: '#f1f1f1' }
@@ -40,7 +40,7 @@
     </script>
 
     <style>
-        body { background-color: #000; color: #fff; overflow-x: hidden; }
+        body { background-color: #020617; color: #fff; overflow-x: hidden; }
         
         /* Premium Cinematic Background */
         .bg-cinema {
@@ -48,39 +48,43 @@
             background-image: url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=2070&auto=format&fit=crop');
             background-size: cover; background-position: center;
         }
-        .bg-overlay { position: fixed; inset: 0; z-index: -1; background: rgba(0, 0, 0, 0.85); }
+        .bg-overlay { position: fixed; inset: 0; z-index: -1; background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(5px); }
         
         /* Glassmorphism */
-        .glass-panel { background: rgba(15, 15, 20, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .glass-card { background: linear-gradient(145deg, rgba(20, 20, 25, 0.8), rgba(5, 5, 10, 0.95)); border: 1px solid rgba(212, 175, 55, 0.2); box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6); }
+        .glass-panel { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5); }
+        .glass-card { background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.95)); border: 1px solid rgba(251, 191, 36, 0.2); box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6); }
         
         /* Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: rgba(0,0,0,0.4); }
-        ::-webkit-scrollbar-thumb { background: rgba(212,175,55,0.3); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
+        ::-webkit-scrollbar-thumb { background: rgba(251, 191, 36, 0.3); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #fbbf24; }
 
         /* Custom UI */
         .nav-item { border-left: 3px solid transparent; transition: all 0.2s; }
-        .nav-item.active { background: linear-gradient(90deg, rgba(212,175,55,0.1) 0%, transparent 100%); border-left-color: #D4AF37; color: #D4AF37; }
-        .nav-item:hover:not(.active) { background: rgba(255,255,255,0.03); }
+        .nav-item.active { background: linear-gradient(90deg, rgba(251, 191, 36, 0.1) 0%, transparent 100%); border-left-color: #fbbf24; color: #fbbf24; }
+        .nav-item:hover:not(.active) { background: rgba(255,255,255,0.05); }
 
         .diff-card { border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: all 0.3s; }
-        .diff-card:hover { border-color: rgba(212, 175, 55, 0.5); transform: translateY(-3px); }
-        .diff-card.selected { border-color: #D4AF37; background: rgba(212, 175, 55, 0.1); box-shadow: 0 0 20px rgba(212, 175, 55, 0.2); }
+        .diff-card:hover { border-color: rgba(251, 191, 36, 0.5); transform: translateY(-3px); }
+        .diff-card.selected { border-color: #fbbf24; background: rgba(251, 191, 36, 0.1); box-shadow: 0 0 20px rgba(251, 191, 36, 0.2); }
 
-        .talent-card { border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: all 0.2s; background: rgba(0,0,0,0.4); }
-        .talent-card:hover { border-color: #D4AF37; }
-        .talent-card.selected { border-color: #D4AF37; background: rgba(212,175,55,0.15); }
+        .talent-card { border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: all 0.2s; background: rgba(0,0,0,0.5); }
+        .talent-card:hover { border-color: #fbbf24; transform: scale(1.02); }
+        .talent-card.selected { border-color: #fbbf24; background: rgba(251, 191, 36, 0.15); box-shadow: 0 0 15px rgba(251, 191, 36, 0.3); }
 
         .chart-container { position: relative; height: 350px; width: 100%; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .modal-active { overflow: hidden; }
 
-        /* Dynamic Island for Login */
-        .dynamic-island { width: 120px; height: 35px; background: #000; border-radius: 20px; margin: 0 auto 30px auto; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; justify-content: center; gap: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
-        .dynamic-island.active { width: 200px; height: 40px; }
-        .loading-spinner { border: 2px solid rgba(255,255,255,0.1); border-left-color: #fff; border-radius: 50%; width: 16px; height: 16px; animation: spin 1s linear infinite; }
+        /* Video Background for Production */
+        .prod-video-bg {
+            position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; opacity: 0.3; filter: grayscale(50%) contrast(120%);
+        }
+        .prod-overlay {
+            position: absolute; inset: 0; background: linear-gradient(to top, #020617 10%, transparent 50%, #020617 90%); z-index: 1;
+        }
+        
+        .loading-spinner { border: 2px solid rgba(255,255,255,0.1); border-left-color: #fbbf24; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
 </head>
@@ -90,75 +94,68 @@
     <div class="bg-overlay"></div>
 
     <!-- Toast Notification -->
-    <div id="toast" class="fixed top-6 right-6 transform -translate-y-24 opacity-0 transition-all duration-400 z-[100] px-5 py-4 rounded-xl shadow-2xl backdrop-blur-md font-medium text-sm flex items-center gap-3 border pointer-events-none min-w-[280px]">
-        <i id="toast-icon" class="fa-solid fa-circle-info text-lg"></i>
+    <div id="toast" class="fixed top-6 right-6 transform -translate-y-24 opacity-0 transition-all duration-400 z-[9999] px-5 py-4 rounded-xl shadow-2xl backdrop-blur-xl font-medium text-sm flex items-center gap-3 border pointer-events-none min-w-[300px]">
+        <i id="toast-icon" class="fa-solid fa-circle-info text-xl"></i>
         <div class="flex flex-col">
             <span id="toast-title" class="font-bold text-xs uppercase tracking-widest opacity-80 mb-0.5">Notification</span>
             <span id="toast-msg" class="text-sm">Message</span>
         </div>
     </div>
 
-    <!-- ================= VIEW 1: LOGIN (iOS Glassmorphism) ================= -->
+    <!-- ================= VIEW 1: LOGIN ================= -->
     <main id="view-login" class="flex-1 flex flex-col items-center justify-center p-6 relative z-50 w-full">
-        <div class="glass-card w-full max-w-sm rounded-[40px] p-8 text-center relative z-10 mx-4 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.8)] backdrop-blur-3xl">
-            
-            <div id="dynamicIsland" class="dynamic-island shadow-lg">
-                <div id="islandContent" class="opacity-0 scale-80 transition-all duration-300 hidden items-center gap-2 text-[12px] text-green-400">
-                    <div class="loading-spinner hidden" id="islandSpinner"></div>
-                    <span id="islandText">Authenticating...</span>
-                </div>
-            </div>
+        <div class="glass-card w-full max-w-md rounded-3xl p-10 text-center relative z-10 mx-4 backdrop-blur-3xl">
+            <i class="fa-solid fa-film text-5xl text-studio-gold mb-6 drop-shadow-[0_0_15px_rgba(251,191,36,0.6)]"></i>
+            <h1 class="text-4xl font-bold tracking-[0.2em] text-white mb-2 font-cinematic uppercase">UR STUDIO</h1>
+            <p class="text-xs text-gray-400 mb-10 tracking-[0.3em] uppercase">Executive Tycoon Simulator</p>
 
-            <h1 class="text-3xl font-bold tracking-widest text-white mb-2 font-cinematic uppercase">UR STUDIO</h1>
-            <p class="text-xs text-gray-400 mb-10 tracking-[0.2em] uppercase">Cinematic Tycoon</p>
-
-            <button id="btn-google-login" class="w-full bg-white/10 hover:bg-white/20 border border-white/10 text-white font-semibold py-4 px-6 rounded-2xl flex items-center justify-center gap-4 transition-all duration-300 group shadow-lg">
+            <button id="btn-google-login" class="w-full bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-4 transition-all duration-300 group shadow-lg">
                 <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-6 h-6 group-hover:scale-110 transition-transform">
-                <span>Continue with Google</span>
+                <span class="tracking-wide">Authorize via Google</span>
             </button>
-            <p class="text-[10px] text-gray-500 mt-8 uppercase tracking-widest">Connect to Firebase Securely</p>
+            <div id="login-spinner" class="hidden justify-center mt-6 text-studio-gold items-center gap-3"><div class="loading-spinner"></div> <span class="tracking-widest text-xs uppercase">Authenticating</span></div>
         </div>
     </main>
 
-    <!-- ================= VIEW 2: SETUP (Difficulty & Name) ================= -->
-    <main id="view-setup" class="flex-1 flex-col items-center justify-center p-6 hidden relative z-40 w-full max-w-3xl mx-auto min-h-screen">
-        <div class="glass-card rounded-2xl p-10 w-full border-t-4 border-t-studio-gold">
+    <!-- ================= VIEW 2: SETUP ================= -->
+    <main id="view-setup" class="flex-1 flex-col items-center justify-center p-6 hidden relative z-40 w-full max-w-4xl mx-auto min-h-screen">
+        <div class="glass-card rounded-3xl p-10 w-full border-t-4 border-t-studio-gold">
             <div class="mb-10 text-center">
-                <h2 class="font-cinematic text-4xl text-white mb-2 uppercase tracking-widest text-studio-gold">Establish Studio</h2>
-                <p class="text-sm text-gray-400 uppercase tracking-widest">Define your legacy and select simulation difficulty.</p>
+                <h2 class="font-cinematic text-4xl text-white mb-2 uppercase tracking-widest text-studio-gold">Found Your Studio</h2>
+                <p class="text-sm text-gray-400 uppercase tracking-widest">Establish your brand and market difficulty.</p>
             </div>
             
-            <div class="mb-8">
-                <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 text-center">Production House Name</label>
-                <input type="text" id="input-studio-name" placeholder="ASPHEXX STUDIOS" class="w-full max-w-md mx-auto block bg-black/50 border border-gray-700 rounded-xl py-4 px-4 text-white text-center font-cinematic text-2xl focus:outline-none focus:border-studio-gold transition shadow-inner">
+            <div class="mb-10">
+                <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 text-center">Studio Branding</label>
+                <input type="text" id="input-studio-name" placeholder="E.g. ASPHEXX STUDIOS" class="w-full max-w-lg mx-auto block bg-slate-900/80 border border-slate-700 rounded-xl py-4 px-4 text-white text-center font-cinematic text-2xl focus:outline-none focus:border-studio-gold transition shadow-inner">
             </div>
 
-            <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 text-center mt-10">Select Difficulty Algorithm</label>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
-                <div class="diff-card rounded-xl p-5 bg-black/60 selected" onclick="selectDifficulty('easy', this)">
-                    <h3 class="font-cinematic text-xl font-bold text-white uppercase mb-1">Easy</h3>
-                    <p class="text-xs text-gray-400 mb-2">Abundant Funding. Relaxed audiences.</p>
-                    <p class="text-xs text-green-400 font-bold">Start: ₹100 Crores</p>
+            <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 text-center">Simulation Algorithm</label>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+                <div class="diff-card rounded-xl p-5 bg-slate-900/60 selected" onclick="selectDifficulty('easy', this)">
+                    <h3 class="font-cinematic text-lg font-bold text-white uppercase mb-1">Easy</h3>
+                    <p class="text-[10px] text-gray-400 mb-2">Abundant funding. Weak rivals.</p>
+                    <p class="text-xs text-green-400 font-bold">₹100 Crores</p>
                 </div>
-                <div class="diff-card rounded-xl p-5 bg-black/60" onclick="selectDifficulty('normal', this)">
-                    <h3 class="font-cinematic text-xl font-bold text-white uppercase mb-1">Normal</h3>
-                    <p class="text-xs text-gray-400 mb-2">Standard industry pressure.</p>
-                    <p class="text-xs text-studio-gold font-bold">Start: ₹50 Crores</p>
+                <div class="diff-card rounded-xl p-5 bg-slate-900/60" onclick="selectDifficulty('normal', this)">
+                    <h3 class="font-cinematic text-lg font-bold text-white uppercase mb-1">Normal</h3>
+                    <p class="text-[10px] text-gray-400 mb-2">Standard industry pressure.</p>
+                    <p class="text-xs text-studio-gold font-bold">₹50 Crores</p>
                 </div>
-                <div class="diff-card rounded-xl p-5 bg-black/60" onclick="selectDifficulty('hard', this)">
-                    <h3 class="font-cinematic text-xl font-bold text-studio-crimson uppercase mb-1">Hard</h3>
-                    <p class="text-xs text-gray-400 mb-2">Tight budgets. Frequent dilemmas.</p>
-                    <p class="text-xs text-orange-400 font-bold">Start: ₹20 Crores</p>
+                <div class="diff-card rounded-xl p-5 bg-slate-900/60" onclick="selectDifficulty('hard', this)">
+                    <h3 class="font-cinematic text-lg font-bold text-studio-crimson uppercase mb-1">Hard</h3>
+                    <p class="text-[10px] text-gray-400 mb-2">Tight budgets. Aggressive dilemmas.</p>
+                    <p class="text-xs text-orange-400 font-bold">₹20 Crores</p>
                 </div>
-                <div class="diff-card rounded-xl p-5 bg-black/60 border-red-900/50" onclick="selectDifficulty('hardcore', this)">
-                    <h3 class="font-cinematic text-xl font-bold text-red-600 uppercase mb-1">Hardcore</h3>
-                    <p class="text-xs text-gray-400 mb-2">Indie survival. Ruthless critics.</p>
-                    <p class="text-xs text-red-500 font-bold">Start: ₹5 Crores</p>
+                <div class="diff-card rounded-xl p-5 bg-slate-900/60 border-red-900/50" onclick="selectDifficulty('hardcore', this)">
+                    <h3 class="font-cinematic text-lg font-bold text-red-600 uppercase mb-1">Hardcore</h3>
+                    <p class="text-[10px] text-gray-400 mb-2">Indie survival. Ruthless critics.</p>
+                    <p class="text-xs text-red-500 font-bold">₹5 Crores</p>
                 </div>
             </div>
 
-            <button id="btn-init-studio" class="w-full max-w-md mx-auto block bg-studio-gold hover:bg-white text-black font-cinematic font-bold tracking-[0.2em] py-4 rounded-xl uppercase transition-all shadow-[0_0_20px_rgba(212,175,55,0.3)]">
-                Initialize Simulation
+            <button id="btn-init-studio" class="w-full max-w-md mx-auto block bg-studio-gold hover:bg-white text-black font-cinematic font-bold tracking-[0.2em] py-4 rounded-xl uppercase transition-all shadow-[0_0_20px_rgba(251,191,36,0.3)]">
+                Launch Studio
             </button>
         </div>
     </main>
@@ -167,101 +164,100 @@
     <div id="view-app" class="flex-1 flex w-full relative z-30 hidden h-screen overflow-hidden">
         
         <!-- SIDEBAR -->
-        <aside class="w-64 glass-panel border-r border-studio-border flex flex-col flex-shrink-0 h-full shadow-2xl bg-black/80">
+        <aside class="w-64 glass-panel border-r border-studio-border flex flex-col flex-shrink-0 h-full shadow-2xl bg-slate-950/90 z-40">
             <div class="p-6 border-b border-studio-border text-center">
-                <i class="fa-solid fa-clapperboard text-4xl text-studio-gold mb-3 drop-shadow-[0_0_15px_rgba(212,175,55,0.5)]"></i>
-                <h1 id="side-studio-name" class="font-cinematic font-bold tracking-[0.1em] text-lg text-white uppercase truncate">ASPHEXX</h1>
+                <i class="fa-solid fa-clapperboard text-4xl text-studio-gold mb-3 drop-shadow-[0_0_15px_rgba(251,191,36,0.5)]"></i>
+                <h1 id="side-studio-name" class="font-cinematic font-bold tracking-[0.1em] text-xl text-white uppercase truncate">STUDIO</h1>
             </div>
             
-            <nav class="flex-1 flex flex-col py-4 overflow-y-auto">
-                <div class="px-6 py-2 text-[10px] text-gray-500 font-bold tracking-[0.2em] uppercase mt-2">Operations</div>
-                <button onclick="switchTab('tab-dashboard')" id="nav-dashboard" class="nav-item active flex items-center gap-3 px-6 py-3 text-sm text-gray-300 w-full text-left uppercase font-cinematic"><i class="fa-solid fa-chart-pie w-5"></i> Dashboard</button>
-                <button onclick="switchTab('tab-inbox')" id="nav-inbox" class="nav-item flex items-center justify-between px-6 py-3 text-sm text-gray-300 w-full text-left uppercase font-cinematic">
+            <nav class="flex-1 flex flex-col py-4 overflow-y-auto custom-scrollbar">
+                <div class="px-6 py-2 text-[10px] text-gray-500 font-bold tracking-[0.2em] uppercase mt-2">Executive</div>
+                <button onclick="switchTab('tab-dashboard')" id="nav-dashboard" class="nav-item active flex items-center gap-3 px-6 py-3 text-sm text-gray-300 w-full text-left uppercase font-cinematic tracking-wide"><i class="fa-solid fa-chart-pie w-5"></i> HQ</button>
+                <button onclick="switchTab('tab-inbox')" id="nav-inbox" class="nav-item flex items-center justify-between px-6 py-3 text-sm text-gray-300 w-full text-left uppercase font-cinematic tracking-wide">
                     <div class="flex gap-3"><i class="fa-solid fa-envelope w-5"></i> Inbox</div>
                     <span id="side-badge" class="bg-studio-crimson text-white text-[10px] px-2 py-0.5 rounded-full hidden">0</span>
                 </button>
-                <button onclick="switchTab('tab-production')" id="nav-production" class="nav-item flex items-center justify-between px-6 py-3 text-sm text-gray-300 w-full text-left uppercase font-cinematic">
-                    <div class="flex gap-3"><i class="fa-solid fa-video w-5"></i> Production</div>
-                    <i id="prod-active-icon" class="fa-solid fa-circle text-studio-crimson text-[8px] animate-pulse hidden"></i>
+                <button onclick="switchTab('tab-production')" id="nav-production" class="nav-item flex items-center justify-between px-6 py-3 text-sm text-gray-300 w-full text-left uppercase font-cinematic tracking-wide">
+                    <div class="flex gap-3"><i class="fa-solid fa-video w-5"></i> Studio Lot</div>
+                    <i id="prod-active-icon" class="fa-solid fa-circle text-studio-crimson text-[8px] animate-pulse hidden shadow-[0_0_10px_rgba(225,29,72,0.8)]"></i>
                 </button>
 
-                <div class="px-6 py-2 text-[10px] text-gray-500 font-bold tracking-[0.2em] uppercase mt-4">Marketing (Hype)</div>
-                <button onclick="switchTab('tab-linta')" id="nav-linta" class="nav-item flex items-center gap-3 px-6 py-3 text-sm text-gray-300 w-full text-left uppercase font-cinematic"><i class="fa-brands fa-instagram w-5 text-pink-500"></i> Lintagram</button>
-                <button onclick="switchTab('tab-youtube')" id="nav-youtube" class="nav-item flex items-center gap-3 px-6 py-3 text-sm text-gray-300 w-full text-left uppercase font-cinematic"><i class="fa-brands fa-youtube w-5 text-red-500"></i> YouTube</button>
+                <div class="px-6 py-2 text-[10px] text-gray-500 font-bold tracking-[0.2em] uppercase mt-6">Social Engine</div>
+                <button onclick="switchTab('tab-linta')" id="nav-linta" class="nav-item flex items-center gap-3 px-6 py-3 text-sm text-gray-300 w-full text-left uppercase font-cinematic tracking-wide"><i class="fa-brands fa-instagram w-5 text-pink-500"></i> Lintagram</button>
+                <button onclick="switchTab('tab-youtube')" id="nav-youtube" class="nav-item flex items-center gap-3 px-6 py-3 text-sm text-gray-300 w-full text-left uppercase font-cinematic tracking-wide"><i class="fa-brands fa-youtube w-5 text-red-500"></i> YouTube</button>
 
-                <div class="px-6 py-2 text-[10px] text-gray-500 font-bold tracking-[0.2em] uppercase mt-4">Archives</div>
-                <button onclick="switchTab('tab-history')" id="nav-history" class="nav-item flex items-center gap-3 px-6 py-3 text-sm text-gray-300 w-full text-left uppercase font-cinematic"><i class="fa-solid fa-film w-5"></i> History</button>
+                <div class="px-6 py-2 text-[10px] text-gray-500 font-bold tracking-[0.2em] uppercase mt-6">Vault</div>
+                <button onclick="switchTab('tab-history')" id="nav-history" class="nav-item flex items-center gap-3 px-6 py-3 text-sm text-gray-300 w-full text-left uppercase font-cinematic tracking-wide"><i class="fa-solid fa-film w-5"></i> Archives</button>
             </nav>
 
-            <div class="p-6 border-t border-studio-border bg-black/50 flex justify-between items-center">
+            <div class="p-6 border-t border-studio-border bg-slate-900/50 flex justify-between items-center">
                 <div>
                     <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">Reputation</p>
                     <div class="flex gap-1 text-studio-gold text-[10px]" id="side-reputation"></div>
                 </div>
-                <button id="btn-logout" class="text-gray-500 hover:text-red-400"><i class="fa-solid fa-power-off"></i></button>
+                <button id="btn-logout" class="text-gray-500 hover:text-studio-crimson transition"><i class="fa-solid fa-power-off"></i></button>
             </div>
         </aside>
 
         <!-- MAIN CONTENT AREA -->
-        <main class="flex-1 flex flex-col h-full overflow-hidden relative">
+        <main class="flex-1 flex flex-col h-full overflow-hidden relative bg-slate-950/40">
             
             <!-- Global Top Bar -->
-            <header class="w-full px-8 py-5 glass-panel border-b border-studio-border flex justify-between items-center sticky top-0 z-30 bg-black/70">
+            <header class="w-full px-8 py-5 glass-panel border-b border-studio-border flex justify-between items-center sticky top-0 z-30 bg-slate-950/70 backdrop-blur-md">
                 <div>
-                    <h2 id="header-title" class="font-cinematic text-2xl text-white uppercase tracking-widest">Dashboard</h2>
-                    <p id="top-date" class="text-xs text-gray-400 mt-1">Oct 26, 2026</p>
+                    <h2 id="header-title" class="font-cinematic text-2xl text-white uppercase tracking-widest">Executive Dashboard</h2>
                 </div>
                 <div class="text-right">
-                    <p class="text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-1">Net Worth</p>
+                    <p class="text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-1">Available Capital</p>
                     <p id="top-funds" class="font-bold text-3xl text-green-400 tracking-wide font-cinematic drop-shadow-md">₹0</p>
                 </div>
             </header>
 
-            <div class="flex-1 overflow-y-auto custom-scrollbar p-6 lg:p-10 pb-24">
+            <div class="flex-1 overflow-y-auto custom-scrollbar p-6 lg:p-10 pb-24 relative z-20">
                 
                 <!-- TAB: DASHBOARD -->
                 <div id="tab-dashboard" class="tab-content h-full flex flex-col gap-8">
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Custom Project Card -->
-                        <div class="glass-card rounded-2xl p-8 border-l-4 border-l-studio-gold flex flex-col justify-between">
+                        <div class="glass-card rounded-2xl p-8 border-l-4 border-l-studio-gold flex flex-col justify-between hover:scale-[1.02] transition-transform">
                             <div>
-                                <h3 class="font-cinematic text-2xl text-white uppercase tracking-widest mb-2"><i class="fa-solid fa-pen-nib text-studio-gold mr-2"></i> Custom Project</h3>
-                                <p class="text-sm text-gray-400 mb-6">Write and produce an original script from scratch. You control the narrative.</p>
+                                <h3 class="font-cinematic text-2xl text-white uppercase tracking-widest mb-2"><i class="fa-solid fa-pen-nib text-studio-gold mr-2"></i> Original Script</h3>
+                                <p class="text-sm text-gray-400 mb-6">Write and produce an original IP from scratch. Full creative control.</p>
                             </div>
-                            <button onclick="openCreateModal()" class="w-full bg-black border border-studio-gold text-studio-gold hover:bg-studio-gold hover:text-black font-cinematic font-bold py-4 rounded-xl uppercase transition">Initialize Original</button>
+                            <button onclick="openCreateModal()" class="w-full bg-slate-900 border border-studio-gold text-studio-gold hover:bg-studio-gold hover:text-slate-900 font-cinematic font-bold py-4 rounded-xl uppercase transition">Initialize IP (₹1 Cr)</button>
                         </div>
 
                         <!-- Scout Scripts Card -->
-                        <div class="glass-card rounded-2xl p-8 border-l-4 border-l-studio-crimson flex flex-col justify-between">
+                        <div class="glass-card rounded-2xl p-8 border-l-4 border-l-studio-crimson flex flex-col justify-between hover:scale-[1.02] transition-transform">
                             <div>
                                 <h3 class="font-cinematic text-2xl text-white uppercase tracking-widest mb-2"><i class="fa-solid fa-search text-studio-crimson mr-2"></i> Scout Market</h3>
-                                <p class="text-sm text-gray-400 mb-6">Receive pitches from top agencies. Discover psychological thrillers, epics, and more.</p>
+                                <p class="text-sm text-gray-400 mb-6">Receive high-profile pitches from top agencies. Review in Inbox.</p>
                             </div>
-                            <button onclick="scoutScripts()" class="w-full bg-studio-crimson hover:bg-red-500 text-white font-cinematic font-bold py-4 rounded-xl uppercase transition">Scout (Check Inbox)</button>
+                            <button onclick="scoutScripts()" class="w-full bg-studio-crimson hover:bg-rose-500 text-white font-cinematic font-bold py-4 rounded-xl uppercase transition shadow-[0_0_15px_rgba(225,29,72,0.4)]">Scout Agencies</button>
                         </div>
                     </div>
 
                     <!-- Stats -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
-                        <div class="glass-panel p-6 rounded-xl flex items-center gap-4 border-l-2 border-blue-500">
-                            <div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl"><i class="fa-solid fa-video"></i></div>
-                            <div>
-                                <p class="text-[10px] text-gray-400 uppercase tracking-widest">Active Status</p>
+                        <div class="glass-panel p-6 rounded-xl flex items-center gap-5 border-l-2 border-blue-500 bg-slate-900/60">
+                            <div class="w-14 h-14 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-2xl shadow-inner"><i class="fa-solid fa-video"></i></div>
+                            <div class="overflow-hidden">
+                                <p class="text-[10px] text-gray-400 uppercase tracking-widest">Active Production</p>
                                 <p id="dash-stat-active" class="font-cinematic text-lg text-white font-bold truncate">Idle</p>
                             </div>
                         </div>
-                        <div class="glass-panel p-6 rounded-xl flex items-center gap-4 border-l-2 border-studio-gold">
-                            <div class="w-12 h-12 rounded-full bg-studio-gold/20 text-studio-gold flex items-center justify-center text-xl"><i class="fa-solid fa-ticket"></i></div>
+                        <div class="glass-panel p-6 rounded-xl flex items-center gap-5 border-l-2 border-studio-gold bg-slate-900/60">
+                            <div class="w-14 h-14 rounded-full bg-studio-gold/20 text-studio-gold flex items-center justify-center text-2xl shadow-inner"><i class="fa-solid fa-ticket"></i></div>
                             <div>
                                 <p class="text-[10px] text-gray-400 uppercase tracking-widest">Films Released</p>
                                 <p id="dash-stat-count" class="font-cinematic text-2xl text-white font-bold">0</p>
                             </div>
                         </div>
-                        <div class="glass-panel p-6 rounded-xl flex items-center gap-4 border-l-2 border-green-500">
-                            <div class="w-12 h-12 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center text-xl"><i class="fa-solid fa-hashtag"></i></div>
+                        <div class="glass-panel p-6 rounded-xl flex items-center gap-5 border-l-2 border-pink-500 bg-slate-900/60">
+                            <div class="w-14 h-14 rounded-full bg-pink-500/20 text-pink-400 flex items-center justify-center text-2xl shadow-inner"><i class="fa-solid fa-users"></i></div>
                             <div>
-                                <p class="text-[10px] text-gray-400 uppercase tracking-widest">Total Hype/Fans</p>
+                                <p class="text-[10px] text-gray-400 uppercase tracking-widest">Total Fanbase</p>
                                 <p id="dash-stat-fans" class="font-cinematic text-2xl text-white font-bold">0</p>
                             </div>
                         </div>
@@ -270,52 +266,92 @@
 
                 <!-- TAB: INBOX -->
                 <div id="tab-inbox" class="tab-content hidden h-full">
-                    <div class="glass-card rounded-2xl h-[calc(100vh-180px)] flex overflow-hidden">
-                        <div class="w-[35%] border-r border-studio-border bg-black/60 overflow-y-auto custom-scrollbar" id="mail-list"></div>
-                        <div class="w-[65%] p-8 overflow-y-auto custom-scrollbar bg-black/40" id="mail-detail"></div>
+                    <div class="glass-card rounded-2xl h-[calc(100vh-200px)] flex overflow-hidden border border-slate-700">
+                        <div class="w-1/3 border-r border-slate-700 bg-slate-900/80 overflow-y-auto custom-scrollbar" id="mail-list"></div>
+                        <div class="w-2/3 p-8 overflow-y-auto custom-scrollbar bg-slate-950/60 relative" id="mail-detail">
+                            <div class="absolute inset-0 flex items-center justify-center text-slate-600 font-cinematic text-xl uppercase tracking-widest pointer-events-none">Select a message</div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- TAB: PRODUCTION -->
                 <div id="tab-production" class="tab-content hidden h-full">
-                    <div id="prod-container" class="glass-card rounded-2xl p-8 min-h-[calc(100vh-180px)] flex flex-col relative"></div>
+                    <div id="prod-container" class="glass-card rounded-3xl p-8 min-h-[calc(100vh-200px)] flex flex-col relative overflow-hidden">
+                        <!-- Content injected here -->
+                    </div>
                 </div>
 
                 <!-- TAB: LINTAGRAM -->
-                <div id="tab-linta" class="tab-content hidden h-full flex justify-center">
-                    <div class="w-full max-w-sm h-[800px] max-h-[calc(100vh-140px)] bg-linta-bg border border-linta-border rounded-[40px] overflow-hidden flex flex-col shadow-[0_0_30px_rgba(255,0,128,0.15)] ring-4 ring-[#111]">
+                <div id="tab-linta" class="tab-content hidden h-full flex justify-center items-start pt-4">
+                    <div class="w-full max-w-[400px] h-[750px] bg-black border border-[#262626] rounded-[45px] overflow-hidden flex flex-col shadow-[0_0_40px_rgba(255,0,128,0.15)] ring-8 ring-[#0f172a] relative">
                         <!-- Linta Header -->
-                        <div class="h-14 border-b border-linta-border flex items-center px-4 justify-between bg-black">
-                            <i class="fa-solid fa-lock text-white text-sm"></i>
-                            <span id="linta-handle" class="font-bold text-white tracking-wide">@studio</span>
-                            <i class="fa-solid fa-square-plus text-white text-xl cursor-pointer hover:text-gray-300" onclick="postSocial('linta')"></i>
+                        <div class="h-14 flex items-center px-5 justify-between bg-black border-b border-[#262626] z-10">
+                            <div class="flex items-center gap-1"><i class="fa-solid fa-lock text-white text-[10px]"></i><span id="linta-handle" class="font-bold text-white tracking-wide text-lg">studio</span><i class="fa-solid fa-angle-down text-white text-xs ml-1"></i></div>
+                            <div class="flex gap-4 text-white text-xl">
+                                <i class="fa-regular fa-square-plus cursor-pointer hover:text-gray-300" onclick="postSocial('linta')"></i>
+                                <i class="fa-solid fa-bars"></i>
+                            </div>
                         </div>
                         <!-- Profile -->
-                        <div class="p-4 bg-black">
+                        <div class="p-5 bg-black z-10">
                             <div class="flex items-center gap-6 mb-4">
-                                <img src="https://picsum.photos/seed/studio/150" class="w-20 h-20 rounded-full border-2 border-pink-500 p-0.5 object-cover">
-                                <div class="flex-1 flex justify-between text-center text-white">
-                                    <div class="flex flex-col"><span id="linta-posts" class="font-bold text-lg">0</span><span class="text-[11px] text-gray-400">Posts</span></div>
-                                    <div class="flex flex-col"><span id="linta-followers" class="font-bold text-lg">0</span><span class="text-[11px] text-gray-400">Followers</span></div>
+                                <img id="linta-profile-pic" src="https://ui-avatars.com/api/?name=S&background=random" class="w-20 h-20 rounded-full border border-gray-700 p-0.5 object-cover">
+                                <div class="flex-1 flex justify-around text-center text-white">
+                                    <div class="flex flex-col"><span id="linta-posts" class="font-bold text-lg">0</span><span class="text-[11px] text-gray-400">posts</span></div>
+                                    <div class="flex flex-col"><span id="linta-followers" class="font-bold text-lg">0</span><span class="text-[11px] text-gray-400">followers</span></div>
+                                    <div class="flex flex-col"><span class="font-bold text-lg">0</span><span class="text-[11px] text-gray-400">following</span></div>
                                 </div>
                             </div>
                             <p class="font-bold text-sm text-white" id="linta-name">Studio</p>
-                            <p class="text-xs text-gray-400">Official Handle. Cinematic Dreams.</p>
+                            <p class="text-xs text-gray-300 whitespace-pre-wrap">Official Studio Account 🎬
+Making cinematic history.
+Link in bio.</p>
+                            <div class="flex gap-2 mt-4">
+                                <button class="flex-1 bg-[#262626] text-white font-bold py-1.5 rounded-lg text-sm">Edit profile</button>
+                                <button class="flex-1 bg-[#262626] text-white font-bold py-1.5 rounded-lg text-sm">Share profile</button>
+                            </div>
                         </div>
-                        <div class="flex border-t border-b border-linta-border bg-black"><div class="flex-1 text-center py-2 text-white border-b-2 border-white"><i class="fa-solid fa-border-all"></i></div></div>
+                        <div class="flex border-t border-b border-[#262626] bg-black z-10"><div class="flex-1 text-center py-2 text-white border-b-2 border-white"><i class="fa-solid fa-border-all"></i></div><div class="flex-1 text-center py-2 text-gray-500"><i class="fa-solid fa-video"></i></div><div class="flex-1 text-center py-2 text-gray-500"><i class="fa-regular fa-user"></i></div></div>
                         <!-- Feed -->
-                        <div class="flex-1 overflow-y-auto hide-scrollbar bg-black" id="linta-feed"></div>
+                        <div class="flex-1 overflow-y-auto hide-scrollbar bg-black z-10 pb-16" id="linta-feed">
+                            <div class="flex items-center justify-center h-full text-gray-600 text-sm">No posts yet. Start production to upload.</div>
+                        </div>
+                        <!-- Linta Bottom Nav -->
+                        <div class="absolute bottom-0 w-full h-12 bg-black border-t border-[#262626] flex justify-around items-center text-white text-2xl z-20">
+                            <i class="fa-solid fa-house"></i>
+                            <i class="fa-solid fa-magnifying-glass text-gray-500"></i>
+                            <i class="fa-regular fa-square-plus text-gray-500"></i>
+                            <i class="fa-brands fa-instagram text-gray-500"></i>
+                            <img id="linta-nav-pic" src="https://ui-avatars.com/api/?name=S" class="w-6 h-6 rounded-full">
+                        </div>
                     </div>
                 </div>
 
                 <!-- TAB: YOUTUBE -->
-                <div id="tab-youtube" class="tab-content hidden h-full">
-                    <div class="w-full h-full max-h-[800px] bg-yt-bg border border-yt-border rounded-2xl overflow-hidden flex flex-col">
-                        <div class="h-16 border-b border-yt-border flex items-center px-6 justify-between bg-yt-bg">
-                            <div class="flex items-center gap-4 text-xl font-bold text-white"><i class="fa-brands fa-youtube text-red-600 text-3xl"></i> StudioTube</div>
-                            <button onclick="postSocial('youtube')" class="bg-[#272727] hover:bg-[#3f3f3f] text-white px-4 py-2 rounded-full text-sm font-medium"><i class="fa-solid fa-video"></i> Upload Trailer</button>
+                <div id="tab-youtube" class="tab-content hidden h-full flex justify-center items-start pt-4">
+                    <div class="w-full max-w-[1000px] h-full max-h-[800px] bg-[#0f0f0f] border border-[#272727] rounded-3xl overflow-hidden flex flex-col shadow-2xl">
+                        <!-- YT Header -->
+                        <div class="h-16 border-b border-[#272727] flex items-center px-6 justify-between bg-[#0f0f0f] flex-shrink-0">
+                            <div class="flex items-center gap-1 text-xl font-bold text-white tracking-tighter"><i class="fa-brands fa-youtube text-red-600 text-3xl mr-1"></i> StudioTube</div>
+                            <div class="flex-1 max-w-xl mx-8 hidden md:flex">
+                                <div class="flex w-full border border-[#303030] rounded-full overflow-hidden bg-[#121212] h-10"><input type="text" placeholder="Search" class="bg-transparent text-white px-4 flex-1 outline-none"><button class="bg-[#222] px-5 border-l border-[#303030] text-gray-400 hover:bg-[#303030]"><i class="fa-solid fa-magnifying-glass"></i></button></div>
+                            </div>
+                            <button onclick="postSocial('youtube')" class="bg-white text-black hover:bg-gray-200 px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2 transition"><i class="fa-solid fa-video"></i> Upload</button>
                         </div>
-                        <div class="flex-1 overflow-y-auto custom-scrollbar p-6 bg-[#0f0f0f]" id="yt-feed"></div>
+                        <!-- Channel Header -->
+                        <div class="bg-[#181818] p-6 border-b border-[#272727] flex gap-6 items-center flex-shrink-0">
+                            <img id="yt-profile-pic" src="https://ui-avatars.com/api/?name=S" class="w-24 h-24 rounded-full object-cover">
+                            <div>
+                                <h2 class="text-3xl font-bold text-white mb-1" id="yt-name">Studio</h2>
+                                <p class="text-gray-400 text-sm mb-2"><span id="yt-handle">@studio</span> • <span id="yt-subs">0</span> subscribers • <span id="yt-videos-count">0</span> videos</p>
+                                <p class="text-gray-400 text-xs">Official trailers and teasers. Subscribe for more.</p>
+                            </div>
+                        </div>
+                        <div class="flex border-b border-[#272727] px-6 text-sm font-bold text-gray-400 flex-shrink-0"><div class="py-3 px-4 border-b-2 border-white text-white">HOME</div><div class="py-3 px-4">VIDEOS</div><div class="py-3 px-4">SHORTS</div></div>
+                        <!-- YT Feed -->
+                        <div class="flex-1 overflow-y-auto custom-scrollbar p-6 bg-[#0f0f0f]" id="yt-feed">
+                             <div class="flex items-center justify-center h-full text-gray-600 text-sm">No videos uploaded. Start a production first.</div>
+                        </div>
                     </div>
                 </div>
 
@@ -328,27 +364,43 @@
     </div>
 
     <!-- CREATE PROJECT MODAL -->
-    <div id="modal-create" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-md hidden items-center justify-center flex-col">
-        <div class="glass-card w-full max-w-lg rounded-2xl p-8 relative">
-            <button onclick="closeCreateModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-2xl"></i></button>
-            <h2 class="font-cinematic text-3xl text-studio-gold mb-6 uppercase">Initialize Original Project</h2>
+    <div id="modal-create" class="fixed inset-0 z-[100] bg-slate-950/90 backdrop-blur-xl hidden items-center justify-center flex-col">
+        <div class="glass-card w-full max-w-lg rounded-3xl p-8 relative border-t-4 border-t-studio-gold">
+            <button onclick="closeCreateModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition"><i class="fa-solid fa-xmark text-2xl"></i></button>
+            <h2 class="font-cinematic text-3xl text-studio-gold mb-6 uppercase tracking-widest text-center">Develop Original IP</h2>
             
             <div class="space-y-6">
                 <div>
-                    <label class="block text-xs text-gray-400 uppercase tracking-widest mb-2">Movie Title</label>
-                    <input type="text" id="cp-title" class="w-full bg-black border border-gray-700 rounded-lg p-3 text-white font-cinematic focus:border-studio-gold outline-none" placeholder="e.g. The Silent Echo">
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Movie Title</label>
+                    <input type="text" id="cp-title" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-white font-cinematic text-xl focus:border-studio-gold outline-none shadow-inner" placeholder="e.g. The Silent Echo">
                 </div>
                 <div>
-                    <label class="block text-xs text-gray-400 uppercase tracking-widest mb-2">Genre</label>
-                    <select id="cp-genre" class="w-full bg-black border border-gray-700 rounded-lg p-3 text-white focus:border-studio-gold outline-none">
-                        <option value="Action Epic">Action Epic (High Budget, 70 Days)</option>
-                        <option value="Psychological Thriller">Psychological Thriller (Low Budget, 40 Days)</option>
-                        <option value="Sci-Fi Survival">Sci-Fi Survival (Med Budget, 60 Days)</option>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Genre & Scale</label>
+                    <select id="cp-genre" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-white focus:border-studio-gold outline-none appearance-none">
+                        <option value="Action Epic">Action Epic (High Scale, 70 Days)</option>
+                        <option value="Sci-Fi Survival">Sci-Fi Survival (Med Scale, 60 Days)</option>
+                        <option value="Psychological Thriller">Psychological Thriller (Low Scale, 40 Days)</option>
+                        <option value="Romantic Comedy">Romantic Comedy (Low Scale, 30 Days)</option>
+                        <option value="Horror">Horror (Micro Scale, 25 Days)</option>
                     </select>
                 </div>
                 <div class="pt-4">
-                    <button onclick="submitCustomProject()" class="w-full bg-studio-gold hover:bg-white text-black font-cinematic font-bold py-4 rounded-xl uppercase transition">Develop Script (Cost: ₹1 Cr)</button>
+                    <button onclick="submitCustomProject()" class="w-full bg-studio-gold hover:bg-white text-black font-cinematic font-bold py-4 rounded-xl uppercase tracking-widest transition shadow-[0_0_15px_rgba(251,191,36,0.3)]">Develop Script (₹1 Cr)</button>
                 </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- DILEMMA MODAL -->
+    <div id="modal-dilemma" class="fixed inset-0 z-[150] bg-black/90 backdrop-blur-xl hidden items-center justify-center flex-col">
+        <div class="glass-card w-full max-w-md rounded-3xl p-8 relative border-t-4 border-t-studio-crimson animate-[pulse_2s_ease-in-out_infinite]">
+            <div class="text-center mb-6">
+                <i class="fa-solid fa-triangle-exclamation text-5xl text-studio-crimson mb-4 drop-shadow-[0_0_15px_rgba(225,29,72,0.8)]"></i>
+                <h2 id="dilemma-title" class="font-cinematic text-2xl font-bold text-white uppercase tracking-widest">Production Crisis</h2>
+            </div>
+            <p id="dilemma-desc" class="text-sm text-gray-300 text-center mb-8"></p>
+            <div class="space-y-4" id="dilemma-options">
+                <!-- Buttons injected here -->
             </div>
         </div>
     </div>
@@ -380,38 +432,48 @@
         // Core State
         window.state = {
             name: '', diff: 'normal', funds: 500000000, rep: 1,
+            followers: 0, subs: 0,
             activeProject: null, pastProjects: [], mails: [],
-            social: {
-                linta: { followers: 1500, posts: [] },
-                yt: { subs: 450, videos: [] }
-            }
+            social: { linta: { posts: [] }, yt: { videos: [] } },
+            relations: {} // Store relationships 0-100 for talent IDs
         };
 
-        // Constants
+        // Vast Cast & Crew
         const DIRECTORS = [
-            { id: 'd1', name: 'S. Rajamouli', pic: 'https://randomuser.me/api/portraits/men/32.jpg', fee: 150000000, skill: 98 }, // 15 Cr
+            { id: 'd1', name: 'S. Rajamouli', pic: 'https://randomuser.me/api/portraits/men/32.jpg', fee: 150000000, skill: 98 },
             { id: 'd2', name: 'Chris N.', pic: 'https://randomuser.me/api/portraits/men/46.jpg', fee: 200000000, skill: 99 }, 
             { id: 'd3', name: 'Zoya A.', pic: 'https://randomuser.me/api/portraits/women/44.jpg', fee: 60000000, skill: 85 },
-            { id: 'd4', name: 'Anurag K.', pic: 'https://randomuser.me/api/portraits/men/22.jpg', fee: 40000000, skill: 90 }
+            { id: 'd4', name: 'Anurag K.', pic: 'https://randomuser.me/api/portraits/men/22.jpg', fee: 40000000, skill: 90 },
+            { id: 'd5', name: 'S. Vanga', pic: 'https://randomuser.me/api/portraits/men/12.jpg', fee: 80000000, skill: 88 },
+            { id: 'd6', name: 'Greta G.', pic: 'https://randomuser.me/api/portraits/women/24.jpg', fee: 100000000, skill: 94 },
+            { id: 'd7', name: 'Prashanth N.', pic: 'https://randomuser.me/api/portraits/men/55.jpg', fee: 120000000, skill: 92 },
+            { id: 'd8', name: 'Karan J.', pic: 'https://randomuser.me/api/portraits/men/65.jpg', fee: 50000000, skill: 80 }
         ];
         const ACTORS = [
-            { id: 'a1', name: 'Shahrukh K.', pic: 'https://randomuser.me/api/portraits/men/75.jpg', fee: 300000000, skill: 92 }, // 30 Cr
+            { id: 'a1', name: 'Shahrukh K.', pic: 'https://randomuser.me/api/portraits/men/75.jpg', fee: 300000000, skill: 92 },
             { id: 'a2', name: 'Prabhas', pic: 'https://randomuser.me/api/portraits/men/85.jpg', fee: 250000000, skill: 75 },
             { id: 'a3', name: 'Deepika P.', pic: 'https://randomuser.me/api/portraits/women/65.jpg', fee: 120000000, skill: 88 },
-            { id: 'a4', name: 'Fahadh F.', pic: 'https://randomuser.me/api/portraits/men/60.jpg', fee: 50000000, skill: 98 }
+            { id: 'a4', name: 'Fahadh F.', pic: 'https://randomuser.me/api/portraits/men/60.jpg', fee: 50000000, skill: 98 },
+            { id: 'a5', name: 'Hrithik R.', pic: 'https://randomuser.me/api/portraits/men/28.jpg', fee: 180000000, skill: 85 },
+            { id: 'a6', name: 'Alia B.', pic: 'https://randomuser.me/api/portraits/women/35.jpg', fee: 150000000, skill: 90 },
+            { id: 'a7', name: 'Vijay', pic: 'https://randomuser.me/api/portraits/men/91.jpg', fee: 200000000, skill: 82 },
+            { id: 'a8', name: 'Kamal H.', pic: 'https://randomuser.me/api/portraits/men/78.jpg', fee: 100000000, skill: 99 },
+            { id: 'a9', name: 'Samantha', pic: 'https://randomuser.me/api/portraits/women/15.jpg', fee: 80000000, skill: 85 },
+            { id: 'a10', name: 'Allu A.', pic: 'https://randomuser.me/api/portraits/men/44.jpg', fee: 160000000, skill: 87 }
         ];
         const GENRES = {
             'Action Epic': { days: 70, baseCost: 100000000 },
-            'Psychological Thriller': { days: 40, baseCost: 30000000 },
             'Sci-Fi Survival': { days: 60, baseCost: 80000000 },
-            'Chess Drama': { days: 35, baseCost: 20000000 }
+            'Psychological Thriller': { days: 40, baseCost: 30000000 },
+            'Romantic Comedy': { days: 30, baseCost: 20000000 },
+            'Horror': { days: 25, baseCost: 15000000 }
         };
-        const COMMENTS_MIX = [
-            "Bhai kya lag raha hai! 🔥", "Flop movie 100% 📉", "Can't wait to watch this!", 
-            "Bakwas poster.", "Oscar winning! 🏆", "First day first show!", 
-            "Teaser ne aag laga di 🔥", "Disappointed.", "CGI looks terrible.", 
-            "Director saab ne kamaal kar diya.", "Masterpiece loading...", "Paisa barbaad bhencho."
-        ];
+
+        const COMMENT_POOL = {
+            pos: ["Masterpiece loading! 🔥", "Can't wait for this! 🍿", "Take my money! 💸", "Looks absolutely insane.", "Director saab rocksss!", "First day first show confirmed.", "Oscar level stuff here 🏆", "Best thing I've seen all year.", "Mind blowing visuals."],
+            neg: ["Flop written all over it 📉", "Disaster loading...", "CGI looks like a ps2 game.", "Why are they making this?", "Total waste of money.", "Actor looks too old for this.", "Boycott this trash.", "Yawn. Seen it a million times."],
+            gen: ["When is the release date?", "Who is the music director?", "Interesting concept.", "Hope it lives up to the hype.", "Wait and watch."]
+        };
 
         let assemblyDraft = { dir: null, actor: null };
         let prodTimer = null;
@@ -425,54 +487,71 @@
             return `₹${Math.round(n).toLocaleString()}`;
         };
         const genId = () => Math.random().toString(36).substr(2, 9);
+        const getRel = (id) => state.relations[id] || 50;
+        
         window.showToast = (msg, title="Info") => {
             const t = document.getElementById('toast');
             document.getElementById('toast-title').innerText = title;
             document.getElementById('toast-msg').innerText = msg;
             t.classList.remove('-translate-y-24', 'opacity-0');
-            t.classList.add('bg-black/90', 'border-studio-gold');
-            setTimeout(() => t.classList.add('-translate-y-24', 'opacity-0'), 3000);
+            if(title==="Error" || title.includes("Crisis")) t.classList.add('bg-rose-900', 'border-rose-500');
+            else t.classList.add('bg-slate-800', 'border-studio-gold');
+            setTimeout(() => {
+                t.classList.add('-translate-y-24', 'opacity-0');
+                t.classList.remove('bg-rose-900', 'border-rose-500', 'bg-slate-800', 'border-studio-gold');
+            }, 3500);
+        };
+
+        const getAIPoster = (title, genre) => {
+            return `https://image.pollinations.ai/prompt/Cinematic%20movie%20poster%20for%20${encodeURIComponent(genre)}%20movie%20titled%20${encodeURIComponent(title)}?width=400&height=600&nologo=true&seed=${Math.floor(Math.random()*10000)}`;
+        };
+        const getAIYTThumb = (title, genre) => {
+            return `https://image.pollinations.ai/prompt/YouTube%20cinematic%20trailer%20thumbnail%20for%20${encodeURIComponent(genre)}%20movie%20titled%20${encodeURIComponent(title)}?width=600&height=337&nologo=true&seed=${Math.floor(Math.random()*10000)}`;
         };
 
         // --- AUTH & DB ---
         document.getElementById('btn-google-login').addEventListener('click', async () => {
-            document.getElementById('islandContent').classList.remove('hidden');
-            document.getElementById('islandContent').classList.add('flex');
-            document.getElementById('islandSpinner').classList.remove('hidden');
-            document.getElementById('dynamicIsland').classList.add('active');
+            document.getElementById('btn-google-login').classList.add('hidden');
+            document.getElementById('login-spinner').classList.remove('hidden');
+            document.getElementById('login-spinner').classList.add('flex');
             
             try {
                 const res = await signInWithPopup(auth, provider);
                 uid = res.user.uid;
-                document.getElementById('islandText').innerText = "Success";
-                document.getElementById('islandSpinner').classList.add('hidden');
                 setTimeout(() => loadUserData(), 1000);
             } catch (e) {
-                document.getElementById('islandText').innerText = "Failed";
-                document.getElementById('islandText').classList.replace('text-green-400', 'text-red-500');
+                document.getElementById('btn-google-login').classList.remove('hidden');
+                document.getElementById('login-spinner').classList.add('hidden');
+                document.getElementById('login-spinner').classList.remove('flex');
                 showToast(e.message, "Auth Error");
             }
         });
 
         async function loadUserData() {
             if(!uid) return;
-            const docRef = doc(db, 'artifacts', appIdEnv, 'users', uid, 'studioData', 'main');
-            const snap = await getDoc(docRef);
-            if(snap.exists()) {
-                window.state = snap.data();
-                startGame();
-            } else {
-                document.getElementById('view-login').classList.add('hidden');
-                document.getElementById('view-setup').classList.remove('hidden');
-                document.getElementById('view-setup').classList.add('flex');
-            }
+            try{
+                const docRef = doc(db, 'artifacts', appIdEnv, 'users', uid, 'studioData', 'main');
+                const snap = await getDoc(docRef);
+                if(snap.exists()) {
+                    window.state = snap.data();
+                    startGame();
+                } else {
+                    document.getElementById('view-login').classList.add('hidden');
+                    document.getElementById('view-setup').classList.remove('hidden');
+                    document.getElementById('view-setup').classList.add('flex');
+                }
+            } catch(e) { showToast("Firebase Error: " + e.message, "Error"); }
         }
 
         async function saveGame() {
             if(!uid) return;
             const docRef = doc(db, 'artifacts', appIdEnv, 'users', uid, 'studioData', 'main');
-            await setDoc(docRef, window.state);
+            await setDoc(docRef, window.state).catch(e=>console.error("Save error", e));
         }
+
+        document.getElementById('btn-logout').addEventListener('click', () => {
+            auth.signOut().then(() => location.reload());
+        });
 
         // --- SETUP ---
         window.selectDifficulty = (diff, el) => {
@@ -484,13 +563,16 @@
         document.getElementById('btn-init-studio').addEventListener('click', () => {
             const name = document.getElementById('input-studio-name').value || 'ASPHEXX STUDIOS';
             window.state.name = name;
-            let funds = 500000000;
-            if(state.diff === 'easy') funds = 1000000000; // 100Cr
-            if(state.diff === 'hard') funds = 200000000; // 20Cr
-            if(state.diff === 'hardcore') funds = 50000000; // 5Cr
+            let funds = 500000000; // Normal
+            if(state.diff === 'easy') funds = 1000000000;
+            if(state.diff === 'hard') funds = 200000000;
+            if(state.diff === 'hardcore') funds = 50000000;
             window.state.funds = funds;
             
-            state.mails.push({ id: genId(), type: 'system', read: false, title: 'Studio Initialized', body: `Welcome CEO.\nFunds: ${formatINR(funds)}.\nMake us proud.` });
+            DIRECTORS.forEach(d => state.relations[d.id] = 50);
+            ACTORS.forEach(a => state.relations[a.id] = 50);
+
+            state.mails.push({ id: genId(), type: 'system', read: false, title: 'Studio Founded', body: `Welcome CEO.\n\nYour starting capital is ${formatINR(funds)}. The industry is ruthless, but with the right scripts and marketing, you can build an empire.\n\nUse 'Scout Market' on the dashboard to receive pitches.` });
             
             saveGame().then(() => startGame());
         });
@@ -500,6 +582,13 @@
             document.getElementById('view-login').classList.add('hidden');
             document.getElementById('view-setup').classList.add('hidden');
             document.getElementById('view-app').classList.remove('hidden');
+            
+            // Set social profile pics
+            let shortName = state.name.replace(/\s+/g,'').toLowerCase();
+            document.getElementById('linta-profile-pic').src = `https://ui-avatars.com/api/?name=${state.name.charAt(0)}&background=1e293b&color=fbbf24`;
+            document.getElementById('yt-profile-pic').src = `https://ui-avatars.com/api/?name=${state.name.charAt(0)}&background=1e293b&color=fbbf24`;
+            document.getElementById('linta-nav-pic').src = `https://ui-avatars.com/api/?name=${state.name.charAt(0)}&background=1e293b&color=fbbf24`;
+            
             updateUI();
             startSocialSim();
             if(state.activeProject?.phase === 'filming') runProdTimer();
@@ -507,8 +596,12 @@
 
         function updateUI() {
             document.getElementById('side-studio-name').innerText = state.name;
+            let shortName = state.name.replace(/\s+/g,'').toLowerCase();
             document.getElementById('linta-name').innerText = state.name;
-            document.getElementById('linta-handle').innerText = '@'+state.name.replace(/\s+/g,'').toLowerCase();
+            document.getElementById('linta-handle').innerText = '@'+shortName;
+            document.getElementById('yt-name').innerText = state.name;
+            document.getElementById('yt-handle').innerText = '@'+shortName;
+            
             document.getElementById('top-funds').innerText = formatINR(state.funds);
             
             document.getElementById('dash-stat-active').innerText = state.activeProject ? state.activeProject.title : 'Idle';
@@ -548,13 +641,14 @@
         window.submitCustomProject = () => {
             const title = document.getElementById('cp-title').value || 'Untitled';
             const genre = document.getElementById('cp-genre').value;
-            const cost = 10000000; // 1 Cr script dev
-            if(state.funds < cost) return showToast("Need ₹1Cr to develop.", "Error");
+            const cost = 10000000; 
+            if(state.funds < cost) return showToast("Need ₹1Cr to develop script.", "Error");
             
             state.funds -= cost;
             state.activeProject = {
                 id: genId(), title, genre, scriptCost: cost, prodCost: 0, hype: 10,
-                daysTotal: GENRES[genre].days, daysElapsed: 0, phase: 'assembly'
+                daysTotal: GENRES[genre].days, daysElapsed: 0, phase: 'assembly',
+                poster: getAIPoster(title, genre)
             };
             closeCreateModal(); saveGame(); updateUI(); switchTab('tab-production');
         };
@@ -563,28 +657,36 @@
         window.scoutScripts = () => {
             if(state.activeProject) return showToast("Finish active project first!", "Warning");
             const pitches = [
-                {t:"The Silent Echo", g:"Psychological Thriller", body:"An unreliable narrator discovers his wife's diary, detailing murders he doesn't remember committing. A mind-bending thriller."},
-                {t:"Checkmate", g:"Chess Drama", body:"A prodigy plays a high-stakes underground chess tournament where losers lose their lives. Intense and claustrophobic."},
-                {t:"Wasteland", g:"Sci-Fi Survival", body:"Earth is scorched. One woman must cross 500 miles of irradiated desert to deliver a cure. Massive visual scale."}
+                {t:"Shattered Minds", g:"Psychological Thriller", body:"An amnesiac detective hunts a serial killer, only to realize the clues point to himself. Dense, dark, atmospheric.", c: 3000000},
+                {t:"The Last Checkmate", g:"Action Epic", body:"A grand scale historical epic about a royal family deciding the fate of a kingdom via a lethal game of physical chess.", c: 15000000},
+                {t:"Neon Dust", g:"Sci-Fi Survival", body:"In 2145, oxygen is a currency. A scavenger finds a machine that breathes life, and the entire city hunts her down.", c: 8000000},
+                {t:"Whispers in the Dark", g:"Horror", body:"A family moves into a smart home that uses AI to recreate the voices of dead relatives. Then, the doors lock.", c: 1000000},
+                {t:"Coffee & Chaos", g:"Romantic Comedy", body:"Two rival baristas are forced to run a shop together to save it from a corporate buyout. Lighthearted and fun.", c: 2000000}
             ];
-            pitches.forEach(p => {
+            
+            // Randomly select 3 pitches
+            let shuffled = pitches.sort(() => 0.5 - Math.random());
+            let selected = shuffled.slice(0, 3);
+
+            selected.forEach(p => {
                 state.mails.push({
                     id: genId(), type: 'script', read: false, title: `PITCH: ${p.t}`,
-                    body: `${p.body}\n\nGenre: ${p.g}\nBase Budget Reqd: ${formatINR(GENRES[p.g].baseCost)}\nAcquisition: ₹50 Lakhs.`,
-                    data: { title: p.t, genre: p.g, cost: 5000000 }
+                    body: `${p.body}\n\nGenre: ${p.g}\nBase Prod Budget Est: ${formatINR(GENRES[p.g].baseCost)}\nScript Acquisition: ${formatINR(p.c)}.`,
+                    data: { title: p.t, genre: p.g, cost: p.c }
                 });
             });
-            showToast("Agencies sent pitches. Check Inbox.", "Scout Success");
+            showToast("Agencies sent 3 pitches. Check Inbox.", "Scout Success");
             saveGame(); updateUI(); switchTab('tab-inbox');
         };
 
         // --- INBOX ---
         function renderInbox() {
             const list = document.getElementById('mail-list');
-            list.innerHTML = state.mails.slice().reverse().map(m => `
-                <div class="p-4 border-b border-gray-800 cursor-pointer hover:bg-white/5 transition ${!m.read ? 'border-l-2 border-l-studio-crimson bg-white/5' : ''}" onclick="openMail('${m.id}')">
-                    <p class="text-sm font-bold text-white line-clamp-1">${m.title}</p>
-                    <p class="text-[10px] text-gray-500 uppercase mt-1">${m.type}</p>
+            if(state.mails.length === 0) list.innerHTML = `<div class="p-4 text-center text-gray-500">Inbox empty</div>`;
+            else list.innerHTML = state.mails.slice().reverse().map(m => `
+                <div class="p-5 border-b border-slate-800 cursor-pointer hover:bg-slate-800/50 transition ${!m.read ? 'border-l-4 border-l-studio-crimson bg-slate-800/30' : ''}" onclick="openMail('${m.id}')">
+                    <p class="text-sm font-bold text-white line-clamp-1 mb-1">${m.title}</p>
+                    <p class="text-[10px] ${m.type==='script'?'text-blue-400':m.type==='ott'?'text-green-400':'text-gray-400'} font-bold uppercase tracking-widest">${m.type}</p>
                 </div>
             `).join('');
         }
@@ -593,20 +695,24 @@
             m.read = true; updateUI(); saveGame();
             
             let act = '';
-            if(m.type === 'script') act = `<button onclick="acquireScript('${m.id}')" class="bg-studio-gold text-black px-6 py-2 rounded font-bold uppercase text-xs">Acquire (${formatINR(m.data.cost)})</button>`;
-            else if(m.type === 'ott') act = `<button onclick="acceptOTT('${m.id}')" class="bg-green-600 text-white px-6 py-2 rounded font-bold uppercase text-xs">Sign Deal (+${formatINR(m.data.offer)})</button>`;
-            else act = `<button onclick="delMail('${m.id}')" class="text-gray-500 hover:text-red-500 uppercase text-xs font-bold">Dismiss</button>`;
+            if(m.type === 'script') act = `<button onclick="acquireScript('${m.id}')" class="bg-studio-gold hover:bg-yellow-300 text-black px-8 py-3 rounded-xl font-bold uppercase text-xs tracking-widest transition shadow-lg mt-6">Acquire Script (${formatINR(m.data.cost)})</button>`;
+            else if(m.type === 'ott') act = `<button onclick="acceptOTT('${m.id}')" class="bg-green-600 hover:bg-green-500 text-white px-8 py-3 rounded-xl font-bold uppercase text-xs tracking-widest transition shadow-lg mt-6">Sign Deal (+${formatINR(m.data.offer)})</button>`;
+            else act = `<button onclick="delMail('${m.id}')" class="text-gray-400 hover:text-studio-crimson uppercase text-xs font-bold tracking-widest mt-6 transition">Dismiss</button>`;
 
-            document.getElementById('mail-detail').innerHTML = `<h3 class="text-xl font-cinematic font-bold text-white mb-4 border-b border-gray-800 pb-2">${m.title}</h3><p class="text-sm text-gray-300 whitespace-pre-wrap mb-6">${m.body}</p>${act}`;
+            document.getElementById('mail-detail').innerHTML = `<h3 class="text-2xl font-cinematic font-bold text-white mb-6 border-b border-slate-700 pb-4">${m.title}</h3><p class="text-sm text-gray-300 whitespace-pre-wrap leading-relaxed">${m.body}</p>${act}`;
         };
-        window.delMail = (id) => { state.mails = state.mails.filter(m=>m.id!==id); document.getElementById('mail-detail').innerHTML=''; updateUI(); saveGame(); };
+        window.delMail = (id) => { state.mails = state.mails.filter(m=>m.id!==id); document.getElementById('mail-detail').innerHTML='<div class="absolute inset-0 flex items-center justify-center text-slate-600 font-cinematic text-xl uppercase tracking-widest pointer-events-none">Select a message</div>'; updateUI(); saveGame(); };
         window.acquireScript = (id) => {
             const m = state.mails.find(x=>x.id===id);
-            if(state.funds < m.data.cost) return showToast("Insufficient Funds");
+            if(state.funds < m.data.cost) return showToast("Insufficient Funds", "Error");
             state.funds -= m.data.cost;
-            state.activeProject = { id: genId(), title: m.data.title, genre: m.data.genre, scriptCost: m.data.cost, prodCost: 0, hype: 15, daysTotal: GENRES[m.data.genre].days, daysElapsed: 0, phase: 'assembly' };
+            state.activeProject = { 
+                id: genId(), title: m.data.title, genre: m.data.genre, scriptCost: m.data.cost, prodCost: 0, 
+                hype: 15, daysTotal: GENRES[m.data.genre].days, daysElapsed: 0, phase: 'assembly',
+                poster: getAIPoster(m.data.title, m.data.genre)
+            };
             state.mails = state.mails.filter(x=>x.type!=='script');
-            document.getElementById('mail-detail').innerHTML='';
+            document.getElementById('mail-detail').innerHTML='<div class="absolute inset-0 flex items-center justify-center text-slate-600 font-cinematic text-xl uppercase tracking-widest pointer-events-none">Select a message</div>';
             saveGame(); updateUI(); switchTab('tab-production');
         };
 
@@ -614,56 +720,68 @@
         function renderProduction() {
             const c = document.getElementById('prod-container');
             const p = state.activeProject;
-            document.getElementById('prod-active-icon').className = p?.phase === 'filming' ? "fa-solid fa-circle text-studio-crimson text-[8px] animate-pulse" : "hidden";
+            document.getElementById('prod-active-icon').className = p?.phase === 'filming' ? "fa-solid fa-circle text-studio-crimson text-[8px] animate-pulse shadow-[0_0_10px_rgba(225,29,72,0.8)]" : "hidden";
 
-            if(!p) return c.innerHTML = `<div class="m-auto text-center"><h2 class="text-2xl text-gray-500 font-cinematic uppercase">No Active Production</h2></div>`;
+            if(!p) return c.innerHTML = `<div class="m-auto text-center"><i class="fa-solid fa-video-slash text-6xl text-slate-800 mb-4"></i><h2 class="text-2xl text-slate-600 font-cinematic uppercase tracking-widest">Studio Lot Empty</h2><p class="text-slate-500 text-xs mt-2">Initialize or acquire a script.</p></div>`;
 
             if(p.phase === 'assembly') {
                 let est = GENRES[p.genre].baseCost + (assemblyDraft.dir?.fee||0) + (assemblyDraft.actor?.fee||0);
                 c.innerHTML = `
-                    <div class="text-center mb-6"><h2 class="font-cinematic text-3xl font-bold text-white uppercase">${p.title}</h2><p class="text-studio-gold text-xs uppercase tracking-widest mt-1">${p.genre}</p></div>
-                    <div class="flex-1 overflow-y-auto space-y-6">
+                    <div class="text-center mb-8 border-b border-slate-800 pb-6"><h2 class="font-cinematic text-3xl font-bold text-white uppercase tracking-widest">${p.title}</h2><p class="text-studio-gold text-xs uppercase tracking-[0.2em] mt-2">${p.genre} • Pre-Production</p></div>
+                    <div class="flex-1 overflow-y-auto space-y-8 custom-scrollbar pr-2 relative z-10">
                         <div>
-                            <p class="text-xs text-gray-400 uppercase tracking-widest mb-3">Director</p>
-                            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">${DIRECTORS.map(d=>`<div class="talent-card rounded-lg p-3 flex gap-3 items-center ${assemblyDraft.dir?.id===d.id?'selected':''}" onclick="selTalent('dir','${d.id}')"><img src="${d.pic}" class="w-10 h-10 rounded object-cover"><div><p class="text-xs font-bold text-white">${d.name}</p><p class="text-[10px] text-green-400">${formatINR(d.fee)}</p></div></div>`).join('')}</div>
+                            <p class="text-xs font-bold text-gray-400 uppercase tracking-[0.2em] mb-4">Select Director</p>
+                            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">${DIRECTORS.map(d=>`<div class="talent-card rounded-xl p-4 flex gap-4 items-center ${assemblyDraft.dir?.id===d.id?'selected':''}" onclick="selTalent('dir','${d.id}')"><img src="${d.pic}" class="w-12 h-12 rounded-full object-cover border border-slate-700"><div class="flex-1"><p class="text-sm font-bold text-white truncate">${d.name}</p><p class="text-[10px] text-green-400 font-bold mb-1">${formatINR(d.fee)}</p><div class="w-full bg-slate-800 h-1 rounded"><div class="bg-studio-gold h-1 rounded" style="width:${getRel(d.id)}%"></div></div><p class="text-[8px] text-gray-500 mt-0.5">Rel: ${getRel(d.id)}</p></div></div>`).join('')}</div>
                         </div>
                         <div>
-                            <p class="text-xs text-gray-400 uppercase tracking-widest mb-3">Lead Actor</p>
-                            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">${ACTORS.map(a=>`<div class="talent-card rounded-lg p-3 flex gap-3 items-center ${assemblyDraft.actor?.id===a.id?'selected':''}" onclick="selTalent('actor','${a.id}')"><img src="${a.pic}" class="w-10 h-10 rounded object-cover"><div><p class="text-xs font-bold text-white">${a.name}</p><p class="text-[10px] text-green-400">${formatINR(a.fee)}</p></div></div>`).join('')}</div>
+                            <p class="text-xs font-bold text-gray-400 uppercase tracking-[0.2em] mb-4">Select Lead Actor</p>
+                            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">${ACTORS.map(a=>`<div class="talent-card rounded-xl p-4 flex gap-4 items-center ${assemblyDraft.actor?.id===a.id?'selected':''}" onclick="selTalent('actor','${a.id}')"><img src="${a.pic}" class="w-12 h-12 rounded-full object-cover border border-slate-700"><div class="flex-1"><p class="text-sm font-bold text-white truncate">${a.name}</p><p class="text-[10px] text-green-400 font-bold mb-1">${formatINR(a.fee)}</p><div class="w-full bg-slate-800 h-1 rounded"><div class="bg-studio-gold h-1 rounded" style="width:${getRel(a.id)}%"></div></div><p class="text-[8px] text-gray-500 mt-0.5">Rel: ${getRel(a.id)}</p></div></div>`).join('')}</div>
                         </div>
                     </div>
-                    <div class="mt-4 p-4 bg-black border border-studio-gold/30 rounded-xl flex justify-between items-center">
-                        <div><p class="text-[10px] text-gray-400 uppercase tracking-widest">Total Budget</p><p class="text-xl font-bold text-white">${formatINR(est)}</p></div>
-                        <button onclick="lockBudget(${est})" class="bg-studio-gold text-black px-6 py-3 rounded uppercase font-bold text-xs" ${(!assemblyDraft.dir || !assemblyDraft.actor)?'disabled':''}>Start Filming</button>
+                    <div class="mt-6 p-6 bg-slate-900 border border-studio-gold/30 rounded-2xl flex justify-between items-center shadow-lg relative z-10">
+                        <div><p class="text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-1">Production Budget</p><p class="text-2xl font-bold text-white font-cinematic">${formatINR(est)}</p></div>
+                        <button onclick="lockBudget(${est})" class="bg-studio-gold hover:bg-yellow-300 text-black px-8 py-4 rounded-xl uppercase font-bold text-sm tracking-widest transition disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_15px_rgba(251,191,36,0.2)]" ${(!assemblyDraft.dir || !assemblyDraft.actor)?'disabled':''}>Commence Filming</button>
                     </div>`;
             } else if(p.phase === 'filming') {
                 c.innerHTML = `
-                    <div class="m-auto text-center w-full max-w-2xl">
-                        <i class="fa-solid fa-video text-5xl text-studio-crimson mb-4 animate-pulse"></i>
-                        <h2 class="font-cinematic text-3xl font-bold text-white uppercase mb-6">${p.title}</h2>
+                    <video autoplay loop muted playsinline class="prod-video-bg"><source src="https://assets.mixkit.co/videos/preview/mixkit-film-crew-working-on-a-movie-set-42841-large.mp4" type="video/mp4"></video>
+                    <div class="prod-overlay"></div>
+                    <div class="m-auto text-center w-full max-w-2xl relative z-10">
+                        <i class="fa-solid fa-video text-5xl text-studio-crimson mb-6 animate-pulse drop-shadow-[0_0_20px_rgba(225,29,72,0.8)]"></i>
+                        <h2 class="font-cinematic text-4xl font-bold text-white uppercase mb-2 tracking-widest drop-shadow-lg">${p.title}</h2>
+                        <p class="text-xs text-studio-gold uppercase tracking-[0.3em] mb-10">Now Filming</p>
                         
-                        <div class="w-full bg-gray-900 rounded-full h-4 mb-2 overflow-hidden border border-gray-700">
-                            <div class="bg-studio-crimson h-full transition-all duration-300" style="width: ${(p.daysElapsed/p.daysTotal)*100}%"></div>
+                        <div class="w-full bg-slate-900/80 rounded-full h-6 mb-3 overflow-hidden border border-slate-700 shadow-inner backdrop-blur-sm">
+                            <div class="bg-studio-crimson h-full transition-all duration-300 relative overflow-hidden" style="width: ${(p.daysElapsed/p.daysTotal)*100}%">
+                                <div class="absolute inset-0 bg-white/20 w-full animate-[shimmer_2s_infinite]"></div>
+                            </div>
                         </div>
-                        <div class="flex justify-between text-xs text-gray-400 font-bold uppercase mb-8"><span>Day ${p.daysElapsed}</span><span>${p.daysTotal} Total</span></div>
+                        <div class="flex justify-between text-xs text-gray-300 font-bold uppercase mb-10 tracking-widest"><span>Day ${p.daysElapsed}</span><span>${p.daysTotal} Total</span></div>
                         
-                        <div class="flex justify-center gap-6">
-                            <div class="bg-black p-4 rounded-xl border border-gray-800"><p class="text-[10px] text-gray-500 uppercase">Hype</p><p class="text-2xl font-bold text-studio-gold">${Math.floor(p.hype)}</p></div>
-                            <button onclick="speedUp()" class="bg-gray-800 hover:bg-gray-700 border border-gray-600 text-white px-6 rounded-xl text-xs uppercase font-bold flex items-center gap-2"><i class="fa-solid fa-forward-fast"></i> Speed Up (₹10L)</button>
+                        <div class="flex justify-center gap-8">
+                            <div class="bg-slate-900/80 backdrop-blur-md p-5 rounded-2xl border border-slate-700 min-w-[120px]"><p class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">Hype</p><p class="text-3xl font-bold text-studio-gold font-cinematic">${Math.floor(p.hype)}</p></div>
+                            <div class="bg-slate-900/80 backdrop-blur-md p-5 rounded-2xl border border-slate-700 min-w-[120px]"><p class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">Spent</p><p class="text-xl font-bold text-red-400 mt-1">${formatINR(p.prodCost)}</p></div>
                         </div>
-                        <p class="text-xs text-gray-500 mt-6">Go to Social Media to increase HYPE via infinite posting!</p>
+                        <div class="mt-8 flex justify-center">
+                            <button onclick="speedUp()" class="bg-slate-800/80 hover:bg-slate-700 backdrop-blur-md border border-slate-600 text-white px-8 py-3 rounded-xl text-xs uppercase font-bold flex items-center gap-3 transition"><i class="fa-solid fa-forward-fast"></i> Expedite (₹20L)</button>
+                        </div>
+                        <p class="text-[10px] text-gray-400 mt-8 uppercase tracking-widest bg-black/50 py-2 px-4 rounded-full inline-block backdrop-blur-sm border border-white/5">Manage Social Media to build Hype before release.</p>
                     </div>`;
             } else if(p.phase === 'theaters') {
-                c.innerHTML = `<div class="flex-1 flex flex-col"><div class="text-center mb-4"><h2 class="font-cinematic text-2xl font-bold text-white uppercase">${p.title} Box Office</h2></div><div class="chart-container flex-1"><canvas id="boChart"></canvas></div><div class="mt-4 text-center"><p class="text-xs text-gray-400 uppercase tracking-widest mb-1">Total Gross</p><p id="bo-gross" class="text-3xl text-green-400 font-bold font-cinematic mb-4">₹0</p><button id="btn-conclude" class="hidden bg-studio-gold text-black px-8 py-3 rounded font-bold uppercase" onclick="finishTheaters()">Conclude Run</button></div></div>`;
+                c.innerHTML = `<div class="flex-1 flex flex-col relative z-10"><div class="text-center mb-6"><h2 class="font-cinematic text-3xl font-bold text-white uppercase tracking-widest">${p.title}</h2><p class="text-xs text-studio-gold uppercase tracking-[0.2em] mt-1">Theatrical Run</p></div><div class="chart-container flex-1 bg-slate-900/50 rounded-2xl p-4 border border-slate-800 backdrop-blur-sm"><canvas id="boChart"></canvas></div><div class="mt-8 flex flex-col items-center"><p class="text-xs text-gray-400 uppercase tracking-widest mb-2">Total Gross Box Office</p><p id="bo-gross" class="text-5xl text-green-400 font-bold font-cinematic mb-6 drop-shadow-[0_0_15px_rgba(74,222,128,0.3)]">₹0</p><button id="btn-conclude" class="hidden bg-studio-gold hover:bg-yellow-300 text-black px-10 py-4 rounded-xl font-bold uppercase tracking-widest transition shadow-lg" onclick="finishTheaters()">Conclude Theatrical Run</button></div></div>`;
                 if(!chartInstance) setTimeout(runBO, 100);
             }
         }
 
         window.selTalent = (t, id) => { assemblyDraft[t] = (t==='dir'?DIRECTORS:ACTORS).find(x=>x.id===id); renderProduction(); };
         window.lockBudget = (cost) => {
-            if(state.funds < cost) return showToast("Need more funds!");
-            state.funds -= cost; state.activeProject.dir = assemblyDraft.dir; state.activeProject.actor = assemblyDraft.actor;
-            state.activeProject.prodCost = cost; state.activeProject.phase = 'filming'; assemblyDraft={dir:null,actor:null};
+            if(state.funds < cost) return showToast("Need more funds!", "Error");
+            state.funds -= cost; 
+            state.activeProject.dir = assemblyDraft.dir; 
+            state.activeProject.actor = assemblyDraft.actor;
+            state.activeProject.prodCost = cost; 
+            state.activeProject.phase = 'filming'; 
+            assemblyDraft={dir:null,actor:null};
             saveGame(); updateUI(); runProdTimer();
         };
 
@@ -672,25 +790,81 @@
             prodTimer = setInterval(() => {
                 let p = state.activeProject;
                 if(!p || p.phase !== 'filming') return clearInterval(prodTimer);
-                p.daysElapsed++;
                 
-                // Dilemma chance based on diff
-                let dC = state.diff==='hardcore'?0.1 : (state.diff==='hard'?0.05 : 0.01);
-                if(Math.random() < dC) {
-                    p.hype -= 5; // bad event reduces hype silently to keep it simple and smooth, no hard blocking modal.
-                    showToast("Production issue! Hype dropped by 5.", "Set Problem");
+                // Dilemma System
+                let dC = state.diff==='hardcore'?0.15 : (state.diff==='hard'?0.08 : 0.03);
+                if(Math.random() < dC && !document.getElementById('modal-dilemma').classList.contains('flex')) {
+                    clearInterval(prodTimer); // Pause game
+                    triggerDilemma();
+                    return;
                 }
 
+                p.daysElapsed++;
+
                 if(p.daysElapsed >= p.daysTotal) {
-                    clearInterval(prodTimer); p.phase = 'theaters'; showToast("Filming Wrapped! Ready for Theaters.");
+                    clearInterval(prodTimer); p.phase = 'theaters'; showToast("Filming Wrapped! Ready for Theaters.", "Production Complete");
                 }
                 saveGame();
                 if(window.currentTab === 'tab-production') renderProduction();
-            }, 1500);
+            }, 1500); // 1.5s per day
         }
+
+        function triggerDilemma() {
+            const p = state.activeProject;
+            const events = [
+                {
+                    title: "Actor Tantrum",
+                    desc: `${p.actor.name} refuses to come out of the trailer due to script changes.`,
+                    options: [
+                        { text: "Bribe them (₹50 Lakhs)", action: () => { state.funds-=5000000; state.relations[p.actor.id] = Math.min(100, state.relations[p.actor.id]+10); } },
+                        { text: "Force them to shoot", action: () => { p.hype-=10; state.relations[p.actor.id] -= 20; } }
+                    ]
+                },
+                {
+                    title: "Rival Studio Clash",
+                    desc: `A competitor announced a similar ${p.genre} movie on your release date!`,
+                    options: [
+                        { text: "Aggressive Marketing (₹1 Cr)", action: () => { state.funds-=10000000; p.hype+=15; } },
+                        { text: "Ignore them", action: () => { p.hype-=15; } }
+                    ]
+                },
+                {
+                    title: "Director's Vision",
+                    desc: `${p.dir.name} wants extra budget for a massive practical explosion instead of CGI.`,
+                    options: [
+                        { text: "Approve (₹2 Cr)", action: () => { state.funds-=20000000; p.prodCost+=20000000; p.hype+=20; state.relations[p.dir.id] = Math.min(100, state.relations[p.dir.id]+15); } },
+                        { text: "Reject (Use CGI)", action: () => { state.relations[p.dir.id]-=15; } }
+                    ]
+                }
+            ];
+
+            let ev = events[Math.floor(Math.random() * events.length)];
+            document.getElementById('dilemma-title').innerText = ev.title;
+            document.getElementById('dilemma-desc').innerText = ev.desc;
+            
+            let html = '';
+            ev.options.forEach((opt, idx) => {
+                html += `<button id="dilemma-btn-${idx}" class="w-full bg-slate-900 border border-slate-700 hover:border-studio-gold text-white px-6 py-4 rounded-xl uppercase font-bold text-xs tracking-widest transition">${opt.text}</button>`;
+            });
+            document.getElementById('dilemma-options').innerHTML = html;
+            
+            document.getElementById('modal-dilemma').classList.remove('hidden');
+            document.getElementById('modal-dilemma').classList.add('flex');
+
+            ev.options.forEach((opt, idx) => {
+                document.getElementById(`dilemma-btn-${idx}`).onclick = () => {
+                    opt.action();
+                    document.getElementById('modal-dilemma').classList.add('hidden');
+                    document.getElementById('modal-dilemma').classList.remove('flex');
+                    updateUI();
+                    runProdTimer(); // Resume
+                };
+            });
+        }
+
         window.speedUp = () => {
-            if(state.funds < 1000000) return;
-            state.funds -= 1000000; state.activeProject.daysElapsed += 5;
+            if(state.funds < 2000000) return showToast("Need ₹20L to speed up", "Error");
+            state.funds -= 2000000; state.activeProject.prodCost += 2000000; state.activeProject.daysElapsed += 5;
             if(state.activeProject.daysElapsed > state.activeProject.daysTotal) state.activeProject.daysElapsed = state.activeProject.daysTotal;
             saveGame(); if(window.currentTab==='tab-production') renderProduction();
         };
@@ -700,16 +874,26 @@
             const p = state.activeProject;
             if(chartInstance) chartInstance.destroy();
             const ctx = document.getElementById('boChart').getContext('2d');
-            Chart.defaults.color = '#555';
-            chartInstance = new Chart(ctx, { type: 'line', data: { labels: [], datasets: [{ label: 'Gross (Cr)', data: [], borderColor: '#D4AF37', fill: false, tension: 0.3 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
+            Chart.defaults.color = '#64748b';
+            chartInstance = new Chart(ctx, { 
+                type: 'line', 
+                data: { labels: [], datasets: [{ label: 'Daily Gross (Cr)', data: [], borderColor: '#fbbf24', backgroundColor: 'rgba(251, 191, 36, 0.1)', fill: true, tension: 0.4 }] }, 
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { color: '#1e293b' } }, x: { grid: { color: '#1e293b' } } } } 
+            });
 
             let day = 1; let gross = p.gross || 0;
-            let daily = (p.hype / 100) * (p.prodCost * 0.4);
+            // Algorithm: Hype + Talent Skills drive initial opening
+            let talentFactor = ((p.dir?.skill||50) + (p.actor?.skill||50)) / 200; // 0.5 to 1.0
+            let daily = Math.max(1000000, (p.hype / 100) * (p.prodCost * 0.5) * talentFactor);
 
             let iv = setInterval(() => {
                 if(day > 14) { clearInterval(iv); document.getElementById('btn-conclude').classList.remove('hidden'); return; }
-                if(day>1) daily *= (day===2||day===3||day===9||day===10) ? 1.1 : 0.8;
-                daily *= (0.9 + Math.random()*0.2);
+                
+                // Drops & Weekend bumps
+                if(day===1) daily = daily; // Opening
+                else if(day===2 || day===3 || day===9 || day===10) daily *= (1.05 + Math.random()*0.1); // Weekend boost
+                else daily *= (0.75 + Math.random()*0.15); // Weekday drop
+                
                 gross += daily; p.gross = gross;
                 
                 chartInstance.data.labels.push(`Day ${day}`);
@@ -717,106 +901,150 @@
                 chartInstance.update();
                 document.getElementById('bo-gross').innerText = formatINR(gross);
                 day++; saveGame();
-            }, 500);
+            }, 600); // slightly slower chart for suspense
         }
 
         window.finishTheaters = () => {
             const p = state.activeProject;
-            state.funds += (p.gross * 0.5); // 50% distributor share
+            const studioShare = p.gross * 0.5; // 50% goes to theaters
+            state.funds += studioShare; 
+            
             let offers = [
-                {n: 'NetFlex', amt: p.prodCost * 0.7}, {n: 'PrimeVideo', amt: p.prodCost * 0.6}, {n: 'HotStar', amt: p.prodCost * 0.5}
+                {n: 'NetFlex', amt: p.prodCost * (0.5 + Math.random()*0.4)}, 
+                {n: 'PrimeVideo', amt: p.prodCost * (0.4 + Math.random()*0.4)}, 
+                {n: 'HotStar', amt: p.prodCost * (0.3 + Math.random()*0.4)}
             ];
             offers.forEach(o => {
-                state.mails.push({ id: genId(), type: 'ott', read: false, title: `${o.n} Offer: ${p.title}`, body: `We offer ${formatINR(o.amt)} for exclusive digital rights.`, data: { offer: o.amt } });
+                state.mails.push({ id: genId(), type: 'ott', read: false, title: `${o.n} Offer: ${p.title}`, body: `Your theatrical run is over.\n\nWe offer ${formatINR(o.amt)} for exclusive 5-year digital streaming rights.`, data: { offer: o.amt } });
             });
-            showToast("Theatrical Run Concluded. Check OTT offers.", "Success");
+            showToast("Theatrical Run Concluded. 50% Share added. Check OTT offers.", "Success");
             
-            const cost = p.prodCost + p.scriptCost; const rev = (p.gross*0.5);
-            let verdict = rev > cost*1.5 ? 'BLOCKBUSTER' : (rev > cost ? 'HIT' : 'FLOP');
-            if(verdict==='HIT'||verdict==='BLOCKBUSTER') state.rep = Math.min(5, state.rep+1); else state.rep = Math.max(1, state.rep-1);
+            const totalBudget = p.prodCost + p.scriptCost; 
+            let verdict = 'FLOP';
+            if (studioShare > totalBudget * 2) verdict = 'BLOCKBUSTER';
+            else if (studioShare > totalBudget * 1.2) verdict = 'HIT';
+            else if (studioShare > totalBudget * 0.8) verdict = 'AVERAGE';
+            else if (studioShare < totalBudget * 0.4) verdict = 'DISASTER';
 
-            state.pastProjects.unshift({ id: p.id, title: p.title, genre: p.genre, cost, gross: rev, verdict, img: `https://picsum.photos/seed/${p.id}/400/600` });
+            if(verdict==='HIT'||verdict==='BLOCKBUSTER') state.rep = Math.min(5, state.rep+1); 
+            else if (verdict==='FLOP'||verdict==='DISASTER') state.rep = Math.max(1, state.rep-1);
+
+            state.pastProjects.unshift({ id: p.id, title: p.title, genre: p.genre, cost: totalBudget, gross: studioShare, verdict, img: p.poster });
             state.activeProject = null; chartInstance = null;
-            saveGame(); updateUI(); switchTab('tab-dashboard');
+            saveGame(); updateUI(); switchTab('tab-history');
         };
 
         window.acceptOTT = (id) => {
-            const m = state.mails.find(x=>x.id===id); state.funds += m.data.offer;
-            // Update last project revenue
+            const m = state.mails.find(x=>x.id===id); 
+            state.funds += m.data.offer;
             if(state.pastProjects.length > 0) state.pastProjects[0].gross += m.data.offer;
             state.mails = state.mails.filter(x=>x.type!=='ott'); // clear all competing offers
-            document.getElementById('mail-detail').innerHTML='';
+            document.getElementById('mail-detail').innerHTML='<div class="absolute inset-0 flex items-center justify-center text-slate-600 font-cinematic text-xl uppercase tracking-widest pointer-events-none">Select a message</div>';
             saveGame(); updateUI(); switchTab('tab-history');
         };
 
         // --- HISTORY ---
         function renderHistory() {
             const grid = document.getElementById('history-grid');
-            grid.innerHTML = state.pastProjects.map(x => `
-                <div class="glass-card rounded-xl overflow-hidden group">
-                    <div class="h-64 bg-black relative"><img src="${x.img}" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition"><div class="absolute bottom-3 left-3"><h4 class="font-cinematic text-xl font-bold text-white uppercase">${x.title}</h4></div><span class="absolute top-3 right-3 text-[9px] font-bold px-2 py-1 rounded bg-black/80 ${x.verdict==='BLOCKBUSTER'?'text-studio-gold':x.verdict==='HIT'?'text-green-400':'text-red-500'}">${x.verdict}</span></div>
-                    <div class="p-4 bg-black border-t border-gray-800"><div class="flex justify-between text-xs text-gray-400 mb-1"><span>Budget</span><span>${formatINR(x.cost)}</span></div><div class="flex justify-between text-xs text-gray-400"><span>Revenue</span><span class="text-green-400 font-bold">${formatINR(x.gross)}</span></div></div>
-                </div>`).join('');
+            if(state.pastProjects.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center text-slate-600 font-cinematic text-xl uppercase tracking-widest mt-20">No archived projects.</div>`;
+                return;
+            }
+            grid.innerHTML = state.pastProjects.map(x => {
+                let vColor = x.verdict==='BLOCKBUSTER'?'text-studio-gold':x.verdict==='HIT'?'text-green-400':x.verdict==='AVERAGE'?'text-blue-400':'text-red-500';
+                return `
+                <div class="glass-card rounded-2xl overflow-hidden group hover:scale-[1.03] transition duration-300">
+                    <div class="h-80 bg-black relative"><img src="${x.img}" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition duration-500"><div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div><div class="absolute bottom-4 left-4 right-4"><h4 class="font-cinematic text-2xl font-bold text-white uppercase drop-shadow-md leading-tight">${x.title}</h4><p class="text-[10px] text-gray-300 uppercase tracking-widest mt-1">${x.genre}</p></div><span class="absolute top-4 right-4 text-[10px] font-bold px-3 py-1.5 rounded-full bg-black/80 border border-slate-700 uppercase tracking-widest shadow-lg ${vColor}">${x.verdict}</span></div>
+                    <div class="p-5 bg-slate-900/90 border-t border-slate-800"><div class="flex justify-between text-xs text-gray-400 mb-2 font-bold uppercase tracking-wide"><span>Total Budget</span><span>${formatINR(x.cost)}</span></div><div class="flex justify-between text-xs font-bold uppercase tracking-wide"><span>Studio Revenue</span><span class="text-green-400">${formatINR(x.gross)}</span></div></div>
+                </div>`
+            }).join('');
         }
 
-        // --- SOCIAL MEDIA (INFINITE POSTING & COMMENTS) ---
+        // --- SOCIAL MEDIA ---
         function startSocialSim() {
             if(socialTimer) clearInterval(socialTimer);
             socialTimer = setInterval(() => {
                 let u = false;
                 state.social.linta.posts.forEach(p => {
-                    if(p.likes < p.pot) { p.likes += Math.floor(Math.random()*50); u=true; }
-                    if(Math.random() < 0.3) { p.comments.unshift(COMMENTS_MIX[Math.floor(Math.random()*COMMENTS_MIX.length)]); if(p.comments.length>10) p.comments.pop(); u=true; }
+                    if(p.likes < p.pot) { p.likes += Math.floor(Math.random()*150); u=true; }
+                    if(Math.random() < 0.4) { 
+                        let pool = Math.random() > 0.5 ? COMMENT_POOL.pos : (Math.random() > 0.5 ? COMMENT_POOL.neg : COMMENT_POOL.gen);
+                        p.comments.unshift(pool[Math.floor(Math.random()*pool.length)]); 
+                        if(p.comments.length>15) p.comments.pop(); u=true; 
+                    }
                 });
                 state.social.yt.videos.forEach(v => {
-                    if(v.views < v.pot) { v.views += Math.floor(Math.random()*150); u=true; }
-                    if(Math.random() < 0.3) { v.comments.unshift(COMMENTS_MIX[Math.floor(Math.random()*COMMENTS_MIX.length)]); if(v.comments.length>10) v.comments.pop(); u=true; }
+                    if(v.views < v.pot) { v.views += Math.floor(Math.random()*500); u=true; }
+                    if(Math.random() < 0.4) { 
+                        let pool = Math.random() > 0.5 ? COMMENT_POOL.pos : (Math.random() > 0.5 ? COMMENT_POOL.neg : COMMENT_POOL.gen);
+                        v.comments.unshift(pool[Math.floor(Math.random()*pool.length)]); 
+                        if(v.comments.length>15) v.comments.pop(); u=true; 
+                    }
                 });
                 if(u) {
+                    state.followers = Math.floor(state.social.linta.posts.reduce((a,b)=>a+b.likes,0)*0.1);
+                    state.subs = Math.floor(state.social.yt.videos.reduce((a,b)=>a+b.views,0)*0.05);
                     if(window.currentTab === 'tab-linta') renderLinta();
                     if(window.currentTab === 'tab-youtube') renderYT();
-                    document.getElementById('dash-stat-fans').innerText = Math.floor(state.social.linta.posts.reduce((a,b)=>a+b.likes,0) + state.social.yt.videos.reduce((a,b)=>a+b.views,0));
+                    document.getElementById('dash-stat-fans').innerText = (state.followers + state.subs).toLocaleString();
                 }
-            }, 2000);
+            }, 2500);
         }
 
         window.postSocial = (plat) => {
             const p = state.activeProject;
-            if(!p || p.phase !== 'filming') return showToast("Requires active filming production.");
-            p.hype = Math.min(100, p.hype + 5); // Infinite posting allowed, each adds 5 hype
+            if(!p || p.phase !== 'filming') return showToast("Requires active filming production.", "Error");
+            p.hype = Math.min(100, p.hype + 8); 
             
             if(plat === 'linta') {
-                state.social.linta.posts.unshift({ id: genId(), img: `https://picsum.photos/seed/${genId()}/400/400`, likes: 0, pot: 5000 + Math.random()*5000, comments: [] });
+                state.social.linta.posts.unshift({ id: genId(), img: getAIPoster(p.title, p.genre), likes: 0, pot: 10000 + Math.random()*20000, comments: [] });
             } else {
-                state.social.yt.videos.unshift({ id: genId(), title: `${p.title} - Official Drop`, views: 0, pot: 20000 + Math.random()*20000, comments: [] });
+                state.social.yt.videos.unshift({ id: genId(), title: `${p.title} | Official Teaser`, img: getAIYTThumb(p.title, p.genre), views: 0, pot: 50000 + Math.random()*100000, comments: [] });
             }
             saveGame(); updateUI();
-            showToast("Content Live! Hype increased.", "Social Drop");
+            showToast("Marketing asset live! Hype increased.", "Social Drop");
         };
 
         function renderLinta() {
             document.getElementById('linta-posts').innerText = state.social.linta.posts.length;
-            document.getElementById('linta-feed').innerHTML = state.social.linta.posts.map(p => `
-                <div class="mb-4 bg-black border-b border-linta-border">
-                    <div class="flex items-center gap-3 p-3"><img src="https://picsum.photos/seed/studio/100" class="w-8 h-8 rounded-full"><span class="font-bold text-sm text-white">${state.name.replace(/\s+/g,'').toLowerCase()}</span></div>
-                    <img src="${p.img}" class="w-full aspect-square object-cover">
+            document.getElementById('linta-followers').innerText = (state.followers || 0).toLocaleString();
+            
+            const feed = document.getElementById('linta-feed');
+            if(state.social.linta.posts.length === 0) return;
+            
+            let shortName = state.name.replace(/\s+/g,'').toLowerCase();
+            feed.innerHTML = state.social.linta.posts.map(p => `
+                <div class="mb-2 bg-black border-b border-[#262626]">
+                    <div class="flex items-center gap-3 p-3"><img src="https://ui-avatars.com/api/?name=${state.name.charAt(0)}&background=1e293b&color=fbbf24" class="w-8 h-8 rounded-full object-cover"><span class="font-bold text-sm text-white">${shortName}</span><i class="fa-solid fa-circle-check text-blue-500 text-xs"></i></div>
+                    <img src="${p.img}" class="w-full object-cover">
                     <div class="p-4">
-                        <div class="flex gap-4 text-2xl text-white mb-2"><i class="fa-solid fa-heart text-red-500"></i><i class="fa-regular fa-comment"></i></div>
+                        <div class="flex gap-4 text-2xl text-white mb-3"><i class="fa-solid fa-heart text-red-500"></i><i class="fa-regular fa-comment"></i><i class="fa-regular fa-paper-plane"></i></div>
                         <p class="font-bold text-sm text-white mb-2">${p.likes.toLocaleString()} likes</p>
-                        <div class="space-y-1">${p.comments.map(c=>`<p class="text-xs text-gray-300"><span class="font-bold text-white mr-1">user:</span>${c}</p>`).join('')}</div>
+                        <div class="space-y-1">${p.comments.map(c=>`<p class="text-[13px] text-gray-300 leading-tight"><span class="font-bold text-white mr-1">user_${Math.floor(Math.random()*999)}</span>${c}</p>`).join('')}</div>
                     </div>
                 </div>`).join('');
         }
 
         function renderYT() {
-            document.getElementById('yt-feed').innerHTML = state.social.yt.videos.map(v => `
-                <div class="mb-6 bg-black rounded-xl overflow-hidden border border-yt-border p-4 flex flex-col lg:flex-row gap-4">
-                    <div class="w-full lg:w-1/2 aspect-video bg-gray-800 relative rounded"><img src="https://picsum.photos/seed/${v.id}/600/337" class="w-full h-full object-cover"><div class="absolute inset-0 flex items-center justify-center"><i class="fa-solid fa-play text-4xl text-white/50"></i></div></div>
+            document.getElementById('yt-videos-count').innerText = state.social.yt.videos.length;
+            document.getElementById('yt-subs').innerText = (state.subs || 0).toLocaleString();
+            
+            const feed = document.getElementById('yt-feed');
+            if(state.social.yt.videos.length === 0) return;
+
+            feed.innerHTML = state.social.yt.videos.map(v => `
+                <div class="mb-6 bg-[#0f0f0f] flex flex-col lg:flex-row gap-4">
+                    <div class="w-full lg:w-[360px] aspect-video bg-[#181818] relative rounded-xl overflow-hidden group cursor-pointer">
+                        <img src="${v.img}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition"></div>
+                        <span class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-1.5 py-0.5 rounded">1:45</span>
+                    </div>
                     <div class="flex-1">
-                        <h3 class="text-lg font-bold text-white mb-1">${v.title}</h3>
-                        <p class="text-xs text-gray-400 mb-4">${v.views.toLocaleString()} views • Studio Official</p>
-                        <div class="bg-[#272727] rounded p-3 text-xs space-y-2 h-32 overflow-y-auto custom-scrollbar">
-                            ${v.comments.map(c=>`<p class="text-gray-300 border-b border-[#3f3f3f] pb-1"><span class="font-bold text-gray-400 mr-2">@fan:</span>${c}</p>`).join('')}
+                        <h3 class="text-lg font-bold text-white mb-1 leading-tight line-clamp-2">${v.title}</h3>
+                        <p class="text-xs text-gray-400 mb-4">${v.views.toLocaleString()} views • 2 hours ago</p>
+                        <div class="bg-[#181818] rounded-xl p-4 text-xs h-32 overflow-y-auto custom-scrollbar border border-[#272727]">
+                            <p class="font-bold text-white mb-2 border-b border-[#272727] pb-2">Comments</p>
+                            ${v.comments.map(c=>`<div class="flex gap-2 mb-3"><img src="https://ui-avatars.com/api/?name=U&background=random" class="w-6 h-6 rounded-full"><div class="flex-1"><p class="text-[10px] text-gray-500 mb-0.5">@user_${Math.floor(Math.random()*9999)}</p><p class="text-gray-300 text-[13px]">${c}</p></div></div>`).join('')}
                         </div>
                     </div>
                 </div>`).join('');
