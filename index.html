@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UR STUDIO | Cinematic Tycoon</title>
+    <title>UR STUDIO | Master Cinematic Tycoon</title>
     
     <!-- Dependencies -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -22,7 +22,7 @@
                     },
                     colors: {
                         studio: {
-                            black: '#050505',
+                            black: '#030303',
                             dark: '#0a0a0a',
                             gold: '#D4AF37',
                             golddim: '#aa8c2c',
@@ -36,24 +36,25 @@
     </script>
 
     <style>
-        body { background-color: #050505; color: #ffffff; overflow-x: hidden; }
-        .bg-layer { position: fixed; inset: 0; z-index: -2; background-image: url('https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059&auto=format&fit=crop'); background-size: cover; background-position: center; opacity: 0.1; }
-        .bg-overlay { position: fixed; inset: 0; z-index: -1; background: radial-gradient(circle at 50% 50%, rgba(20,20,20,0.8) 0%, rgba(5,5,5,1) 100%); }
+        body { background-color: #030303; color: #ffffff; overflow-x: hidden; }
+        .bg-layer { position: fixed; inset: 0; z-index: -2; background-image: url('https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059&auto=format&fit=crop'); background-size: cover; background-position: center; opacity: 0.15; }
+        .bg-overlay { position: fixed; inset: 0; z-index: -1; background: radial-gradient(circle at 50% 50%, rgba(10,10,10,0.8) 0%, rgba(3,3,3,1) 100%); }
         
-        .glass-panel { background: rgba(10, 10, 10, 0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .glass-card { background: linear-gradient(145deg, rgba(20,20,20,0.9), rgba(10,10,10,0.9)); border: 1px solid rgba(212, 175, 55, 0.15); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5); }
+        .glass-panel { background: rgba(10, 10, 10, 0.75); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .glass-card { background: linear-gradient(145deg, rgba(25,25,25,0.9), rgba(10,10,10,0.9)); border: 1px solid rgba(212, 175, 55, 0.15); box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); }
         
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 2px; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+        ::-webkit-scrollbar-thumb { background: rgba(212,175,55,0.5); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
 
         /* Sidebar active states */
-        .nav-item.active { background: linear-gradient(90deg, rgba(212,175,55,0.2) 0%, transparent 100%); border-left: 3px solid #D4AF37; color: #D4AF37; }
+        .nav-item.active { background: linear-gradient(90deg, rgba(212,175,55,0.2) 0%, transparent 100%); border-left: 4px solid #D4AF37; color: #D4AF37; }
         
         /* Selection Cards */
-        .talent-card { border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.6); transition: all 0.2s ease; cursor: pointer; }
-        .talent-card:hover { border-color: rgba(212, 175, 55, 0.5); transform: translateY(-2px); }
-        .talent-card.selected { border-color: #D4AF37; background: rgba(212, 175, 55, 0.15); box-shadow: 0 0 15px rgba(212, 175, 55, 0.2); }
+        .talent-card { border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.6); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; }
+        .talent-card:hover { border-color: rgba(212, 175, 55, 0.6); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
+        .talent-card.selected { border-color: #D4AF37; background: rgba(212, 175, 55, 0.15); box-shadow: 0 0 20px rgba(212, 175, 55, 0.25); }
 
         .stat-bar { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; width: 100%; margin-top: 2px; }
         .stat-fill { height: 100%; transition: width 0.5s ease; }
@@ -61,8 +62,12 @@
         .chart-container { position: relative; height: 350px; width: 100%; }
 
         /* Mail animations */
-        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
-        .mail-anim { animation: slideIn 0.3s ease forwards; }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+        .mail-anim { animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        
+        /* Modal Blur */
+        .modal-active { overflow: hidden; }
+        .modal-bg { backdrop-filter: blur(10px); }
     </style>
 </head>
 <body class="flex min-h-screen text-sm selection:bg-studio-gold selection:text-black">
@@ -71,26 +76,62 @@
     <div class="bg-overlay"></div>
 
     <!-- Loading Overlay -->
-    <div id="loading-overlay" class="fixed inset-0 bg-[#050505] z-[100] flex flex-col items-center justify-center transition-opacity duration-500">
-        <div class="w-12 h-12 border-2 border-studio-gold/20 border-t-studio-gold rounded-full animate-spin mb-4"></div>
-        <p class="font-cinematic text-studio-gold tracking-[0.3em] text-xs uppercase animate-pulse">Initializing Studio DB</p>
+    <div id="loading-overlay" class="fixed inset-0 bg-[#030303] z-[100] flex flex-col items-center justify-center transition-opacity duration-700">
+        <i class="fa-solid fa-film text-5xl text-studio-gold mb-6 animate-pulse drop-shadow-[0_0_15px_rgba(212,175,55,0.5)]"></i>
+        <div class="w-48 h-1 bg-white/10 rounded overflow-hidden">
+            <div class="h-full bg-studio-gold w-1/2 animate-[progress_1s_ease-in-out_infinite]"></div>
+        </div>
+        <p class="font-cinematic text-studio-gold tracking-[0.4em] text-[10px] uppercase mt-4">Connecting to Studio Servers</p>
     </div>
 
     <!-- Toast Notification -->
-    <div id="toast" class="fixed top-6 right-6 transform -translate-y-24 opacity-0 transition-all duration-400 z-[90] px-6 py-4 rounded-xl shadow-2xl backdrop-blur-md font-medium text-sm flex items-center gap-3 border pointer-events-none">
+    <div id="toast" class="fixed top-6 right-6 transform -translate-y-24 opacity-0 transition-all duration-500 z-[90] px-6 py-4 rounded-xl shadow-2xl backdrop-blur-md font-medium text-sm flex items-center gap-3 border pointer-events-none min-w-[300px]">
         <i id="toast-icon" class="fa-solid fa-circle-info"></i>
         <span id="toast-msg">Notification</span>
     </div>
 
-    <!-- ================= VIEW: LOGIN ================= -->
-    <main id="view-login" class="flex-1 flex flex-col items-center justify-center p-6 relative z-10 w-full">
-        <div class="text-center mb-12">
-            <i class="fa-solid fa-film text-6xl text-studio-gold mb-6 drop-shadow-[0_0_20px_rgba(212,175,55,0.5)]"></i>
-            <h1 class="font-cinematic text-5xl font-bold tracking-[0.2em] text-white mb-2 uppercase">UR Studio</h1>
-            <p class="text-xs text-gray-400 font-light tracking-[0.4em] uppercase mt-4">The Mogul Simulator</p>
+    <!-- MODAL: Create Original Script -->
+    <div id="modal-original" class="fixed inset-0 z-[80] bg-black/80 modal-bg flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+        <div class="glass-card w-full max-w-lg rounded-2xl p-8 transform scale-95 transition-transform duration-300" id="modal-original-card">
+            <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
+                <h3 class="font-cinematic text-2xl text-studio-gold uppercase tracking-widest">Create Original Script</h3>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <form id="form-original" class="space-y-5">
+                <div>
+                    <label class="block text-[10px] text-gray-400 uppercase tracking-widest mb-1">Movie Title</label>
+                    <input type="text" id="orig-title" required class="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white focus:border-studio-gold outline-none transition font-bold" placeholder="e.g. The Final Stand">
+                </div>
+                <div>
+                    <label class="block text-[10px] text-gray-400 uppercase tracking-widest mb-1">Genre</label>
+                    <select id="orig-genre" class="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white focus:border-studio-gold outline-none transition appearance-none">
+                        <option value="Action Masala">Action Masala</option>
+                        <option value="Sci-Fi Epic">Sci-Fi Epic</option>
+                        <option value="Thriller">Thriller</option>
+                        <option value="Romantic Drama">Romantic Drama</option>
+                        <option value="Horror">Horror</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[10px] text-gray-400 uppercase tracking-widest mb-1">Plot Summary</label>
+                    <textarea id="orig-plot" required rows="3" class="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white focus:border-studio-gold outline-none transition text-xs" placeholder="Write a short summary of your movie..."></textarea>
+                </div>
+                <div class="pt-4">
+                    <button type="submit" class="w-full bg-studio-gold text-black py-4 rounded-lg font-cinematic font-bold tracking-[0.2em] uppercase hover:bg-white transition shadow-[0_0_15px_rgba(212,175,55,0.4)]">Develop Project (₹5 Lakhs)</button>
+                </div>
+            </form>
         </div>
-        <button id="btn-google-login" class="glass-card hover:bg-white/5 border border-white/10 text-white py-4 px-8 rounded-xl flex items-center justify-center gap-4 transition-all duration-300 w-full max-w-sm">
-            <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5">
+    </div>
+
+    <!-- ================= VIEW: LOGIN ================= -->
+    <main id="view-login" class="flex-1 flex flex-col items-center justify-center p-6 relative z-10 w-full hidden">
+        <div class="text-center mb-12">
+            <i class="fa-solid fa-clapperboard text-7xl text-studio-gold mb-6 drop-shadow-[0_0_25px_rgba(212,175,55,0.6)]"></i>
+            <h1 class="font-cinematic text-5xl md:text-6xl font-extrabold tracking-[0.2em] text-white mb-2 uppercase">UR Studio</h1>
+            <p class="text-xs text-gray-400 font-light tracking-[0.5em] uppercase mt-4">The Cinematic Mogul Simulator</p>
+        </div>
+        <button id="btn-google-login" class="glass-card hover:bg-white/10 border border-white/20 text-white py-4 px-10 rounded-xl flex items-center justify-center gap-4 transition-all duration-300 w-full max-w-sm group">
+            <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-6 h-6 group-hover:scale-110 transition-transform">
             <span class="tracking-widest text-xs font-bold uppercase">Sign in with Google</span>
         </button>
     </main>
@@ -105,24 +146,14 @@
             <form id="form-setup" class="space-y-8">
                 <div>
                     <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 text-center">Production House Name</label>
-                    <input type="text" id="input-studio-name" required placeholder="e.g. Dreamscape Films" class="w-full bg-black/60 border border-white/10 rounded-lg py-3 px-4 text-white text-center font-cinematic text-xl focus:outline-none focus:border-studio-gold transition">
+                    <input type="text" id="input-studio-name" required placeholder="e.g. Dreamscape Films" class="w-full bg-black/60 border border-white/10 rounded-lg py-4 px-4 text-white text-center font-cinematic text-2xl focus:outline-none focus:border-studio-gold transition">
                 </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 text-center">Initial Capital</label>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="talent-card rounded-xl p-4 selected" onclick="document.getElementById('input-funds').value='500000000'; document.querySelectorAll('.talent-card').forEach(c=>c.classList.remove('selected')); this.classList.add('selected');">
-                            <h3 class="font-cinematic text-lg text-white mb-1">Standard</h3>
-                            <p class="text-[10px] text-gray-400">₹50 Cr. Balanced start.</p>
-                        </div>
-                        <div class="talent-card rounded-xl p-4" onclick="document.getElementById('input-funds').value='150000000'; document.querySelectorAll('.talent-card').forEach(c=>c.classList.remove('selected')); this.classList.add('selected');">
-                            <h3 class="font-cinematic text-lg text-white mb-1">Indie</h3>
-                            <p class="text-[10px] text-gray-400">₹15 Cr. Tight budgets.</p>
-                        </div>
-                    </div>
-                    <input type="hidden" id="input-funds" value="500000000">
+                <div class="text-center pt-4">
+                    <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Initial Capital Provided By Board</p>
+                    <p class="font-cinematic text-3xl text-green-400 font-bold">₹50 Crores</p>
                 </div>
-                <button type="submit" id="btn-submit-setup" class="w-full bg-studio-gold hover:bg-studio-golddim text-black font-cinematic font-bold tracking-[0.2em] py-4 rounded-lg uppercase transition-colors shadow-[0_0_15px_rgba(212,175,55,0.3)]">
-                    Register Studio
+                <button type="submit" id="btn-submit-setup" class="w-full bg-studio-gold hover:bg-white text-black font-cinematic font-bold tracking-[0.2em] py-4 rounded-lg uppercase transition-colors shadow-[0_0_20px_rgba(212,175,55,0.4)]">
+                    Sign & Register Studio
                 </button>
             </form>
         </div>
@@ -132,99 +163,117 @@
     <div id="view-app" class="flex-1 flex w-full relative z-10 hidden overflow-hidden h-screen">
         
         <!-- SIDEBAR -->
-        <aside class="w-64 glass-panel border-r border-white/10 flex flex-col flex-shrink-0 h-full">
+        <aside class="w-64 glass-panel border-r border-white/10 flex flex-col flex-shrink-0 h-full bg-[#080808]/90">
             <div class="p-6 border-b border-white/10 text-center">
-                <i class="fa-solid fa-film text-3xl text-studio-gold mb-3"></i>
+                <i class="fa-solid fa-film text-3xl text-studio-gold mb-3 drop-shadow-[0_0_10px_rgba(212,175,55,0.5)]"></i>
                 <h1 id="side-studio-name" class="font-cinematic font-bold tracking-[0.1em] text-lg text-white uppercase truncate">STUDIO</h1>
                 <p class="text-[9px] text-studio-gold uppercase tracking-[0.2em] mt-1">CEO Dashboard</p>
             </div>
             
-            <nav class="flex-1 flex flex-col py-4 space-y-2">
-                <button onclick="switchTab('tab-dashboard')" id="nav-dashboard" class="nav-item active flex items-center gap-3 px-6 py-3 text-sm text-gray-400 hover:text-white transition w-full text-left uppercase tracking-widest font-semibold font-cinematic">
+            <nav class="flex-1 flex flex-col py-6 space-y-2">
+                <button onclick="switchTab('tab-dashboard')" id="nav-dashboard" class="nav-item active flex items-center gap-3 px-6 py-4 text-sm text-gray-400 hover:text-white transition w-full text-left uppercase tracking-widest font-semibold font-cinematic">
                     <i class="fa-solid fa-chart-pie w-5 text-center"></i> Dashboard
                 </button>
-                <button onclick="switchTab('tab-inbox')" id="nav-inbox" class="nav-item flex items-center justify-between px-6 py-3 text-sm text-gray-400 hover:text-white transition w-full text-left uppercase tracking-widest font-semibold font-cinematic">
+                <button onclick="switchTab('tab-inbox')" id="nav-inbox" class="nav-item flex items-center justify-between px-6 py-4 text-sm text-gray-400 hover:text-white transition w-full text-left uppercase tracking-widest font-semibold font-cinematic">
                     <div class="flex items-center gap-3"><i class="fa-solid fa-envelope w-5 text-center"></i> Inbox</div>
-                    <span id="side-badge" class="bg-red-600 text-white text-[10px] px-2 py-0.5 rounded-full hidden">0</span>
+                    <span id="side-badge" class="bg-red-600 text-white text-[10px] px-2 py-0.5 rounded-full hidden font-sans font-bold shadow-[0_0_10px_rgba(220,38,38,0.5)]">0</span>
                 </button>
-                <button onclick="switchTab('tab-production')" id="nav-production" class="nav-item flex items-center gap-3 px-6 py-3 text-sm text-gray-400 hover:text-white transition w-full text-left uppercase tracking-widest font-semibold font-cinematic">
+                <button onclick="switchTab('tab-production')" id="nav-production" class="nav-item flex items-center gap-3 px-6 py-4 text-sm text-gray-400 hover:text-white transition w-full text-left uppercase tracking-widest font-semibold font-cinematic">
                     <i class="fa-solid fa-clapperboard w-5 text-center"></i> Production
                 </button>
-                <button onclick="switchTab('tab-history')" id="nav-history" class="nav-item flex items-center gap-3 px-6 py-3 text-sm text-gray-400 hover:text-white transition w-full text-left uppercase tracking-widest font-semibold font-cinematic">
+                <button onclick="switchTab('tab-history')" id="nav-history" class="nav-item flex items-center gap-3 px-6 py-4 text-sm text-gray-400 hover:text-white transition w-full text-left uppercase tracking-widest font-semibold font-cinematic">
                     <i class="fa-solid fa-clock-rotate-left w-5 text-center"></i> History
                 </button>
             </nav>
 
-            <div class="p-6 border-t border-white/10">
+            <div class="p-6 border-t border-white/10 bg-black/40">
                 <div class="flex items-center gap-3 mb-4">
-                    <img id="side-avatar" src="" class="w-10 h-10 rounded-full border border-studio-gold/50 object-cover">
+                    <img id="side-avatar" src="" class="w-10 h-10 rounded-full border border-studio-gold/50 object-cover shadow-[0_0_10px_rgba(212,175,55,0.2)]">
                     <div class="flex-1 overflow-hidden">
                         <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Reputation</p>
                         <div class="flex items-center gap-1 text-studio-gold text-[10px]" id="side-reputation"></div>
                     </div>
                 </div>
-                <button id="btn-logout" class="w-full py-2 border border-red-900/50 text-red-500 rounded hover:bg-red-900/20 transition text-xs uppercase tracking-widest font-bold">Logout</button>
+                <button id="btn-logout" class="w-full py-2.5 border border-red-900/50 text-red-500 rounded hover:bg-red-900/20 transition text-xs uppercase tracking-widest font-bold">Logout</button>
             </div>
         </aside>
 
         <!-- MAIN CONTENT AREA -->
         <main class="flex-1 flex flex-col h-full overflow-y-auto custom-scrollbar relative">
             
-            <!-- Global Top Bar (Finances) -->
-            <header class="w-full p-6 glass-panel border-b border-white/10 sticky top-0 z-40 flex justify-between items-center">
+            <!-- Global Top Bar -->
+            <header class="w-full p-6 glass-panel border-b border-white/10 sticky top-0 z-40 flex justify-between items-center bg-[#080808]/80">
                 <div>
                     <h2 id="header-title" class="font-cinematic text-2xl text-white uppercase tracking-widest">Dashboard</h2>
                 </div>
-                <div class="text-right">
-                    <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">Total Studio Net Worth</p>
-                    <p id="top-funds" class="font-bold text-3xl text-green-400 tracking-wide drop-shadow-[0_0_10px_rgba(74,222,128,0.2)] font-cinematic">₹0</p>
+                <div class="text-right flex items-center gap-6">
+                    <div>
+                        <p class="text-[9px] text-gray-500 uppercase tracking-widest mb-0.5">Total Studio Net Worth</p>
+                        <p id="top-funds" class="font-bold text-3xl text-green-400 tracking-wide drop-shadow-[0_0_10px_rgba(74,222,128,0.2)] font-cinematic">₹0</p>
+                    </div>
                 </div>
             </header>
 
-            <div class="p-8 w-full max-w-6xl mx-auto h-full">
+            <div class="p-8 w-full max-w-7xl mx-auto h-full pb-24">
                 
                 <!-- TAB: DASHBOARD -->
                 <div id="tab-dashboard" class="tab-content h-full flex flex-col gap-8">
+                    
                     <!-- Action Banner -->
-                    <div class="glass-card rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between border-l-4 border-l-studio-gold">
-                        <div>
-                            <h3 class="font-cinematic text-2xl text-white uppercase tracking-widest mb-2">Need a New Hit?</h3>
-                            <p class="text-sm text-gray-400">Scout for new screenplays to begin your next major production.</p>
+                    <div class="glass-card rounded-2xl p-8 flex flex-col lg:flex-row items-center justify-between border-l-4 border-l-studio-gold relative overflow-hidden">
+                        <div class="absolute right-0 top-0 opacity-10 pointer-events-none"><i class="fa-solid fa-film text-9xl"></i></div>
+                        <div class="relative z-10 mb-6 lg:mb-0">
+                            <h3 class="font-cinematic text-3xl text-white uppercase tracking-widest mb-2 text-center lg:text-left">Develop Next Project</h3>
+                            <p class="text-sm text-gray-400 text-center lg:text-left max-w-xl">A studio is only as good as its next release. Will you scout the market for fresh scripts from agencies, or develop an original in-house concept?</p>
                         </div>
-                        <button onclick="triggerScriptScout()" class="mt-4 md:mt-0 bg-studio-gold hover:bg-white text-black font-cinematic font-bold tracking-[0.2em] py-4 px-8 rounded-xl uppercase transition shadow-[0_0_20px_rgba(212,175,55,0.4)] whitespace-nowrap">
-                            <i class="fa-solid fa-search mr-2"></i> Scout Scripts
-                        </button>
+                        <div class="flex flex-col sm:flex-row gap-4 relative z-10 w-full lg:w-auto">
+                            <button onclick="triggerScriptScout()" class="flex-1 lg:flex-none bg-studio-gold hover:bg-white text-black font-cinematic font-bold tracking-[0.1em] py-4 px-6 rounded-xl uppercase transition shadow-[0_0_20px_rgba(212,175,55,0.4)] whitespace-nowrap flex items-center justify-center group">
+                                <i class="fa-solid fa-search mr-2 group-hover:scale-110 transition-transform"></i> Scout Agencies
+                            </button>
+                            <button onclick="openModal()" class="flex-1 lg:flex-none bg-black/50 border border-studio-gold/50 hover:border-studio-gold text-studio-gold hover:bg-studio-gold/10 font-cinematic font-bold tracking-[0.1em] py-4 px-6 rounded-xl uppercase transition whitespace-nowrap flex items-center justify-center group">
+                                <i class="fa-solid fa-pen-nib mr-2 group-hover:scale-110 transition-transform"></i> Write Original
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Studio Stats -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="glass-panel p-6 rounded-xl border border-white/10 text-center">
-                            <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Active Project</p>
-                            <p id="dash-stat-active" class="font-cinematic text-xl text-white truncate">None</p>
+                        <div class="glass-panel p-6 rounded-xl border border-white/10 flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-blue-900/20 text-blue-400 flex items-center justify-center text-xl border border-blue-500/30"><i class="fa-solid fa-clapperboard"></i></div>
+                            <div>
+                                <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Active Production</p>
+                                <p id="dash-stat-active" class="font-cinematic text-xl text-white font-bold truncate max-w-[200px]">None</p>
+                            </div>
                         </div>
-                        <div class="glass-panel p-6 rounded-xl border border-white/10 text-center">
-                            <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Movies Produced</p>
-                            <p id="dash-stat-count" class="font-cinematic text-3xl text-studio-gold">0</p>
+                        <div class="glass-panel p-6 rounded-xl border border-white/10 flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-studio-gold/20 text-studio-gold flex items-center justify-center text-xl border border-studio-gold/30"><i class="fa-solid fa-ticket"></i></div>
+                            <div>
+                                <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Movies Released</p>
+                                <p id="dash-stat-count" class="font-cinematic text-2xl text-white font-bold">0</p>
+                            </div>
                         </div>
-                        <div class="glass-panel p-6 rounded-xl border border-white/10 text-center">
-                            <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Unread Mails</p>
-                            <p id="dash-stat-mails" class="font-cinematic text-3xl text-red-400">0</p>
+                        <div class="glass-panel p-6 rounded-xl border border-white/10 flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-red-900/20 text-red-400 flex items-center justify-center text-xl border border-red-500/30"><i class="fa-solid fa-envelope"></i></div>
+                            <div>
+                                <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Unread Mails</p>
+                                <p id="dash-stat-mails" class="font-cinematic text-2xl text-white font-bold">0</p>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- TAB: INBOX -->
                 <div id="tab-inbox" class="tab-content hidden h-full">
-                    <div class="glass-card rounded-2xl h-[calc(100vh-180px)] flex border border-white/10 overflow-hidden">
+                    <div class="glass-card rounded-2xl h-[calc(100vh-180px)] flex border border-white/10 overflow-hidden shadow-2xl">
                         <!-- List -->
-                        <div class="w-1/3 border-r border-white/10 bg-black/40 overflow-y-auto custom-scrollbar" id="mail-list">
+                        <div class="w-1/3 border-r border-white/10 bg-black/60 overflow-y-auto custom-scrollbar" id="mail-list">
                             <!-- Populated via JS -->
                         </div>
                         <!-- Detail -->
-                        <div class="w-2/3 p-8 overflow-y-auto custom-scrollbar relative bg-gradient-to-br from-black to-[#0a0a0a]" id="mail-detail">
+                        <div class="w-2/3 p-10 overflow-y-auto custom-scrollbar relative bg-gradient-to-br from-black to-[#080808]" id="mail-detail">
                             <div class="absolute inset-0 flex items-center justify-center text-gray-700 flex-col">
-                                <i class="fa-regular fa-envelope-open text-6xl mb-4 opacity-50"></i>
-                                <p class="font-cinematic tracking-widest uppercase opacity-50">Select a message</p>
+                                <i class="fa-regular fa-envelope-open text-6xl mb-6 opacity-30 drop-shadow-md"></i>
+                                <p class="font-cinematic text-xl tracking-[0.2em] uppercase opacity-40">Select a message</p>
                             </div>
                         </div>
                     </div>
@@ -232,14 +281,14 @@
 
                 <!-- TAB: PRODUCTION -->
                 <div id="tab-production" class="tab-content hidden h-full">
-                    <div id="prod-container" class="glass-card rounded-2xl p-8 min-h-[calc(100vh-180px)] flex flex-col relative border border-white/10">
+                    <div id="prod-container" class="glass-card rounded-2xl p-8 min-h-[calc(100vh-180px)] flex flex-col relative border border-white/10 shadow-2xl">
                         <!-- Dynamic Content via JS -->
                     </div>
                 </div>
 
                 <!-- TAB: HISTORY -->
                 <div id="tab-history" class="tab-content hidden h-full">
-                    <div id="history-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-20">
+                    <div id="history-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                         <!-- Dynamic Content via JS -->
                     </div>
                 </div>
@@ -254,8 +303,7 @@
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Global Env check
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'urstudio-tycoon-v2';
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'urstudio-master';
         let configStr = typeof __firebase_config !== 'undefined' ? __firebase_config : null;
         const fallbackConfig = { apiKey: "AIzaSyClLSLmdoz5PHVVJrxkoqZ02Xmm-nwsNXQ", authDomain: "urstudio-f341c.firebaseapp.com", projectId: "urstudio-f341c", storageBucket: "urstudio-f341c.firebasestorage.app", messagingSenderId: "1017863212287", appId: "1:1017863212287:web:2af7564d1aec2f02e310ca" };
         const firebaseConfig = configStr ? JSON.parse(configStr) : fallbackConfig;
@@ -265,35 +313,47 @@
         const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
 
-        // --- GAME DATA ---
+        // --- GAME DATA (RESTORED IMAGES & HIGH DETAIL) ---
         const DIRECTORS = [
-            { id: 'd1', name: 'S. Rajamouli', pic: 'https://placehold.co/150/111/D4AF37?text=SR', fee: 100000000, skill: 98, ego: 85 }, // 10 Cr
-            { id: 'd2', name: 'Chris N.', pic: 'https://placehold.co/150/111/D4AF37?text=CN', fee: 150000000, skill: 99, ego: 90 }, // 15 Cr
-            { id: 'd3', name: 'Zoya A.', pic: 'https://placehold.co/150/111/D4AF37?text=ZA', fee: 50000000, skill: 88, ego: 60 },  // 5 Cr
-            { id: 'd4', name: 'R. Hirani', pic: 'https://placehold.co/150/111/D4AF37?text=RH', fee: 80000000, skill: 95, ego: 70 },  // 8 Cr
-            { id: 'd5', name: 'A. Kashyap', pic: 'https://placehold.co/150/111/D4AF37?text=AK', fee: 20000000, skill: 90, ego: 80 },  // 2 Cr
-            { id: 'd6', name: 'Prashanth N.', pic: 'https://placehold.co/150/111/D4AF37?text=PN', fee: 60000000, skill: 85, ego: 65 },  // 6 Cr
-            { id: 'd7', name: 'Indie Joe', pic: 'https://placehold.co/150/111/D4AF37?text=IJ', fee: 5000000, skill: 70, ego: 40 },   // 50 L
-            { id: 'd8', name: 'Debutant Sam', pic: 'https://placehold.co/150/111/D4AF37?text=DS', fee: 1500000, skill: 60, ego: 20 }    // 15 L
+            { id: 'd1', name: 'S. Rajamouli', pic: 'https://randomuser.me/api/portraits/men/32.jpg', fee: 150000000, skill: 98, ego: 85 }, // 15 Cr
+            { id: 'd2', name: 'Chris N.', pic: 'https://randomuser.me/api/portraits/men/46.jpg', fee: 200000000, skill: 99, ego: 90 }, // 20 Cr
+            { id: 'd3', name: 'Zoya A.', pic: 'https://randomuser.me/api/portraits/women/44.jpg', fee: 60000000, skill: 88, ego: 60 },  // 6 Cr
+            { id: 'd4', name: 'R. Hirani', pic: 'https://randomuser.me/api/portraits/men/22.jpg', fee: 100000000, skill: 95, ego: 70 }, // 10 Cr
+            { id: 'd5', name: 'A. Kashyap', pic: 'https://randomuser.me/api/portraits/men/62.jpg', fee: 30000000, skill: 90, ego: 80 },  // 3 Cr
+            { id: 'd6', name: 'Prashanth N.', pic: 'https://randomuser.me/api/portraits/men/82.jpg', fee: 80000000, skill: 85, ego: 65 },  // 8 Cr
+            { id: 'd7', name: 'Indie Joe', pic: 'https://randomuser.me/api/portraits/men/15.jpg', fee: 5000000, skill: 70, ego: 40 },   // 50 L
+            { id: 'd8', name: 'Debutant Sam', pic: 'https://randomuser.me/api/portraits/men/5.jpg', fee: 1500000, skill: 60, ego: 20 }    // 15 L
         ];
 
         const ACTORS = [
-            { id: 'a1', name: 'Shahrukh K.', pic: 'https://placehold.co/150/111/fff?text=SK', fee: 150000000, fame: 99, skill: 92, ego: 75 }, // 15 Cr
-            { id: 'a2', name: 'Prabhas', pic: 'https://placehold.co/150/111/fff?text=PR', fee: 120000000, fame: 95, skill: 75, ego: 60 }, // 12 Cr
-            { id: 'a3', name: 'Deepika P.', pic: 'https://placehold.co/150/111/fff?text=DP', fee: 80000000, fame: 96, skill: 88, ego: 65 },  // 8 Cr
-            { id: 'a4', name: 'Fahadh F.', pic: 'https://placehold.co/150/111/fff?text=FF', fee: 40000000, fame: 82, skill: 98, ego: 40 },  // 4 Cr
-            { id: 'a5', name: 'Alia B.', pic: 'https://placehold.co/150/111/fff?text=AB', fee: 60000000, fame: 92, skill: 90, ego: 55 },  // 6 Cr
-            { id: 'a6', name: 'Vijay T.', pic: 'https://placehold.co/150/111/fff?text=VT', fee: 100000000, fame: 97, skill: 80, ego: 70 }, // 10 Cr
-            { id: 'a7', name: 'Ayushmann K.', pic: 'https://placehold.co/150/111/fff?text=AK', fee: 25000000, fame: 78, skill: 92, ego: 45 },  // 2.5 Cr
-            { id: 'a8', name: 'Newcomer Raj', pic: 'https://placehold.co/150/111/fff?text=NR', fee: 2000000, fame: 30, skill: 65, ego: 30 }    // 20 L
+            { id: 'a1', name: 'Shahrukh K.', pic: 'https://randomuser.me/api/portraits/men/75.jpg', fee: 300000000, fame: 99, skill: 92, ego: 80 }, // 30 Cr
+            { id: 'a2', name: 'Prabhas', pic: 'https://randomuser.me/api/portraits/men/85.jpg', fee: 250000000, fame: 97, skill: 75, ego: 60 }, // 25 Cr
+            { id: 'a3', name: 'Deepika P.', pic: 'https://randomuser.me/api/portraits/women/65.jpg', fee: 120000000, fame: 96, skill: 88, ego: 65 }, // 12 Cr
+            { id: 'a4', name: 'Fahadh F.', pic: 'https://randomuser.me/api/portraits/men/60.jpg', fee: 50000000, fame: 82, skill: 98, ego: 40 },  // 5 Cr
+            { id: 'a5', name: 'Alia B.', pic: 'https://randomuser.me/api/portraits/women/25.jpg', fee: 80000000, fame: 94, skill: 92, ego: 55 },  // 8 Cr
+            { id: 'a6', name: 'Vijay T.', pic: 'https://randomuser.me/api/portraits/men/35.jpg', fee: 200000000, fame: 98, skill: 80, ego: 70 }, // 20 Cr
+            { id: 'a7', name: 'Ayushmann K.', pic: 'https://randomuser.me/api/portraits/men/45.jpg', fee: 30000000, fame: 78, skill: 92, ego: 45 },  // 3 Cr
+            { id: 'a8', name: 'Newcomer Raj', pic: 'https://randomuser.me/api/portraits/men/9.jpg', fee: 2000000, fame: 35, skill: 65, ego: 30 }    // 20 L
         ];
-        
-        const GENRES = ["Action Masala", "Thriller", "Sci-Fi Epic", "Rom-Com", "Historical Drama", "Horror"];
+
+        const PLOT_TEMPLATES = [
+            { g: "Action Masala", p: "An exiled cop returns to his hometown to dismantle a brutal cartel, uncovering a conspiracy that reaches the highest levels of government." },
+            { g: "Sci-Fi Epic", p: "In 2145, a rogue AI discovers a human emotion chip. Now, a team of rebels must escort the android across the galaxy before the empire destroys it." },
+            { g: "Thriller", p: "A high-profile lawyer is forced to defend the man who murdered her sister, only to realize the real killer is sitting in the judge's chair." },
+            { g: "Romantic Drama", p: "Two rival chefs in a small coastal town fall in love, but must choose between their Michelin-star ambitions and their relationship." },
+            { g: "Horror", p: "A family moves into a smart-home that slowly begins trapping them inside, controlling their senses and turning them against each other." }
+        ];
+
+        const DILEMMAS = [
+            { text: "Lead Actor is throwing a massive tantrum on set over their vanity van.", optA: "Pay 1Cr bonus to calm them", cost: 10000000, hypeEff: 0, optB: "Force them to work", cost2: 0, hypeEff2: -15 },
+            { text: "A massive fire destroyed the climax set piece!", optA: "Rebuild Set (Cost: 3Cr)", cost: 30000000, hypeEff: 5, optB: "Use CGI instead (Looks cheap)", cost2: 0, hypeEff2: -20 },
+            { text: "Rival Studio announced a big movie on our release date.", optA: "Ramp up Marketing (Cost: 2Cr)", cost: 20000000, hypeEff: 25, optB: "Ignore and Clash", cost2: 0, hypeEff2: -10 }
+        ];
 
         // --- STATE ---
         let state = {
             name: '', funds: 0, reputation: 1,
-            activeProject: null, // {id, title, genre, scriptCost, prodCost, dir, actor, phase: 'assembly'|'ready'|'theaters'|'ott', gross}
+            activeProject: null, // phase: 'assembly' | 'dilemma' | 'strategy' | 'theaters' | 'ott'
             pastProjects: [],
             mails: []
         };
@@ -304,30 +364,45 @@
 
         // --- UTILS ---
         const genId = () => Math.random().toString(36).substr(2, 9);
-        
         const formatINR = (num) => {
             if (num >= 10000000) return `₹${(num / 10000000).toFixed(2)} Cr`;
-            if (num >= 100000) return `₹${(num / 100000).toFixed(2)} Lakhs`;
+            if (num >= 100000) return `₹${(num / 100000).toFixed(2)} L`;
             return `₹${Math.round(num).toLocaleString('en-IN')}`;
         };
 
         const showToast = (msg, type='info') => {
             const t = document.getElementById('toast');
             const i = document.getElementById('toast-icon');
-            t.className = `fixed top-6 right-6 transform transition-all duration-400 z-[90] px-6 py-4 rounded-xl shadow-2xl backdrop-blur-md font-medium text-sm flex items-center gap-3 text-white border`;
-            if(type==='good'){ t.classList.add('bg-green-900/90','border-green-500'); i.className='fa-solid fa-circle-check text-green-400'; }
-            else if(type==='bad'){ t.classList.add('bg-red-900/90','border-red-500'); i.className='fa-solid fa-triangle-exclamation text-red-400'; }
-            else { t.classList.add('bg-black/90','border-studio-gold/50'); i.className='fa-solid fa-circle-info text-studio-gold'; }
+            t.className = `fixed top-6 right-6 transform transition-all duration-500 z-[90] px-6 py-4 rounded-xl shadow-2xl backdrop-blur-md font-medium text-sm flex items-center gap-3 text-white border min-w-[300px]`;
+            if(type==='good'){ t.classList.add('bg-green-900/90','border-green-500'); i.className='fa-solid fa-circle-check text-green-400 text-xl'; }
+            else if(type==='bad'){ t.classList.add('bg-red-900/90','border-red-500'); i.className='fa-solid fa-triangle-exclamation text-red-400 text-xl'; }
+            else { t.classList.add('bg-black/90','border-studio-gold/50'); i.className='fa-solid fa-circle-info text-studio-gold text-xl'; }
             document.getElementById('toast-msg').innerText = msg;
             t.classList.remove('-translate-y-24', 'opacity-0');
-            setTimeout(() => t.classList.add('-translate-y-24', 'opacity-0'), 3000);
+            setTimeout(() => t.classList.add('-translate-y-24', 'opacity-0'), 4000);
         };
 
-        // --- AUTH & DB ---
+        // Modal Logic
+        window.openModal = () => {
+            if(state.activeProject) return showToast("Finish your active project first!", "bad");
+            document.getElementById('modal-original').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('modal-original').classList.remove('opacity-0');
+                document.getElementById('modal-original-card').classList.remove('scale-95');
+                document.body.classList.add('modal-active');
+            }, 10);
+        }
+        window.closeModal = () => {
+            document.getElementById('modal-original').classList.add('opacity-0');
+            document.getElementById('modal-original-card').classList.add('scale-95');
+            document.body.classList.remove('modal-active');
+            setTimeout(() => document.getElementById('modal-original').classList.add('hidden'), 300);
+        }
+
+        // --- AUTH & INITIALIZATION ---
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 try {
-                    // RULE 1: STRICT PATH
                     const docSnap = await getDoc(doc(db, 'artifacts', appId, 'users', user.uid, 'studio', 'data'));
                     if (docSnap.exists()) {
                         state = docSnap.data();
@@ -341,25 +416,18 @@
                         document.getElementById('view-setup').classList.remove('hidden');
                         document.getElementById('view-setup').classList.add('flex');
                     }
-                } catch (e) { showToast("DB Error", "bad"); console.error(e); }
+                } catch (e) { showToast("Database Sync Error", "bad"); console.error(e); }
             } else {
                 document.getElementById('view-login').classList.remove('hidden');
                 document.getElementById('view-app').classList.add('hidden');
                 document.getElementById('view-setup').classList.add('hidden');
             }
-            setTimeout(() => document.getElementById('loading-overlay').classList.add('opacity-0', 'pointer-events-none'), 500);
+            setTimeout(() => document.getElementById('loading-overlay').classList.add('opacity-0', 'pointer-events-none'), 800);
         });
 
         document.getElementById('btn-google-login').addEventListener('click', async () => {
-            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                 import("https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js").then(({ signInWithCustomToken }) => {
-                     signInWithCustomToken(auth, __initial_auth_token).catch(() => signInWithPopup(auth, provider));
-                 });
-            } else {
-                try { await signInWithPopup(auth, provider); } catch(e) {}
-            }
+            try { await signInWithPopup(auth, provider); } catch(e) {}
         });
-        
         document.getElementById('btn-logout').addEventListener('click', () => signOut(auth));
 
         document.getElementById('form-setup').addEventListener('submit', async (e) => {
@@ -367,11 +435,11 @@
             document.getElementById('btn-submit-setup').innerText = 'Initializing...';
             state = {
                 name: document.getElementById('input-studio-name').value,
-                funds: parseInt(document.getElementById('input-funds').value),
+                funds: 500000000, // 50 Cr
                 reputation: 1, activeProject: null, pastProjects: [],
                 mails: [{
-                    id: genId(), type: 'system', read: false, title: 'Welcome, CEO',
-                    body: `Dear CEO,\n\nWelcome to ${document.getElementById('input-studio-name').value}.\n\nYour mandate is simple: produce hit films, manage talent, and maximize box office returns. Use the 'Scout Scripts' button on your dashboard to find your first project.\n\nGood luck.\n- The Board of Directors`
+                    id: genId(), type: 'system', read: false, title: 'Welcome to the Big Leagues',
+                    body: `Dear CEO,\n\nWelcome to ${document.getElementById('input-studio-name').value}.\n\nThe board has wired ₹50 Crores to your production account. Your mandate is simple: produce hit films, manage massive egos, handle on-set crises, and maximize box office returns.\n\nUse the Dashboard to scout for scripts or write your own.\n\nGood luck.\n- The Board of Directors`
                 }]
             };
             await saveState();
@@ -381,7 +449,7 @@
             showToast("Studio Registered Successfully", "good");
         });
 
-        // --- NAVIGATION ---
+        // --- NAVIGATION & UI SYNC ---
         window.switchTab = (tabId) => {
             window.currentTab = tabId;
             document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
@@ -390,23 +458,21 @@
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById('nav-' + tabId.replace('tab-', '')).classList.add('active');
             
-            const titles = {'tab-dashboard': 'Dashboard', 'tab-inbox': 'Executive Inbox', 'tab-production': 'Active Production', 'tab-history': 'Theatrical History'};
+            const titles = {'tab-dashboard': 'CEO Dashboard', 'tab-inbox': 'Executive Inbox', 'tab-production': 'Active Production', 'tab-history': 'Cinematic History'};
             document.getElementById('header-title').innerText = titles[tabId];
 
             if(tabId === 'tab-production') renderProduction();
         }
 
-        // --- UI UPDATES ---
         function updateAllUI() {
             document.getElementById('side-studio-name').innerText = state.name;
             document.getElementById('top-funds').innerText = formatINR(state.funds);
-            document.getElementById('side-avatar').src = auth.currentUser?.photoURL || 'https://placehold.co/100/111/fff?text=CEO';
+            document.getElementById('side-avatar').src = auth.currentUser?.photoURL || 'https://randomuser.me/api/portraits/lego/1.jpg';
             
             let stars = '';
-            for(let i=0; i<5; i++) stars += i < state.reputation ? '<i class="fa-solid fa-star"></i>' : '<i class="fa-regular fa-star text-white/20"></i>';
+            for(let i=0; i<5; i++) stars += i < state.reputation ? '<i class="fa-solid fa-star text-studio-gold"></i>' : '<i class="fa-regular fa-star text-white/20"></i>';
             document.getElementById('side-reputation').innerHTML = stars;
 
-            // Dashboard Stats
             document.getElementById('dash-stat-active').innerText = state.activeProject ? state.activeProject.title : "None";
             document.getElementById('dash-stat-count').innerText = state.pastProjects.length;
             
@@ -421,36 +487,59 @@
             renderHistory();
         }
 
-        // --- ACTIONS ---
+        // --- DASHBOARD ACTIONS ---
+        document.getElementById('form-original').addEventListener('submit', (e) => {
+            e.preventDefault();
+            if(state.funds < 500000) return showToast("Insufficient funds!", "bad");
+            
+            state.funds -= 500000;
+            state.activeProject = {
+                id: genId(), title: document.getElementById('orig-title').value, 
+                genre: document.getElementById('orig-genre').value, plot: document.getElementById('orig-plot').value,
+                scriptCost: 500000, prodCost: 0, hype: 50, dir: null, actor: null, phase: 'assembly', gross: 0
+            };
+            closeModal();
+            saveState();
+            showToast("Original Script Developed. Move to Production Tab.", "good");
+            switchTab('tab-production');
+        });
+
         window.triggerScriptScout = () => {
             if(state.activeProject) return showToast("Finish your active project first!", "bad");
             
-            const pre = ["The Last", "Secret of", "Operation", "Return to", "Midnight", "Project"];
-            const suf = ["Shadows", "Echo", "Tomorrow", "Vengeance", "Love", "Mumbai"];
-            const title = `${pre[Math.floor(Math.random()*pre.length)]} ${suf[Math.floor(Math.random()*suf.length)]}`;
-            const genre = GENRES[Math.floor(Math.random()*GENRES.length)];
-            const cost = 500000; // 5 Lakhs flat script fee
+            const pre = ["The Last", "Secret of", "Operation", "Return to", "Midnight", "Project", "Echoes of", "Blood"];
+            const suf = ["Shadows", "Protocol", "Tomorrow", "Vengeance", "Love", "Mumbai", "the King", "Requiem"];
+            
+            // Generate 4 pitches
+            for(let i=0; i<4; i++) {
+                const title = `${pre[Math.floor(Math.random()*pre.length)]} ${suf[Math.floor(Math.random()*suf.length)]}`;
+                const template = PLOT_TEMPLATES[Math.floor(Math.random()*PLOT_TEMPLATES.length)];
+                const cost = Math.floor(Math.random() * 4 + 1) * 1000000; // 1-4 Cr
 
-            state.mails.push({
-                id: genId(), type: 'script', read: false,
-                title: `PITCH: ${title}`,
-                body: `Hello,\n\nI am representing a young writer with a fantastic ${genre} script titled '${title}'.\n\nAcquisition Fee: ${formatINR(cost)}\n\nPlease accept the offer below if you wish to greenlight this project.`,
-                data: { title, genre, cost }
-            });
+                state.mails.push({
+                    id: genId(), type: 'script', read: false,
+                    title: `PITCH: ${title}`,
+                    body: `From: Creative Talent Agency\n\nWe have an incredible script ready for production.\n\nTitle: ${title}\nGenre: ${template.g}\n\nLogline:\n"${template.p}"\n\nAcquisition Fee: ${formatINR(cost)}\n\nPlease review and let us know if you wish to acquire the rights.`,
+                    data: { title, genre: template.g, plot: template.p, cost }
+                });
+            }
             saveState();
-            showToast("Agent sent a script pitch to your Inbox!", "good");
+            showToast("4 New Scripts received in your Inbox!", "good");
             switchTab('tab-inbox');
         }
 
         // --- INBOX LOGIC ---
         function renderInbox() {
             const list = document.getElementById('mail-list');
-            if(state.mails.length === 0) { list.innerHTML = `<p class="text-gray-500 text-xs p-4 text-center mt-10">Inbox Empty</p>`; return; }
+            if(state.mails.length === 0) { list.innerHTML = `<p class="text-gray-500 text-xs p-8 text-center uppercase tracking-widest font-cinematic">Inbox Empty</p>`; return; }
 
             list.innerHTML = state.mails.slice().reverse().map(m => `
-                <div class="p-4 border-b border-white/5 cursor-pointer hover:bg-white/5 transition ${m.read?'opacity-60':'bg-white/10 border-l-4 border-l-studio-gold'}" onclick="openMail('${m.id}')">
-                    <p class="text-sm font-bold text-white truncate">${m.title}</p>
-                    <p class="text-[10px] text-gray-400 uppercase mt-1 tracking-widest">${m.type} MAIL</p>
+                <div class="p-5 border-b border-white/5 cursor-pointer hover:bg-white/5 transition relative ${m.read?'opacity-60':'bg-white/10 border-l-4 border-l-studio-gold'}" onclick="openMail('${m.id}')">
+                    ${!m.read ? '<div class="absolute right-4 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-studio-gold shadow-[0_0_8px_rgba(212,175,55,1)]"></div>' : ''}
+                    <p class="text-sm font-bold text-white pr-6 line-clamp-1">${m.title}</p>
+                    <p class="text-[10px] text-gray-400 uppercase mt-2 tracking-[0.2em] flex items-center gap-2">
+                        <i class="fa-solid ${m.type==='script'?'fa-file-lines':m.type==='ott'?'fa-satellite-dish':'fa-user-tie'}"></i> ${m.type} MAIL
+                    </p>
                 </div>
             `).join('');
         }
@@ -459,7 +548,7 @@
             const mail = state.mails.find(m => m.id === id);
             if(!mail) return;
             mail.read = true;
-            saveState(); // sync read status
+            saveState(); // sync
             
             const detail = document.getElementById('mail-detail');
             let actions = '';
@@ -467,34 +556,33 @@
             if(mail.type === 'script') {
                 const canAccept = !state.activeProject;
                 actions = `
-                    <div class="mt-8 pt-6 border-t border-white/10 flex gap-4">
-                        ${canAccept ? `<button onclick="acceptScript('${mail.id}')" class="bg-studio-gold text-black px-6 py-3 rounded font-cinematic uppercase tracking-widest font-bold hover:bg-white transition shadow-lg">Acquire Script (${formatINR(mail.data.cost)})</button>` 
-                        : `<p class="text-xs text-red-400 py-3 border border-red-900/50 bg-red-900/10 px-4 rounded">Cannot acquire: Finish active project first.</p>`}
-                        <button onclick="deleteMail('${mail.id}')" class="bg-white/5 border border-white/10 text-white px-6 py-3 rounded font-cinematic uppercase tracking-widest text-xs hover:bg-red-900/50 hover:border-red-500 transition">Pass</button>
+                    <div class="mt-10 pt-8 border-t border-white/10 flex flex-wrap gap-4">
+                        ${canAccept ? `<button onclick="acceptScript('${mail.id}')" class="bg-studio-gold text-black px-8 py-4 rounded-xl font-cinematic uppercase tracking-widest font-bold hover:bg-white transition shadow-[0_0_20px_rgba(212,175,55,0.3)]"><i class="fa-solid fa-file-signature mr-2"></i> Acquire Script (${formatINR(mail.data.cost)})</button>` 
+                        : `<p class="text-xs text-red-400 py-4 border border-red-900/50 bg-red-900/10 px-6 rounded-xl"><i class="fa-solid fa-lock mr-2"></i> Finish active production to acquire new scripts.</p>`}
+                        <button onclick="deleteMail('${mail.id}')" class="bg-black/50 border border-white/10 text-white px-8 py-4 rounded-xl font-cinematic uppercase tracking-widest text-xs hover:bg-red-900/50 hover:border-red-500 transition"><i class="fa-solid fa-trash mr-2"></i> Trash Pitch</button>
                     </div>`;
             } else if (mail.type === 'ott') {
                 actions = `
-                    <div class="mt-8 pt-6 border-t border-white/10 flex gap-4">
-                        <button onclick="acceptOTT('${mail.id}')" class="bg-green-600 text-white px-6 py-3 rounded font-cinematic uppercase tracking-widest font-bold hover:bg-green-500 transition shadow-[0_0_15px_rgba(22,163,74,0.4)]">Sign OTT Deal (+${formatINR(mail.data.offer)})</button>
-                        <button onclick="deleteMail('${mail.id}')" class="bg-white/5 border border-white/10 text-white px-6 py-3 rounded font-cinematic uppercase tracking-widest text-xs hover:bg-red-900/50 hover:border-red-500 transition">Reject & Archive</button>
+                    <div class="mt-10 pt-8 border-t border-white/10 flex flex-wrap gap-4">
+                        <button onclick="acceptOTT('${mail.id}')" class="bg-green-700 text-white px-8 py-4 rounded-xl font-cinematic uppercase tracking-widest font-bold hover:bg-green-600 transition shadow-[0_0_20px_rgba(22,163,74,0.4)]"><i class="fa-solid fa-handshake mr-2"></i> Sign OTT Deal (+${formatINR(mail.data.offer)})</button>
                     </div>`;
             } else {
-                actions = `<button onclick="deleteMail('${mail.id}')" class="mt-8 px-6 py-3 bg-white/5 border border-white/10 rounded font-cinematic uppercase tracking-widest text-xs hover:bg-white/20 transition">Delete Message</button>`;
+                actions = `<button onclick="deleteMail('${mail.id}')" class="mt-10 px-8 py-4 bg-black/50 border border-white/10 rounded-xl font-cinematic uppercase tracking-widest text-xs hover:bg-white/20 transition"><i class="fa-solid fa-check mr-2"></i> Dismiss</button>`;
             }
 
             detail.innerHTML = `
-                <div class="mb-8 mail-anim">
-                    <h3 class="text-3xl font-cinematic font-bold text-white mb-2">${mail.title}</h3>
-                    <p class="text-[10px] text-studio-gold uppercase tracking-[0.2em]">Sender: ${mail.type==='script'?'Talent Agency': mail.type==='ott'?'Streaming Platform':'System Administration'}</p>
+                <div class="mb-8 mail-anim border-b border-white/10 pb-6">
+                    <h3 class="text-3xl font-cinematic font-bold text-white mb-3">${mail.title}</h3>
+                    <p class="text-xs text-studio-gold uppercase tracking-[0.3em] font-bold">From: ${mail.type==='script'?'Talent Agency': mail.type==='ott'?'Streaming Platform':'System Administration'}</p>
                 </div>
-                <div class="text-sm text-gray-300 leading-relaxed whitespace-pre-wrap font-sans bg-black/40 p-6 rounded-xl border border-white/5 mail-anim" style="animation-delay: 0.1s">${mail.body}</div>
+                <div class="text-[13px] text-gray-300 leading-relaxed whitespace-pre-wrap font-sans bg-black/40 p-8 rounded-2xl border border-white/5 mail-anim shadow-inner" style="animation-delay: 0.1s">${mail.body}</div>
                 <div class="mail-anim" style="animation-delay: 0.2s">${actions}</div>
             `;
         }
 
         window.deleteMail = (id) => {
             state.mails = state.mails.filter(m => m.id !== id);
-            document.getElementById('mail-detail').innerHTML = '<div class="absolute inset-0 flex items-center justify-center text-gray-700 flex-col"><i class="fa-regular fa-envelope-open text-6xl mb-4 opacity-50"></i><p class="font-cinematic tracking-widest uppercase opacity-50">Deleted</p></div>';
+            document.getElementById('mail-detail').innerHTML = '<div class="absolute inset-0 flex items-center justify-center text-gray-700 flex-col"><i class="fa-regular fa-envelope-open text-6xl mb-6 opacity-30"></i><p class="font-cinematic text-xl tracking-[0.2em] uppercase opacity-40">Deleted</p></div>';
             saveState();
         }
 
@@ -504,14 +592,13 @@
             
             state.funds -= mail.data.cost;
             state.activeProject = {
-                id: genId(), title: mail.data.title, genre: mail.data.genre,
-                scriptCost: mail.data.cost, prodCost: 0,
-                dir: null, actor: null, phase: 'assembly', gross: 0
+                id: genId(), title: mail.data.title, genre: mail.data.genre, plot: mail.data.plot,
+                scriptCost: mail.data.cost, prodCost: 0, hype: 50, dir: null, actor: null, phase: 'assembly', gross: 0
             };
             
-            state.mails = state.mails.filter(m => m.id !== id);
+            state.mails = state.mails.filter(m => m.type !== 'script'); // clear other pitches
             saveState();
-            showToast("Script Acquired! Move to Production Tab.", "good");
+            showToast("Script Acquired! Moving to Assembly Phase.", "good");
             switchTab('tab-production');
         }
 
@@ -523,37 +610,40 @@
             if(!p) {
                 cont.innerHTML = `
                     <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-8">
-                        <i class="fa-solid fa-clapperboard text-7xl text-gray-800 mb-6"></i>
-                        <h2 class="font-cinematic text-3xl text-gray-400 uppercase tracking-widest mb-2">No Active Production</h2>
-                        <p class="text-gray-500 mb-8 max-w-md">Your soundstages are currently empty. Scout for new scripts or check your inbox for pitches.</p>
-                        <button onclick="switchTab('tab-dashboard')" class="bg-studio-gold text-black px-8 py-3 rounded font-cinematic uppercase font-bold tracking-widest hover:bg-white transition">Return to Dashboard</button>
+                        <div class="w-32 h-32 rounded-full bg-white/5 flex items-center justify-center mb-8 border border-white/10">
+                            <i class="fa-solid fa-video-slash text-5xl text-gray-700"></i>
+                        </div>
+                        <h2 class="font-cinematic text-4xl text-white uppercase tracking-widest mb-4">No Active Production</h2>
+                        <p class="text-gray-400 mb-10 max-w-lg text-sm leading-relaxed">Your soundstages are currently empty. Check your inbox for script pitches or write an original concept to begin production.</p>
+                        <button onclick="switchTab('tab-dashboard')" class="bg-studio-gold text-black px-10 py-4 rounded-xl font-cinematic uppercase font-bold tracking-[0.1em] hover:bg-white transition shadow-[0_0_20px_rgba(212,175,55,0.2)]">Return to Dashboard</button>
                     </div>`;
                 return;
             }
 
             if(p.phase === 'assembly') renderAssembly(cont, p);
-            else if(p.phase === 'ready') renderReady(cont, p);
+            else if(p.phase === 'dilemma') renderDilemma(cont, p);
+            else if(p.phase === 'strategy') renderStrategy(cont, p);
             else if(p.phase === 'theaters') renderTheaters(cont, p);
             else if(p.phase === 'ott') renderOTTWait(cont, p);
         }
 
-        // Assembly Phase
+        // Phase 1: Assembly
         function renderAssembly(cont, p) {
-            let baseProdCost = (p.genre.includes('Sci-Fi') || p.genre.includes('Action')) ? 100000000 : 30000000; // 10cr or 3cr base
+            let baseProdCost = (p.genre.includes('Sci-Fi') || p.genre.includes('Action')) ? 100000000 : 40000000; 
             
             const createCard = (person, type) => `
-                <div class="talent-card rounded-xl p-3 flex flex-col gap-2 ${assemblyDraft[type]?.id === person.id ? 'selected' : ''}" onclick="selectTalent('${type}', '${person.id}')">
-                    <div class="flex items-center gap-3 border-b border-white/5 pb-2">
-                        <img src="${person.pic}" class="w-12 h-12 rounded object-cover border border-white/10">
-                        <div>
-                            <p class="font-bold text-white text-sm">${person.name}</p>
-                            <p class="text-[10px] text-red-400 font-bold uppercase tracking-widest">${formatINR(person.fee)}</p>
+                <div class="talent-card rounded-xl p-4 flex flex-col gap-3 ${assemblyDraft[type]?.id === person.id ? 'selected' : ''}" onclick="selectTalent('${type}', '${person.id}')">
+                    <div class="flex items-center gap-4 border-b border-white/10 pb-3">
+                        <img src="${person.pic}" class="w-14 h-14 rounded-lg object-cover border-2 border-white/10 shadow-md">
+                        <div class="flex-1 overflow-hidden">
+                            <p class="font-bold text-white text-sm truncate">${person.name}</p>
+                            <p class="text-[10px] text-green-400 font-bold uppercase tracking-widest mt-1">${formatINR(person.fee)}</p>
                         </div>
                     </div>
-                    <div class="text-[9px] text-gray-400 uppercase tracking-widest space-y-1.5 pt-1">
-                        <div class="flex justify-between"><span>Skill</span><span class="text-white">${person.skill}</span></div>
+                    <div class="text-[9px] text-gray-400 uppercase tracking-widest space-y-2 pt-1">
+                        <div class="flex justify-between items-center"><span>Skill</span><span class="text-white">${person.skill}</span></div>
                         <div class="stat-bar"><div class="stat-fill bg-blue-500" style="width:${person.skill}%"></div></div>
-                        <div class="flex justify-between mt-1"><span>${type==='actor'?'Fame':'Ego'}</span><span class="text-white">${type==='actor'?person.fame:person.ego}</span></div>
+                        <div class="flex justify-between items-center mt-1"><span>${type==='actor'?'Fame':'Ego'}</span><span class="text-white">${type==='actor'?person.fame:person.ego}</span></div>
                         <div class="stat-bar"><div class="stat-fill ${type==='actor'?'bg-yellow-500':'bg-red-500'}" style="width:${type==='actor'?person.fame:person.ego}%"></div></div>
                     </div>
                 </div>`;
@@ -561,30 +651,38 @@
             let totalEst = baseProdCost + (assemblyDraft.dir?.fee || 0) + (assemblyDraft.actor?.fee || 0);
 
             cont.innerHTML = `
-                <div class="text-center mb-8 border-b border-white/10 pb-6">
-                    <span class="text-blue-400 border border-blue-500/30 bg-blue-900/20 px-3 py-1 rounded text-[10px] uppercase tracking-widest font-bold mb-3 inline-block">Pre-Production Assembly</span>
-                    <h2 class="font-cinematic text-3xl font-bold text-white uppercase tracking-widest">${p.title}</h2>
-                    <p class="text-xs text-studio-gold uppercase tracking-[0.3em] font-bold mt-1">${p.genre}</p>
+                <div class="text-center mb-8 border-b border-white/10 pb-8 relative">
+                    <div class="absolute inset-0 bg-gradient-to-b from-studio-gold/5 to-transparent pointer-events-none rounded-t-2xl"></div>
+                    <span class="relative z-10 text-blue-400 border border-blue-500/30 bg-blue-900/20 px-4 py-1.5 rounded text-[10px] uppercase tracking-widest font-bold mb-4 inline-block shadow-lg">Phase 1: Pre-Production Assembly</span>
+                    <h2 class="relative z-10 font-cinematic text-4xl font-bold text-white uppercase tracking-[0.1em] drop-shadow-md">${p.title}</h2>
+                    <p class="relative z-10 text-xs text-studio-gold uppercase tracking-[0.4em] font-bold mt-2">${p.genre}</p>
                 </div>
                 
-                <div class="flex-1 overflow-y-auto custom-scrollbar pr-4 space-y-8">
+                <div class="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-10">
                     <div>
-                        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4"><i class="fa-solid fa-chair text-studio-gold mr-2"></i>Hire Director</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">${DIRECTORS.map(d=>createCard(d,'dir')).join('')}</div>
+                        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-6 flex items-center"><i class="fa-solid fa-chair text-studio-gold text-lg w-8"></i> Select Director</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">${DIRECTORS.map(d=>createCard(d,'dir')).join('')}</div>
                     </div>
                     <div>
-                        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4"><i class="fa-solid fa-star text-studio-gold mr-2"></i>Sign Lead Actor</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">${ACTORS.map(a=>createCard(a,'actor')).join('')}</div>
+                        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-6 flex items-center"><i class="fa-solid fa-star text-studio-gold text-lg w-8"></i> Cast Lead Actor</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">${ACTORS.map(a=>createCard(a,'actor')).join('')}</div>
                     </div>
                 </div>
 
-                <div class="mt-6 pt-6 border-t border-white/10 flex justify-between items-center bg-black/40 p-4 rounded-xl">
-                    <div>
-                        <p class="text-[10px] text-gray-500 uppercase tracking-widest">Base Cost: ${formatINR(baseProdCost)}</p>
-                        <p class="text-sm font-bold text-white uppercase tracking-widest">Total Budget: <span class="text-red-400 text-xl ml-2">${formatINR(totalEst)}</span></p>
+                <div class="mt-8 pt-6 border-t border-white/10 flex flex-col md:flex-row justify-between items-center bg-black/60 p-6 rounded-2xl border border-white/5 shadow-inner gap-6">
+                    <div class="flex items-center gap-8">
+                        <div>
+                            <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Base Cost</p>
+                            <p class="text-sm font-bold text-gray-300">${formatINR(baseProdCost)}</p>
+                        </div>
+                        <div class="w-px h-8 bg-white/10"></div>
+                        <div>
+                            <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Total Budget Required</p>
+                            <p class="text-2xl font-bold text-red-400 drop-shadow-md">${formatINR(totalEst)}</p>
+                        </div>
                     </div>
-                    <button id="btn-lock" onclick="lockBudget(${totalEst})" class="${(assemblyDraft.dir && assemblyDraft.actor) ? 'bg-studio-gold text-black hover:bg-white shadow-[0_0_15px_rgba(212,175,55,0.4)]' : 'bg-white/10 text-gray-500 cursor-not-allowed'} px-8 py-4 rounded font-cinematic font-bold tracking-[0.2em] uppercase transition" ${(assemblyDraft.dir && assemblyDraft.actor) ? '' : 'disabled'}>
-                        Lock Budget & Shoot
+                    <button id="btn-lock" onclick="lockBudget(${totalEst})" class="${(assemblyDraft.dir && assemblyDraft.actor) ? 'bg-studio-gold text-black hover:bg-white shadow-[0_0_20px_rgba(212,175,55,0.5)] scale-100 hover:scale-105' : 'bg-white/5 text-gray-500 cursor-not-allowed border border-white/10'} px-10 py-5 rounded-xl font-cinematic font-bold tracking-[0.2em] uppercase transition-all duration-300 w-full md:w-auto" ${(assemblyDraft.dir && assemblyDraft.actor) ? '' : 'disabled'}>
+                        <i class="fa-solid fa-video mr-2"></i> Greenlight Production
                     </button>
                 </div>
             `;
@@ -602,88 +700,147 @@
             state.activeProject.dir = assemblyDraft.dir;
             state.activeProject.actor = assemblyDraft.actor;
             state.activeProject.prodCost = total;
-            state.activeProject.phase = 'ready';
+            
+            // Randomly trigger a dilemma or skip to strategy
+            state.activeProject.phase = Math.random() > 0.3 ? 'dilemma' : 'strategy'; 
+            state.activeProject.dilemmaObj = DILEMMAS[Math.floor(Math.random() * DILEMMAS.length)];
+            
             assemblyDraft = {dir:null, actor:null}; // reset
             saveState();
             renderProduction();
-            showToast("Production Completed! Ready for Theaters.", "good");
+            showToast("Production Started!", "good");
         }
 
-        // Ready Phase
-        function renderReady(cont, p) {
+        // Phase 2: Dilemma Event
+        function renderDilemma(cont, p) {
+            const d = p.dilemmaObj;
             cont.innerHTML = `
-                <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-8 bg-gradient-to-b from-transparent to-black/80">
-                    <span class="text-yellow-400 border border-yellow-500/30 bg-yellow-900/20 px-3 py-1 rounded text-[10px] uppercase tracking-widest font-bold mb-6 animate-pulse">Post-Production Complete</span>
-                    
-                    <h2 class="font-cinematic text-5xl font-bold text-white uppercase tracking-widest mb-2 drop-shadow-2xl">${p.title}</h2>
-                    <p class="text-sm text-studio-gold uppercase tracking-[0.3em] font-bold mb-8">${p.genre}</p>
-                    
-                    <div class="flex gap-12 mb-12 bg-black/40 p-6 rounded-2xl border border-white/5">
-                        <div class="text-center">
-                            <img src="${p.dir.pic}" class="w-16 h-16 rounded-full mx-auto border-2 border-studio-gold/50 mb-3 shadow-[0_0_10px_rgba(212,175,55,0.2)]">
-                            <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">Director</p>
-                            <p class="text-sm font-bold text-white uppercase tracking-widest">${p.dir.name}</p>
-                        </div>
-                        <div class="w-px bg-white/10"></div>
-                        <div class="text-center">
-                            <img src="${p.actor.pic}" class="w-16 h-16 rounded-full mx-auto border-2 border-studio-gold/50 mb-3 shadow-[0_0_10px_rgba(212,175,55,0.2)]">
-                            <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">Lead Actor</p>
-                            <p class="text-sm font-bold text-white uppercase tracking-widest">${p.actor.name}</p>
-                        </div>
+                <div class="absolute inset-0 flex flex-col items-center justify-center p-8 bg-black/90 backdrop-blur-sm rounded-2xl z-20">
+                    <div class="w-20 h-20 bg-red-900/30 rounded-full flex items-center justify-center border-2 border-red-500 mb-6 animate-pulse shadow-[0_0_30px_rgba(220,38,38,0.4)]">
+                        <i class="fa-solid fa-triangle-exclamation text-4xl text-red-500"></i>
                     </div>
+                    <span class="text-red-400 border border-red-500/30 bg-red-900/20 px-4 py-1.5 rounded text-[10px] uppercase tracking-widest font-bold mb-4 inline-block">Production Crisis</span>
+                    <h2 class="font-cinematic text-3xl font-bold text-white uppercase tracking-widest mb-8 text-center max-w-2xl leading-tight">"${d.text}"</h2>
                     
-                    <button onclick="initTheatricalRun()" class="bg-studio-gold text-black hover:bg-white font-cinematic font-bold tracking-[0.3em] py-5 px-12 rounded-xl text-lg uppercase transition shadow-[0_0_30px_rgba(212,175,55,0.5)] hover:scale-105">
-                        Release in Theaters <i class="fa-solid fa-ticket ml-3"></i>
-                    </button>
+                    <div class="flex flex-col sm:flex-row gap-6 w-full max-w-3xl">
+                        <!-- Option A -->
+                        <button onclick="resolveDilemma(1, ${d.cost}, ${d.hypeEff})" class="flex-1 bg-black/60 border border-white/20 p-8 rounded-xl hover:border-studio-gold hover:bg-studio-gold/10 transition text-left group flex flex-col items-center text-center">
+                            <h4 class="font-cinematic text-lg font-bold text-white uppercase tracking-widest mb-4 group-hover:text-studio-gold transition">${d.optA}</h4>
+                            <div class="flex gap-4 text-xs font-bold tracking-widest uppercase">
+                                <span class="text-red-400 bg-red-900/20 px-3 py-1 rounded">Cost: ${formatINR(d.cost)}</span>
+                                <span class="text-green-400 bg-green-900/20 px-3 py-1 rounded">Hype: +${d.hypeEff}</span>
+                            </div>
+                        </button>
+                        <!-- Option B -->
+                        <button onclick="resolveDilemma(2, ${d.cost2}, ${d.hypeEff2})" class="flex-1 bg-black/60 border border-white/20 p-8 rounded-xl hover:border-red-500 hover:bg-red-900/10 transition text-left group flex flex-col items-center text-center">
+                            <h4 class="font-cinematic text-lg font-bold text-white uppercase tracking-widest mb-4 group-hover:text-red-400 transition">${d.optB}</h4>
+                            <div class="flex gap-4 text-xs font-bold tracking-widest uppercase">
+                                <span class="text-gray-400 bg-gray-800 px-3 py-1 rounded">Cost: Free</span>
+                                <span class="text-red-400 bg-red-900/20 px-3 py-1 rounded">Hype: ${d.hypeEff2}</span>
+                            </div>
+                        </button>
+                    </div>
                 </div>
             `;
         }
 
-        // Theatrical Simulator
-        window.initTheatricalRun = () => {
+        window.resolveDilemma = (choice, cost, hypeChange) => {
+            if(state.funds < cost) return showToast("Not enough funds for this choice!", "bad");
+            state.funds -= cost;
+            state.activeProject.prodCost += cost;
+            state.activeProject.hype += hypeChange;
+            if(state.activeProject.hype < 10) state.activeProject.hype = 10;
+            if(state.activeProject.hype > 100) state.activeProject.hype = 100;
+            
+            state.activeProject.phase = 'strategy';
+            saveState();
+            renderProduction();
+        }
+
+        // Phase 3: Strategy
+        function renderStrategy(cont, p) {
+            cont.innerHTML = `
+                <div class="absolute inset-0 flex flex-col items-center justify-center p-8 bg-gradient-to-b from-transparent to-black/90">
+                    <span class="text-yellow-400 border border-yellow-500/30 bg-yellow-900/20 px-4 py-1.5 rounded text-[10px] uppercase tracking-widest font-bold mb-6">Phase 3: Release Strategy</span>
+                    <h2 class="font-cinematic text-5xl font-bold text-white uppercase tracking-widest mb-2 drop-shadow-2xl text-center">${p.title}</h2>
+                    <p class="text-sm text-studio-gold uppercase tracking-[0.3em] font-bold mb-10">${p.genre} • Hype: ${p.hype}/100</p>
+                    
+                    <h3 class="font-cinematic text-xl text-gray-300 uppercase tracking-widest mb-6">Select Ticket Pricing</h3>
+                    <div class="flex flex-col md:flex-row gap-6 mb-12 w-full max-w-4xl justify-center">
+                        <div class="talent-card rounded-xl p-6 text-center flex-1" onclick="setStrategy(150, 'mass')">
+                            <i class="fa-solid fa-users text-3xl text-gray-400 mb-4"></i>
+                            <h4 class="font-cinematic text-lg font-bold text-white mb-2">Mass Appeal</h4>
+                            <p class="text-2xl text-studio-gold font-bold mb-3 font-cinematic">₹150</p>
+                            <p class="text-[10px] text-gray-400 uppercase tracking-widest">High footfall, lower revenue. Safe for average films.</p>
+                        </div>
+                        <div class="talent-card rounded-xl p-6 text-center flex-1" onclick="setStrategy(300, 'standard')">
+                            <i class="fa-solid fa-ticket text-3xl text-gray-400 mb-4"></i>
+                            <h4 class="font-cinematic text-lg font-bold text-white mb-2">Standard</h4>
+                            <p class="text-2xl text-studio-gold font-bold mb-3 font-cinematic">₹300</p>
+                            <p class="text-[10px] text-gray-400 uppercase tracking-widest">Balanced approach. Standard multiplex rates.</p>
+                        </div>
+                        <div class="talent-card rounded-xl p-6 text-center flex-1" onclick="setStrategy(600, 'premium')">
+                            <i class="fa-solid fa-gem text-3xl text-gray-400 mb-4"></i>
+                            <h4 class="font-cinematic text-lg font-bold text-white mb-2">Premium 3D/IMAX</h4>
+                            <p class="text-2xl text-studio-gold font-bold mb-3 font-cinematic">₹600</p>
+                            <p class="text-[10px] text-gray-400 uppercase tracking-widest">High risk, high reward. Flops hard if reviews are bad.</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        window.setStrategy = (price, type) => {
+            state.activeProject.ticketPrice = { val: price, type: type };
             state.activeProject.phase = 'theaters';
             saveState();
             renderProduction();
-            setTimeout(runBoxOfficeSim, 500); // slight delay for UI render
+            setTimeout(runBoxOfficeSim, 800);
         }
 
+        // Phase 4: Theatrical Simulator
         function renderTheaters(cont, p) {
             cont.innerHTML = `
-                <div class="flex justify-between items-end border-b border-white/10 pb-4 mb-6">
+                <div class="flex flex-col md:flex-row justify-between items-end border-b border-white/10 pb-6 mb-8 gap-4">
                     <div>
-                        <h2 class="font-cinematic text-3xl font-bold text-white uppercase tracking-widest">${p.title}</h2>
-                        <p class="text-[10px] text-studio-gold uppercase tracking-[0.2em] mt-1">Global Theatrical Run</p>
+                        <h2 class="font-cinematic text-3xl font-bold text-white uppercase tracking-[0.1em]">${p.title}</h2>
+                        <div class="flex gap-4 mt-2">
+                            <span class="text-[10px] text-studio-gold uppercase tracking-[0.2em] font-bold bg-studio-gold/10 px-2 py-1 rounded">Theatrical Run</span>
+                            <span class="text-[10px] text-gray-400 uppercase tracking-[0.2em] font-bold bg-white/5 px-2 py-1 rounded">Ticket: ₹${p.ticketPrice.val}</span>
+                        </div>
                     </div>
-                    <div class="text-right">
-                        <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Day</p>
-                        <p id="sim-day" class="text-3xl font-bold text-white font-cinematic">0 / 14</p>
+                    <div class="text-left md:text-right bg-black/50 p-4 rounded-xl border border-white/5 shadow-inner">
+                        <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Current Day</p>
+                        <p id="sim-day" class="text-4xl font-bold text-white font-cinematic drop-shadow-md">0 <span class="text-xl text-gray-500">/ 14</span></p>
                     </div>
                 </div>
 
-                <div class="flex-1 flex flex-col lg:flex-row gap-6">
-                    <div class="flex-1 glass-card p-4 rounded-xl">
+                <div class="flex-1 flex flex-col lg:flex-row gap-8">
+                    <div class="flex-1 glass-card p-6 rounded-2xl shadow-inner relative">
                         <div class="chart-container"><canvas id="boChart"></canvas></div>
                     </div>
                     
-                    <div class="w-full lg:w-64 flex flex-col gap-4">
-                        <div class="glass-panel p-5 rounded-xl border border-white/5 text-center">
-                            <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-2">Total Gross</p>
-                            <p id="sim-gross" class="text-3xl font-bold text-green-400 drop-shadow-[0_0_8px_rgba(74,222,128,0.2)] font-cinematic">₹0</p>
+                    <div class="w-full lg:w-72 flex flex-col gap-5">
+                        <div class="glass-panel p-6 rounded-2xl border border-white/5 text-center shadow-lg relative overflow-hidden">
+                            <div class="absolute inset-0 bg-green-500/5 pointer-events-none"></div>
+                            <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-2 relative z-10">Total Gross Collection</p>
+                            <p id="sim-gross" class="text-4xl font-bold text-green-400 drop-shadow-[0_0_15px_rgba(74,222,128,0.3)] font-cinematic relative z-10">₹0</p>
                         </div>
-                        <div class="glass-panel p-5 rounded-xl border border-white/5 text-center">
-                            <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-2">Total Budget</p>
-                            <p class="text-xl font-bold text-red-400 font-cinematic">${formatINR(p.prodCost + p.scriptCost)}</p>
+                        <div class="glass-panel p-6 rounded-2xl border border-white/5 text-center shadow-lg relative overflow-hidden">
+                             <div class="absolute inset-0 bg-red-500/5 pointer-events-none"></div>
+                            <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-2 relative z-10">Total Budget Spent</p>
+                            <p class="text-2xl font-bold text-red-400 font-cinematic relative z-10">${formatINR(p.prodCost + p.scriptCost)}</p>
                         </div>
-                        <div id="sim-status-box" class="flex-1 glass-panel p-5 rounded-xl border border-white/5 flex flex-col justify-center items-center text-center transition-all duration-500 bg-black/50">
-                            <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Status</p>
-                            <p id="sim-status" class="text-sm font-semibold text-gray-300 animate-pulse uppercase tracking-widest">Simulating...</p>
+                        <div id="sim-status-box" class="flex-1 glass-panel p-6 rounded-2xl border border-white/5 flex flex-col justify-center items-center text-center transition-all duration-700 bg-black/60 shadow-lg">
+                            <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Verdict Status</p>
+                            <p id="sim-status" class="text-lg font-bold text-gray-300 animate-pulse uppercase tracking-[0.2em] font-cinematic">Simulating...</p>
                         </div>
                     </div>
                 </div>
                 
-                <div id="sim-action" class="mt-6 text-center hidden">
-                    <button onclick="finishTheatricalRun()" class="bg-white/10 hover:bg-white text-white hover:text-black px-10 py-4 rounded font-cinematic font-bold tracking-widest uppercase transition w-full border border-white/20">
-                        Conclude Theatrical Run
+                <div id="sim-action" class="mt-8 text-center hidden">
+                    <button onclick="finishTheatricalRun()" class="bg-studio-gold hover:bg-white text-black px-12 py-5 rounded-xl font-cinematic font-bold tracking-[0.2em] uppercase transition-all duration-300 w-full shadow-[0_0_20px_rgba(212,175,55,0.4)] text-lg hover:scale-[1.02]">
+                        <i class="fa-solid fa-flag-checkered mr-2"></i> Conclude Box Office Run
                     </button>
                 </div>
             `;
@@ -694,73 +851,81 @@
             if(chartInstance) chartInstance.destroy();
             
             const ctx = document.getElementById('boChart').getContext('2d');
+            Chart.defaults.color = '#888';
+            Chart.defaults.font.family = 'Inter';
+            
             chartInstance = new Chart(ctx, {
-                type: 'line',
-                data: { labels: [], datasets: [{ label: 'Daily Collection (Cr)', data: [], borderColor: '#D4AF37', backgroundColor: 'rgba(212, 175, 55, 0.1)', borderWidth: 3, tension: 0.4, fill: true, pointBackgroundColor: '#fff' }] },
+                type: 'bar',
+                data: { labels: [], datasets: [{ label: 'Daily Collection (Cr)', data: [], backgroundColor: 'rgba(212, 175, 55, 0.8)', borderRadius: 4, hoverBackgroundColor: '#fff' }] },
                 options: {
                     responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false, titleFont:{family:'Inter'}, bodyFont:{family:'Inter'} } },
+                    plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false, backgroundColor:'rgba(0,0,0,0.8)', titleFont:{family:'Inter'}, bodyFont:{family:'Inter'} } },
                     scales: {
-                        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#888' } },
-                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#888', callback: v => '₹'+v+'Cr' } }
+                        x: { grid: { display: false } },
+                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { callback: v => '₹'+v+'Cr' } }
                     },
-                    animation: { duration: 300 }
+                    animation: { duration: 400 }
                 }
             });
 
-            // Algorithm
-            const qual = (p.dir.skill + p.actor.skill) / 2;
-            const hype = (p.actor.fame * 0.7) + (p.dir.skill * 0.3);
+            // Advanced Algorithm
+            const qual = (p.dir.skill * 0.6) + (p.actor.skill * 0.4);
             const totalBudget = p.prodCost + p.scriptCost;
             
+            // Multipliers based on pricing strategy
+            let ticketMulti = 1.0;
+            let womMulti = 1.0; // Word of mouth
+            if(p.ticketPrice.type === 'mass') { ticketMulti = 0.8; womMulti = qual > 60 ? 1.0 : 0.8; }
+            if(p.ticketPrice.type === 'premium') { ticketMulti = 1.4; womMulti = qual > 85 ? 1.2 : 0.4; } // Crashes hard if bad
+            
             let day = 1;
-            let gross = 0;
-            let daily = (hype / 100) * (totalBudget * 0.20); // Base day 1
+            let gross = p.gross || 0; // resume if refreshed
+            let daily = ((p.hype / 100) * (totalBudget * 0.25)) * ticketMulti; 
 
             const interval = setInterval(() => {
-                if(day > 14 || window.currentTab !== 'tab-production') { // stop if left tab or done
+                if(day > 14 || window.currentTab !== 'tab-production') { 
                     clearInterval(interval);
                     if(day > 14) showConcludeBtn(gross);
                     return;
                 }
 
-                // Math modifiers
-                const drop = (100 - qual) / 100;
-                if(day === 3 || day === 10) daily *= 1.4; // weekend bump
-                else if (day === 4 || day === 11) daily *= 0.4; // monday crash
-                else daily *= (1 - (drop * 0.5)); // daily drop
+                // Daily variance and trends
+                if(day === 1) daily = daily;
+                else if(day === 2 || day === 3 || day === 9 || day === 10) daily *= (1.1 + (Math.random()*0.2)); // Weekends
+                else if(day === 4 || day === 11) daily *= (0.4 * womMulti); // Monday crash, affected by WOM
+                else daily *= (0.85 * womMulti); // Daily drop
                 
-                daily *= (0.85 + Math.random() * 0.3); // variance
-                if(daily < 500000) daily = 500000;
+                daily *= (0.9 + Math.random() * 0.2); // Random daily noise
+                if(daily < 1000000) daily = 1000000; // Floor 10 Lakhs
 
                 gross += daily;
-                p.gross = gross; // live update
+                p.gross = gross; 
 
-                chartInstance.data.labels.push(`D${day}`);
+                chartInstance.data.labels.push(`Day ${day}`);
                 chartInstance.data.datasets[0].data.push((daily / 10000000).toFixed(2));
                 chartInstance.update();
 
                 const dEl = document.getElementById('sim-day');
                 const gEl = document.getElementById('sim-gross');
-                if(dEl) dEl.innerText = `${day} / 14`;
+                if(dEl) dEl.innerHTML = `${day} <span class="text-xl text-gray-500">/ 14</span>`;
                 if(gEl) gEl.innerText = formatINR(gross);
 
                 day++;
-            }, 500);
+            }, 600); // Slower, more dramatic simulation
         }
 
         function showConcludeBtn(finalGross) {
             const p = state.activeProject;
             const totalCost = p.prodCost + p.scriptCost;
-            const net = finalGross * 0.5; // Studio share
+            const net = finalGross * 0.5; // Studio gets roughly 50% of box office
 
             const sb = document.getElementById('sim-status-box');
             const st = document.getElementById('sim-status');
             st.classList.remove('animate-pulse');
 
-            if(net > totalCost) { sb.classList.add('bg-studio-gold/20','border-studio-gold'); st.innerText='HIT'; st.classList.add('text-studio-gold'); }
-            else if(net > totalCost*0.7) { sb.classList.add('bg-green-900/30','border-green-500'); st.innerText='AVERAGE'; st.classList.add('text-green-400'); }
-            else { sb.classList.add('bg-red-900/30','border-red-500'); st.innerText='FLOP'; st.classList.add('text-red-500'); }
+            if(net > totalCost * 1.5) { sb.classList.add('bg-studio-gold/20','border-studio-gold'); st.innerText='BLOCKBUSTER'; st.className='text-2xl font-bold text-studio-gold font-cinematic uppercase tracking-[0.2em] drop-shadow-md'; }
+            else if(net > totalCost) { sb.classList.add('bg-green-900/40','border-green-500'); st.innerText='HIT'; st.className='text-2xl font-bold text-green-400 font-cinematic uppercase tracking-[0.2em] drop-shadow-md'; }
+            else { sb.classList.add('bg-red-900/40','border-red-500'); st.innerText='FLOP'; st.className='text-2xl font-bold text-red-500 font-cinematic uppercase tracking-[0.2em] drop-shadow-md'; }
 
             document.getElementById('sim-action').classList.remove('hidden');
         }
@@ -773,19 +938,18 @@
             saveState();
             renderProduction();
             showToast(`Theatrical share ${formatINR(netStudio)} added. Awaiting OTT offers.`, "info");
-            
-            // Generate OTT Mail
-            setTimeout(generateOTTMail, 2000);
+            setTimeout(generateOTTMail, 2500);
         }
 
+        // Phase 5: OTT
         function renderOTTWait(cont, p) {
             cont.innerHTML = `
                 <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-8">
-                    <span class="text-purple-400 border border-purple-500/30 bg-purple-900/20 px-3 py-1 rounded text-[10px] uppercase tracking-widest font-bold mb-6">Post-Theatrical Phase</span>
-                    <i class="fa-solid fa-satellite-dish text-6xl text-purple-900 mb-6 animate-pulse"></i>
-                    <h2 class="font-cinematic text-3xl text-white uppercase tracking-widest mb-2">${p.title}</h2>
-                    <p class="text-gray-500 mb-8 max-w-md">Theatrical run concluded. We are broadcasting availability to major streaming platforms. Check your Inbox for acquisition offers.</p>
-                    <button onclick="switchTab('tab-inbox')" class="bg-white/10 hover:bg-white/20 text-white px-8 py-3 rounded font-cinematic uppercase font-bold tracking-widest transition border border-white/20">Go to Inbox</button>
+                    <span class="text-purple-400 border border-purple-500/30 bg-purple-900/20 px-4 py-1.5 rounded text-[10px] uppercase tracking-widest font-bold mb-8">Phase 5: Post-Theatrical Distribution</span>
+                    <i class="fa-solid fa-satellite-dish text-7xl text-purple-900 mb-8 animate-pulse drop-shadow-[0_0_20px_rgba(88,28,135,0.5)]"></i>
+                    <h2 class="font-cinematic text-4xl text-white uppercase tracking-[0.1em] mb-4">${p.title}</h2>
+                    <p class="text-gray-400 mb-10 max-w-lg leading-relaxed">Theatrical run concluded. We are broadcasting availability to major streaming platforms. Check your Executive Inbox for acquisition offers shortly.</p>
+                    <button onclick="switchTab('tab-inbox')" class="bg-black/50 hover:bg-white/10 text-white px-10 py-4 rounded-xl font-cinematic uppercase font-bold tracking-widest transition border border-white/20"><i class="fa-solid fa-envelope mr-2"></i> Open Inbox</button>
                 </div>
             `;
         }
@@ -794,22 +958,22 @@
             const p = state.activeProject;
             if(!p || p.phase !== 'ott') return;
 
-            const platforms = ["NetStream", "PrimeBox", "HuluMax"];
+            const platforms = ["NetStream Global", "PrimeBox India", "HuluMax"];
             const platform = platforms[Math.floor(Math.random()*platforms.length)];
             const totalCost = p.prodCost + p.scriptCost;
             
-            let offer = totalCost * 0.3; // base 30% recovery
-            if(p.gross > totalCost * 2) offer = totalCost * 1.5; // huge offer if hit
-            if(p.actor.fame > 90) offer += 50000000; // 5cr star bonus
+            let offer = totalCost * 0.4; 
+            if(p.gross > totalCost * 2) offer = totalCost * 1.5; 
+            if(p.actor.fame > 90) offer += 50000000; 
 
             state.mails.push({
                 id: genId(), type: 'ott', read: false,
-                title: `Rights Acquisition: ${p.title}`,
-                body: `To the Studio Head,\n\n${platform} is interested in acquiring exclusive digital streaming rights for '${p.title}'.\n\nOur final offer is: ${formatINR(offer)}\n\nAccepting this offer will transfer digital rights and archive the project in your history.`,
+                title: `Digital Rights Offer: ${p.title}`,
+                body: `To the Studio CEO,\n\n${platform} is highly interested in acquiring exclusive digital streaming rights for '${p.title}' following its theatrical window.\n\nOur final, non-negotiable offer is: ${formatINR(offer)}\n\nAccepting this offer will finalize revenue, transfer digital rights, and officially archive the project.`,
                 data: { offer, platform }
             });
             saveState();
-            showToast("OTT Platform sent an offer to your Inbox!", "good");
+            showToast("OTT Platform sent a lucrative offer to your Inbox!", "good");
         }
 
         window.acceptOTT = (mailId) => {
@@ -826,12 +990,13 @@
             else if(profit > 0) { verdict = 'HIT'; }
             else { state.reputation = Math.max(1, state.reputation-1); }
 
-            // Archive
-            const safeTitle = encodeURIComponent(p.title);
+            // Create stylistic poster using Picsum with a seed based on title
+            const seed = p.title.replace(/\s+/g, '').toLowerCase();
+            
             state.pastProjects.unshift({
                 id: p.id, title: p.title, genre: p.genre,
                 cost: totalCost, gross: totalRevenue, verdict,
-                poster: `https://placehold.co/400x600/0a0a0a/D4AF37?text=${safeTitle}%0A${encodeURIComponent(p.genre)}`
+                posterImg: `https://picsum.photos/seed/${seed}/400/600`
             });
 
             state.activeProject = null;
@@ -846,33 +1011,38 @@
         function renderHistory() {
             const grid = document.getElementById('history-grid');
             if(state.pastProjects.length === 0) {
-                grid.innerHTML = '<div class="col-span-full text-center py-20 text-gray-600 font-cinematic uppercase tracking-widest">No cinematic history recorded.</div>';
+                grid.innerHTML = '<div class="col-span-full text-center py-32"><i class="fa-solid fa-film text-6xl text-gray-800 mb-4"></i><p class="text-gray-600 font-cinematic text-xl uppercase tracking-widest">No cinematic history recorded.</p></div>';
                 return;
             }
 
             grid.innerHTML = state.pastProjects.map(x => `
-                <div class="glass-card rounded-xl overflow-hidden flex flex-col group hover:border-studio-gold/50 transition duration-300">
-                    <div class="h-48 bg-black relative overflow-hidden">
-                        <img src="${x.poster}" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition duration-500 group-hover:scale-105">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
-                        <div class="absolute bottom-4 left-4 right-4">
-                            <span class="text-[9px] font-bold ${x.verdict==='BLOCKBUSTER'?'text-studio-gold bg-studio-gold/20':x.verdict==='HIT'?'text-green-400 bg-green-900/50':'text-red-500 bg-red-900/50'} px-2 py-1 rounded border ${x.verdict==='BLOCKBUSTER'?'border-studio-gold':x.verdict==='HIT'?'border-green-500':'border-red-500'} mb-2 inline-block">${x.verdict}</span>
-                            <h4 class="font-cinematic text-lg font-bold text-white uppercase tracking-widest leading-tight">${x.title}</h4>
-                            <p class="text-[9px] text-gray-400 uppercase tracking-widest mt-1">${x.genre}</p>
+                <div class="glass-card rounded-2xl overflow-hidden flex flex-col group hover:border-studio-gold/50 transition duration-500 shadow-2xl relative">
+                    <div class="h-64 bg-black relative overflow-hidden flex items-center justify-center">
+                        <img src="${x.posterImg}" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-60 group-hover:scale-110 transition duration-700 blur-[2px] group-hover:blur-0">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/60 to-transparent"></div>
+                        
+                        <!-- Cinematic Title Overlay -->
+                        <div class="relative z-10 text-center px-4 transform group-hover:-translate-y-2 transition duration-500">
+                            <h4 class="font-cinematic text-3xl font-bold text-white uppercase tracking-[0.1em] leading-tight drop-shadow-[0_5px_5px_rgba(0,0,0,1)]">${x.title}</h4>
+                            <p class="text-[10px] text-studio-gold uppercase tracking-[0.4em] mt-3 drop-shadow-md font-bold">${x.genre}</p>
+                        </div>
+
+                        <div class="absolute top-4 right-4 z-10">
+                            <span class="text-[10px] font-bold ${x.verdict==='BLOCKBUSTER'?'text-studio-gold bg-studio-gold/20':x.verdict==='HIT'?'text-green-400 bg-green-900/50':'text-red-500 bg-red-900/50'} px-3 py-1.5 rounded backdrop-blur-md border ${x.verdict==='BLOCKBUSTER'?'border-studio-gold':x.verdict==='HIT'?'border-green-500':'border-red-500'} inline-block shadow-lg tracking-widest">${x.verdict}</span>
                         </div>
                     </div>
-                    <div class="p-4 bg-black/50 flex flex-col gap-2">
-                        <div class="flex justify-between items-center text-xs border-b border-white/5 pb-2">
-                            <span class="text-gray-500 uppercase tracking-widest">Budget</span>
-                            <span class="text-white font-bold">${formatINR(x.cost)}</span>
+                    <div class="p-6 bg-[#080808] flex flex-col gap-3 relative z-20">
+                        <div class="flex justify-between items-center text-xs border-b border-white/5 pb-3">
+                            <span class="text-gray-500 uppercase tracking-widest"><i class="fa-solid fa-money-bill-wave mr-2"></i>Budget</span>
+                            <span class="text-gray-300 font-bold">${formatINR(x.cost)}</span>
                         </div>
-                        <div class="flex justify-between items-center text-xs border-b border-white/5 pb-2">
-                            <span class="text-gray-500 uppercase tracking-widest">Total Revenue</span>
+                        <div class="flex justify-between items-center text-xs border-b border-white/5 pb-3">
+                            <span class="text-gray-500 uppercase tracking-widest"><i class="fa-solid fa-sack-dollar mr-2"></i>Revenue</span>
                             <span class="text-green-400 font-bold">${formatINR(x.gross)}</span>
                         </div>
-                        <div class="flex justify-between items-center text-xs pt-1">
-                            <span class="text-gray-500 uppercase tracking-widest">Net Profit</span>
-                            <span class="${x.gross - x.cost >= 0 ? 'text-studio-gold' : 'text-red-500'} font-bold">${formatINR(x.gross - x.cost)}</span>
+                        <div class="flex justify-between items-center text-sm pt-2">
+                            <span class="text-gray-400 uppercase tracking-widest font-bold">Net Profit</span>
+                            <span class="${x.gross - x.cost >= 0 ? 'text-studio-gold' : 'text-red-500'} font-bold font-cinematic text-lg">${formatINR(x.gross - x.cost)}</span>
                         </div>
                     </div>
                 </div>
@@ -884,8 +1054,8 @@
             if(auth.currentUser) {
                 try {
                     await setDoc(doc(db, 'artifacts', appId, 'users', auth.currentUser.uid, 'studio', 'data'), state);
-                    updateAllUI(); // sync UI after save
-                } catch(e) { console.error(e); }
+                    updateAllUI(); 
+                } catch(e) { console.error(e); showToast("Auto-save failed.", "bad"); }
             }
         }
     </script>
