@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UR STUDIO | Cinematic Tycoon</title>
+    
+    <!-- Dependencies -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
         tailwind.config = {
@@ -24,7 +27,7 @@
                             gold: '#D4AF37',
                             golddim: '#aa8c2c',
                             crimson: '#8B0000',
-                            panel: 'rgba(12, 12, 12, 0.85)',
+                            panel: 'rgba(15, 15, 15, 0.85)',
                         }
                     }
                 }
@@ -33,135 +36,46 @@
     </script>
 
     <style>
-        body {
-            background-color: #050505;
-            color: #ffffff;
-            overflow-x: hidden;
-        }
-
-        /* Cinematic Background Elements */
-        .bg-layer {
-            position: fixed;
-            inset: 0;
-            z-index: -2;
-            background-image: url('https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            opacity: 0.1;
-        }
-        .bg-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            background: radial-gradient(circle at 50% 10%, rgba(20,20,20,0.5) 0%, rgba(5,5,5,1) 70%);
-        }
-
-        /* Glass Panels */
-        .glass-panel {
-            background: var(--tw-colors-studio-panel);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8);
-        }
-
-        /* Scrollbar */
+        body { background-color: #050505; color: #ffffff; overflow-x: hidden; }
+        .bg-layer { position: fixed; inset: 0; z-index: -2; background-image: url('https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059&auto=format&fit=crop'); background-size: cover; background-position: center; opacity: 0.15; }
+        .bg-overlay { position: fixed; inset: 0; z-index: -1; background: radial-gradient(circle at 50% 10%, rgba(20,20,20,0.7) 0%, rgba(5,5,5,1) 80%); }
+        .glass-panel { background: var(--tw-colors-studio-panel); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.9); }
+        
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #050505; }
-        ::-webkit-scrollbar-thumb { background: #222; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
 
-        /* Inputs & Cards */
-        .premium-input {
-            background: rgba(0,0,0,0.6);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 8px;
-            color: white;
-            padding: 12px 16px;
-            transition: all 0.3s ease;
-            width: 100%;
-        }
-        .premium-input:focus {
-            outline: none;
-            border-color: #D4AF37;
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
-        }
+        .select-card { border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.5); transition: all 0.3s ease; cursor: pointer; }
+        .select-card:hover { border-color: rgba(212, 175, 55, 0.6); background: rgba(20,20,20,0.8); }
+        .select-card.selected { border-color: #D4AF37; background: rgba(212, 175, 55, 0.1); box-shadow: 0 0 20px rgba(212, 175, 55, 0.15); }
+        
+        .modal-overlay { opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .modal-overlay.active { opacity: 1; pointer-events: all; }
+        
+        /* Stats Bars */
+        .stat-bar { height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden; width: 100%; margin-top: 2px; }
+        .stat-fill { height: 100%; }
 
-        .select-card {
-            border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(0,0,0,0.5);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-        }
-        .select-card:hover {
-            border-color: rgba(212, 175, 55, 0.6);
-            transform: translateY(-2px);
-            background: rgba(20,20,20,0.8);
-        }
-        .select-card.selected {
-            border-color: #D4AF37;
-            background: rgba(212, 175, 55, 0.1);
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
-        }
-
-        /* Relationship Bar */
-        .rel-bar-bg { background: rgba(255,255,255,0.1); height: 4px; border-radius: 2px; overflow: hidden; width: 100%; margin-top: 4px; }
-        .rel-bar-fill { height: 100%; transition: width 0.5s ease; }
-
-        /* Modals & Steps */
-        .modal-overlay {
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.4s ease;
-        }
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: all;
-        }
-        .wizard-step { display: none; animation: fadeIn 0.4s ease forwards; }
-        .wizard-step.active { display: block; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Sliders */
-        input[type=range] {
-            -webkit-appearance: none;
-            width: 100%;
-            background: transparent;
-        }
-        input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            height: 20px;
-            width: 20px;
-            border-radius: 50%;
-            background: #D4AF37;
-            cursor: pointer;
-            margin-top: -8px;
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
-        }
-        input[type=range]::-webkit-slider-runnable-track {
-            width: 100%;
-            height: 4px;
-            cursor: pointer;
-            background: rgba(255,255,255,0.2);
-            border-radius: 2px;
-        }
+        .chart-container { position: relative; height: 300px; width: 100%; }
+        
+        #inbox-badge { transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        #inbox-badge.pop { transform: scale(1.5); }
     </style>
 </head>
-<body class="flex flex-col selection:bg-studio-gold selection:text-black min-h-screen">
+<body class="flex flex-col selection:bg-studio-gold selection:text-black min-h-screen text-sm">
 
     <div class="bg-layer"></div>
     <div class="bg-overlay"></div>
 
-    <!-- Loading Screen -->
+    <!-- Loading Overlay -->
     <div id="loading-overlay" class="fixed inset-0 bg-[#050505] z-[100] flex flex-col items-center justify-center transition-opacity duration-500">
         <div class="w-12 h-12 border-2 border-studio-gold/20 border-t-studio-gold rounded-full animate-spin mb-4"></div>
         <p class="font-cinematic text-studio-gold tracking-[0.3em] text-xs uppercase animate-pulse">Establishing Connection</p>
     </div>
 
-    <!-- TOAST -->
-    <div id="toast" class="fixed bottom-6 right-6 transform translate-y-24 opacity-0 transition-all duration-400 z-[90] px-6 py-4 rounded-xl shadow-2xl backdrop-blur-md font-medium text-sm flex items-center gap-3">
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 transform translate-y-24 opacity-0 transition-all duration-400 z-[90] px-6 py-4 rounded-xl shadow-2xl backdrop-blur-md font-medium text-sm flex items-center gap-3 border border-white/10 pointer-events-none">
         <i id="toast-icon" class="fa-solid fa-circle-info"></i>
         <span id="toast-msg">Notification</span>
     </div>
@@ -173,7 +87,7 @@
             <h1 class="font-cinematic text-5xl font-bold tracking-[0.2em] text-white mb-2 uppercase">UR Studio</h1>
             <p class="text-xs text-gray-400 font-light tracking-[0.3em] uppercase mt-4">The Mogul Simulator</p>
         </div>
-        <button id="btn-google-login" class="w-full glass-panel hover:bg-white/10 border border-white/10 text-white py-4 px-6 rounded-xl flex items-center justify-center gap-4 transition-all duration-300">
+        <button id="btn-google-login" class="w-full glass-panel hover:bg-white/10 border border-white/10 text-white py-4 px-6 rounded-xl flex items-center justify-center gap-4 transition-all duration-300 shadow-2xl shadow-studio-gold/10 hover:shadow-studio-gold/20">
             <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5">
             <span class="tracking-widest text-xs font-semibold uppercase">Access Studio Terminal</span>
         </button>
@@ -188,32 +102,32 @@
             </div>
             <form id="form-setup" class="space-y-8">
                 <div>
-                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2">Production House Name</label>
-                    <input type="text" id="input-studio-name" required placeholder="e.g. Dreamscape Films" class="premium-input font-cinematic text-xl text-center tracking-wider">
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2 text-center">Production House Name</label>
+                    <input type="text" id="input-studio-name" required placeholder="e.g. Dreamscape Films" class="w-full bg-black/60 border border-white/15 rounded-lg py-3 px-4 text-white text-center font-cinematic text-xl focus:outline-none focus:border-studio-gold focus:ring-1 focus:ring-studio-gold transition">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-widest mb-4">Initial Investment (Difficulty)</label>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-widest mb-4 text-center">Initial Investment</label>
                     <div class="grid grid-cols-2 gap-4">
-                        <div class="select-card diff-card rounded-xl p-4 selected" data-funds="500000000"> <!-- 50 Cr -->
+                        <div class="select-card diff-card rounded-xl p-4 selected" data-funds="500000000">
                             <h3 class="font-cinematic text-lg text-white mb-1">Standard</h3>
                             <p class="text-[10px] text-gray-400">₹50 Crore. Balanced market.</p>
                         </div>
-                        <div class="select-card diff-card rounded-xl p-4" data-funds="2000000000"> <!-- 200 Cr -->
-                            <h3 class="font-cinematic text-lg text-white mb-1">Backed by Billionaires</h3>
+                        <div class="select-card diff-card rounded-xl p-4" data-funds="2000000000">
+                            <h3 class="font-cinematic text-lg text-white mb-1">Billionaire Backing</h3>
                             <p class="text-[10px] text-gray-400">₹200 Crore. Money is no object.</p>
                         </div>
-                        <div class="select-card diff-card rounded-xl p-4 border-t-studio-crimson/50" data-funds="150000000"> <!-- 15 Cr -->
+                        <div class="select-card diff-card rounded-xl p-4 border-t-studio-crimson/50" data-funds="150000000">
                             <h3 class="font-cinematic text-lg text-white mb-1">Indie Struggle</h3>
                             <p class="text-[10px] text-gray-400">₹15 Crore. Tight budgets.</p>
                         </div>
-                        <div class="select-card diff-card rounded-xl p-4 border border-red-900/50" data-funds="30000000"> <!-- 3 Cr -->
+                        <div class="select-card diff-card rounded-xl p-4 border border-red-900/50" data-funds="30000000">
                             <h3 class="font-cinematic text-lg text-red-500 mb-1">Bootstrapped</h3>
                             <p class="text-[10px] text-gray-400">₹3 Crore. One flop means bankruptcy.</p>
                         </div>
                     </div>
                     <input type="hidden" id="input-funds" value="500000000">
                 </div>
-                <button type="submit" id="btn-submit-setup" class="w-full bg-studio-gold hover:bg-studio-golddim text-black font-cinematic font-bold tracking-[0.2em] py-4 rounded-lg uppercase transition-colors">
+                <button type="submit" id="btn-submit-setup" class="w-full bg-studio-gold hover:bg-studio-golddim text-black font-cinematic font-bold tracking-[0.2em] py-4 rounded-lg uppercase transition-colors shadow-[0_0_15px_rgba(212,175,55,0.3)]">
                     Register Studio
                 </button>
             </form>
@@ -223,27 +137,40 @@
     <!-- ================= VIEW: DASHBOARD ================= -->
     <div id="view-dashboard" class="flex-col min-h-screen w-full relative z-10 hidden">
         <!-- Executive Topbar -->
-        <nav class="w-full px-8 py-4 flex items-center justify-between glass-panel rounded-b-2xl sticky top-0 z-40">
-            <div>
-                <h1 id="dash-studio-name" class="font-cinematic font-bold tracking-[0.2em] text-xl text-white uppercase">STUDIO NAME</h1>
-                <p class="text-[9px] text-studio-gold uppercase tracking-[0.3em] mt-1">Global Headquarters</p>
+        <nav class="w-full px-8 py-4 flex items-center justify-between glass-panel border-b border-white/5 sticky top-0 z-40 bg-studio-panel/95">
+            <div class="flex items-center gap-4">
+                <i class="fa-solid fa-film text-2xl text-studio-gold"></i>
+                <div>
+                    <h1 id="dash-studio-name" class="font-cinematic font-bold tracking-[0.2em] text-xl text-white uppercase">STUDIO NAME</h1>
+                    <p class="text-[9px] text-studio-gold uppercase tracking-[0.3em] mt-1">Global Headquarters</p>
+                </div>
             </div>
             
-            <div class="flex items-center gap-10">
-                <div class="text-right">
-                    <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">Studio Net Worth</p>
-                    <p id="dash-funds" class="font-bold text-2xl text-green-400 tracking-wide">₹0</p>
+            <div class="flex items-center gap-8">
+                <div class="text-right flex flex-col items-end">
+                    <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">Net Worth</p>
+                    <p id="dash-funds" class="font-bold text-2xl text-green-400 tracking-wide drop-shadow-[0_0_8px_rgba(74,222,128,0.3)]">₹0</p>
                 </div>
+                
                 <div class="h-10 w-px bg-white/10"></div>
-                <div class="text-right">
-                    <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">Reputation</p>
-                    <div class="flex items-center justify-end gap-1 text-studio-gold text-sm" id="dash-reputation"></div>
-                </div>
+                
+                <!-- Inbox Button -->
+                <button id="btn-inbox" class="relative group p-3 rounded-full hover:bg-white/5 transition border border-transparent hover:border-white/10">
+                    <i class="fa-solid fa-envelope text-xl text-gray-300 group-hover:text-white transition"></i>
+                    <span id="inbox-badge" class="absolute top-2 right-2 w-3 h-3 bg-red-500 rounded-full border-2 border-black hidden"></span>
+                </button>
+
+                <div class="h-10 w-px bg-white/10"></div>
+
                 <!-- Profile -->
-                <div class="relative group cursor-pointer flex items-center gap-3 border-l border-white/10 pl-8">
-                    <img id="dash-avatar" src="" class="w-10 h-10 rounded-full border border-studio-gold/50 object-cover">
-                    <div class="absolute right-0 top-full mt-4 w-40 glass-panel rounded-lg shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                        <button id="btn-logout" class="w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-white/5 rounded-lg flex items-center gap-2">
+                <div class="relative group cursor-pointer flex items-center gap-3">
+                    <img id="dash-avatar" src="" class="w-10 h-10 rounded-full border border-studio-gold/50 object-cover shadow-[0_0_10px_rgba(212,175,55,0.2)]">
+                    <div class="absolute right-0 top-full mt-4 w-40 glass-panel rounded-lg shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all border border-white/10 overflow-hidden">
+                        <div class="p-3 border-b border-white/10 text-center">
+                            <p class="text-[10px] text-gray-400 uppercase tracking-widest">Reputation</p>
+                            <div class="flex items-center justify-center gap-1 text-studio-gold text-xs mt-1" id="dash-reputation"></div>
+                        </div>
+                        <button id="btn-logout" class="w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-red-500/10 flex items-center gap-2 transition">
                             <i class="fa-solid fa-power-off"></i> Logout
                         </button>
                     </div>
@@ -251,67 +178,26 @@
             </div>
         </nav>
 
-        <main class="flex-1 p-8 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <main class="flex-1 p-8 max-w-[1400px] mx-auto w-full grid grid-cols-1 lg:grid-cols-3 gap-8">
             
-            <!-- LEFT: Active Production / Action Area -->
+            <!-- LEFT: Active Production Pipeline -->
             <div class="lg:col-span-2 flex flex-col gap-6">
                 <div class="flex justify-between items-end border-b border-white/10 pb-4">
-                    <h2 class="font-cinematic text-2xl text-white tracking-widest uppercase">Current Slate</h2>
-                    <button id="btn-new-project" class="bg-studio-gold hover:bg-white text-black font-cinematic font-bold tracking-widest py-2 px-6 rounded uppercase transition-colors text-sm shadow-[0_0_15px_rgba(212,175,55,0.3)]">
-                        + Greenlight Project
-                    </button>
+                    <h2 class="font-cinematic text-2xl text-white tracking-widest uppercase"><i class="fa-solid fa-clapperboard text-studio-gold mr-3"></i>Production Pipeline</h2>
                 </div>
 
-                <!-- Active Project Card -->
-                <div id="active-project-container" class="glass-panel rounded-xl p-6 border-l-4 border-l-studio-gold hidden flex-col">
-                    <div class="flex justify-between items-start mb-6">
-                        <div>
-                            <span id="ap-phase-badge" class="bg-blue-900/40 text-blue-300 border border-blue-500/30 px-2 py-1 text-[10px] rounded uppercase tracking-widest font-semibold">Phase: Shooting</span>
-                            <h3 id="ap-title" class="font-cinematic text-3xl font-bold text-white uppercase mt-2">TITLE</h3>
-                            <p id="ap-genre" class="text-xs text-studio-gold uppercase tracking-widest mt-1">Genre</p>
-                        </div>
-                    </div>
-                    
-                    <div class="grid grid-cols-3 gap-4 mb-6">
-                        <div class="bg-black/40 p-3 rounded border border-white/5 flex items-center gap-3">
-                            <img id="ap-dir-pic" src="" class="w-10 h-10 rounded object-cover">
-                            <div>
-                                <p class="text-[9px] text-gray-400 uppercase tracking-widest">Director</p>
-                                <p id="ap-dir-name" class="text-sm text-white font-medium truncate"></p>
-                            </div>
-                        </div>
-                        <div class="bg-black/40 p-3 rounded border border-white/5 flex items-center gap-3">
-                            <img id="ap-act-pic" src="" class="w-10 h-10 rounded object-cover">
-                            <div>
-                                <p class="text-[9px] text-gray-400 uppercase tracking-widest">Lead Cast</p>
-                                <p id="ap-act-name" class="text-sm text-white font-medium truncate"></p>
-                            </div>
-                        </div>
-                        <div class="bg-black/40 p-3 rounded border border-white/5">
-                            <p class="text-[9px] text-gray-400 uppercase tracking-widest">Budget Invested</p>
-                            <p id="ap-budget" class="text-lg text-red-400 font-bold mt-1 tracking-wide"></p>
-                        </div>
-                    </div>
-
-                    <!-- Dynamic Action Button based on phase -->
-                    <button id="btn-ap-action" class="w-full bg-white hover:bg-studio-gold text-black font-cinematic font-bold py-4 rounded transition-colors uppercase tracking-widest shadow-lg">
-                        Handle Production Event
-                    </button>
-                </div>
-
-                <div id="no-active-project" class="glass-panel rounded-xl p-12 text-center border border-dashed border-white/10">
-                    <i class="fa-solid fa-clapperboard text-4xl text-gray-600 mb-4"></i>
-                    <p class="text-gray-400 font-medium text-lg">No active productions.</p>
-                    <p class="text-sm text-gray-500 mt-2">Your soundstages are empty. Greenlight a script to generate revenue.</p>
+                <!-- Pipeline State Container -->
+                <div id="pipeline-container" class="glass-panel rounded-xl p-8 min-h-[300px] flex flex-col justify-center relative overflow-hidden border border-white/5">
+                    <!-- Dynamic Content Injected Here via JS -->
                 </div>
             </div>
 
             <!-- RIGHT: Past Projects Log -->
             <div class="lg:col-span-1 flex flex-col gap-6">
                 <div class="border-b border-white/10 pb-4">
-                    <h2 class="font-cinematic text-2xl text-white tracking-widest uppercase">Theatrical History</h2>
+                    <h2 class="font-cinematic text-xl text-white tracking-widest uppercase text-center">Theatrical History</h2>
                 </div>
-                <div id="past-projects-grid" class="flex flex-col gap-4 overflow-y-auto max-h-[70vh] custom-scrollbar pr-2">
+                <div id="past-projects-grid" class="flex flex-col gap-4 overflow-y-auto max-h-[75vh] custom-scrollbar pr-2">
                     <!-- Populated dynamically -->
                 </div>
             </div>
@@ -321,168 +207,124 @@
 
     <!-- ================= MODALS ================= -->
 
-    <!-- 1. GREENLIGHT WIZARD MODAL -->
-    <div id="modal-greenlight" class="modal-overlay fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4">
-        <div class="glass-panel w-full max-w-4xl rounded-2xl border border-white/10 shadow-2xl flex flex-col max-h-[90vh]">
-            
-            <div class="p-6 border-b border-white/10 flex justify-between items-center bg-black/60 rounded-t-2xl">
+    <!-- INBOX MODAL -->
+    <div id="modal-inbox" class="modal-overlay fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-3xl h-[80vh] rounded-2xl border border-white/10 shadow-2xl flex flex-col overflow-hidden">
+            <div class="p-5 border-b border-white/10 bg-black/60 flex justify-between items-center">
+                <h2 class="font-cinematic text-xl text-white uppercase tracking-widest"><i class="fa-solid fa-envelope-open-text text-studio-gold mr-3"></i>Executive Inbox</h2>
+                <button class="close-modal text-gray-400 hover:text-white transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <div class="flex-1 flex overflow-hidden">
+                <!-- Mail List -->
+                <div class="w-1/3 border-r border-white/10 bg-black/30 overflow-y-auto custom-scrollbar p-2 space-y-2" id="mail-list">
+                    <!-- Mails injected here -->
+                </div>
+                <!-- Mail Detail -->
+                <div class="w-2/3 p-6 overflow-y-auto custom-scrollbar bg-black/10 relative" id="mail-detail">
+                    <div class="absolute inset-0 flex items-center justify-center text-gray-600 opacity-50 flex-col">
+                        <i class="fa-regular fa-envelope text-6xl mb-4"></i>
+                        <p class="font-cinematic tracking-widest uppercase">Select a message</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ASSEMBLY WIZARD MODAL (Cast & Crew) -->
+    <div id="modal-assembly" class="modal-overlay fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-4xl rounded-2xl border border-white/10 shadow-2xl flex flex-col h-[85vh]">
+            <div class="p-6 border-b border-white/10 bg-black/60 rounded-t-2xl flex justify-between items-center">
                 <div>
-                    <h2 class="font-cinematic text-2xl text-studio-gold uppercase tracking-widest">Pre-Production</h2>
-                    <p id="wizard-subtitle" class="text-[10px] text-gray-400 tracking-[0.2em] uppercase mt-1">Phase 1: Concept</p>
+                    <h2 class="font-cinematic text-2xl text-studio-gold uppercase tracking-widest" id="assembly-title">Movie Title</h2>
+                    <p id="assembly-subtitle" class="text-[10px] text-gray-400 tracking-[0.2em] uppercase mt-1">Pre-Production Assembly</p>
                 </div>
                 <button class="close-modal text-gray-400 hover:text-white transition"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
 
-            <div class="p-8 overflow-y-auto flex-1 custom-scrollbar">
-                
-                <!-- STEP 1: Concept -->
-                <div id="step-1" class="wizard-step active space-y-8 max-w-xl mx-auto">
+            <div class="flex-1 overflow-y-auto custom-scrollbar p-6 bg-black/20">
+                <div id="assembly-content" class="space-y-8">
+                    <!-- Director Selection -->
                     <div>
-                        <label class="block text-xs font-semibold text-gray-400 uppercase tracking-widest mb-3">Working Title</label>
-                        <input type="text" id="gl-title" class="premium-input font-cinematic text-2xl text-center" placeholder="e.g. The Final Act">
+                        <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-4"><i class="fa-solid fa-chair text-studio-gold mr-2"></i>Hire Director</h3>
+                        <div id="grid-directors" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
                     </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-400 uppercase tracking-widest mb-3">Primary Genre</label>
-                        <div class="grid grid-cols-2 gap-3">
-                            <div class="select-card genre-card rounded-lg p-3 text-center text-sm selected" data-genre="Action Masala">Action Masala</div>
-                            <div class="select-card genre-card rounded-lg p-3 text-center text-sm" data-genre="Psychological Thriller">Psych Thriller</div>
-                            <div class="select-card genre-card rounded-lg p-3 text-center text-sm" data-genre="Historical Epic">Historical Epic</div>
-                            <div class="select-card genre-card rounded-lg p-3 text-center text-sm" data-genre="Romantic Drama">Romantic Drama</div>
-                            <div class="select-card genre-card rounded-lg p-3 text-center text-sm" data-genre="Gritty Crime">Gritty Crime</div>
-                            <div class="select-card genre-card rounded-lg p-3 text-center text-sm" data-genre="Sci-Fi Fantasy">Sci-Fi Fantasy</div>
-                        </div>
+                    <!-- Actor Selection -->
+                    <div class="pt-6 border-t border-white/10">
+                        <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-4"><i class="fa-solid fa-star text-studio-gold mr-2"></i>Sign Lead Actor</h3>
+                        <div id="grid-actors" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
                     </div>
                 </div>
-
-                <!-- STEP 2: Writer -->
-                <div id="step-2" class="wizard-step">
-                    <p class="text-sm text-gray-400 mb-6 text-center">Hire a screenwriter. Their skill dictates the base quality of the film.</p>
-                    <div id="grid-writers" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-                </div>
-
-                <!-- STEP 3: Director -->
-                <div id="step-3" class="wizard-step">
-                    <p class="text-sm text-gray-400 mb-6 text-center">Hire a Director. Good relationships reduce production problems.</p>
-                    <div id="grid-directors" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-                </div>
-
-                <!-- STEP 4: Cast -->
-                <div id="step-4" class="wizard-step">
-                    <p class="text-sm text-gray-400 mb-6 text-center">Sign the Lead Star. Star power drives initial box office hype.</p>
-                    <div id="grid-actors" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-                </div>
-
-                <!-- STEP 5: Final Review -->
-                <div id="step-5" class="wizard-step">
-                    <div class="bg-black/60 border border-studio-gold/20 rounded-xl p-8 max-w-2xl mx-auto">
-                        <h3 class="font-cinematic text-4xl text-center text-white mb-2" id="rev-title">TITLE</h3>
-                        <p class="text-center text-studio-gold text-xs uppercase tracking-widest mb-8" id="rev-genre">GENRE</p>
-                        
-                        <div class="space-y-4">
-                            <div class="flex justify-between border-b border-white/5 pb-2">
-                                <span class="text-gray-400 text-sm">Screenplay by</span>
-                                <span class="text-white font-medium" id="rev-writer">-</span>
-                            </div>
-                            <div class="flex justify-between border-b border-white/5 pb-2">
-                                <span class="text-gray-400 text-sm">Directed by</span>
-                                <span class="text-white font-medium" id="rev-dir">-</span>
-                            </div>
-                            <div class="flex justify-between border-b border-white/5 pb-2">
-                                <span class="text-gray-400 text-sm">Starring</span>
-                                <span class="text-white font-medium" id="rev-actor">-</span>
-                            </div>
-                            <div class="flex justify-between pt-4">
-                                <span class="text-studio-gold font-bold uppercase tracking-widest text-sm">Initial Production Budget</span>
-                                <span class="text-red-400 font-bold text-xl" id="rev-cost">₹0</span>
-                            </div>
-                        </div>
-                        
-                        <div class="mt-8 p-4 bg-white/5 rounded border border-white/10 text-center flex flex-col items-center">
-                            <p class="text-xs text-gray-400 mb-1">Available Funds: <span id="rev-funds" class="text-green-400 font-bold"></span></p>
-                            <p id="warn-funds" class="text-xs text-red-500 font-bold hidden"><i class="fa-solid fa-triangle-exclamation"></i> Insufficient Funds!</p>
-                        </div>
-                    </div>
-                </div>
-
             </div>
 
             <div class="p-6 border-t border-white/10 bg-black/60 rounded-b-2xl flex justify-between items-center">
-                <button id="btn-gl-prev" class="px-6 py-2 rounded text-gray-400 hover:text-white hover:bg-white/5 transition hidden uppercase text-xs tracking-widest">Back</button>
-                <div class="flex-1"></div>
-                <button id="btn-gl-next" class="bg-white text-black hover:bg-studio-gold px-8 py-3 rounded font-medium transition uppercase text-xs tracking-widest font-bold">Next <i class="fa-solid fa-arrow-right ml-2"></i></button>
-                <button id="btn-gl-start" class="bg-studio-gold text-black hover:bg-white px-8 py-3 rounded font-cinematic font-bold tracking-[0.2em] uppercase transition hidden shadow-[0_0_15px_rgba(212,175,55,0.4)]">Commence Shooting</button>
+                <div class="text-xs text-gray-400 uppercase tracking-widest">
+                    Est. Budget: <span id="lbl-est-budget" class="text-red-400 font-bold text-lg ml-2">₹0</span>
+                </div>
+                <button id="btn-lock-assembly" class="bg-studio-gold text-black hover:bg-white px-8 py-3 rounded font-cinematic font-bold tracking-[0.2em] uppercase transition shadow-[0_0_15px_rgba(212,175,55,0.4)]">
+                    Lock Budget & Shoot
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- 2. PRODUCTION EVENT MODAL -->
-    <div id="modal-event" class="modal-overlay fixed inset-0 bg-black/90 backdrop-blur-md z-[60] flex items-center justify-center p-4">
-        <div class="glass-panel w-full max-w-lg rounded-2xl border border-studio-crimson/30 shadow-2xl p-8 text-center relative overflow-hidden">
-            <div class="absolute top-0 left-0 w-full h-1 bg-studio-crimson"></div>
-            <i class="fa-solid fa-triangle-exclamation text-4xl text-studio-crimson mb-4"></i>
-            <h2 class="font-cinematic text-2xl text-white uppercase tracking-widest mb-2">Production Dilemma</h2>
-            <p id="event-desc" class="text-gray-300 mb-8 text-sm leading-relaxed">Event description goes here...</p>
-            
-            <div id="event-options" class="space-y-4">
-                <!-- Buttons injected here -->
-            </div>
-        </div>
-    </div>
-
-    <!-- 3. RELEASE STRATEGY MODAL -->
-    <div id="modal-release" class="modal-overlay fixed inset-0 bg-black/90 backdrop-blur-md z-[60] flex items-center justify-center p-4">
-        <div class="glass-panel w-full max-w-xl rounded-2xl border border-studio-gold/30 shadow-2xl flex flex-col">
-            <div class="p-6 border-b border-white/10 bg-black/60 rounded-t-2xl text-center">
-                <h2 class="font-cinematic text-2xl text-studio-gold uppercase tracking-widest">Release Strategy</h2>
-                <p class="text-xs text-gray-400 tracking-[0.2em] uppercase mt-1">Plan Theatrical Debut</p>
-            </div>
-            
-            <div class="p-8 space-y-8">
-                <div>
-                    <div class="flex justify-between items-end mb-2">
-                        <label class="text-xs font-semibold text-gray-400 uppercase tracking-widest">Marketing & P&A Budget</label>
-                        <span id="lbl-marketing" class="text-red-400 font-bold text-sm">₹0</span>
-                    </div>
-                    <input type="range" id="slider-marketing" min="1000000" max="500000000" step="1000000" value="50000000">
-                    <p class="text-[10px] text-gray-500 mt-2">Higher marketing increases opening hype but raises breakeven point.</p>
+    <!-- THEATRICAL SIMULATOR MODAL -->
+    <div id="modal-theatrical" class="modal-overlay fixed inset-0 bg-black/95 backdrop-blur-xl z-[60] flex items-center justify-center p-4">
+        <div class="w-full max-w-5xl rounded-2xl border border-studio-gold/30 shadow-[0_0_50px_rgba(212,175,55,0.1)] flex flex-col bg-[#080808] overflow-hidden">
+            <div class="p-6 border-b border-white/5 text-center relative bg-gradient-to-b from-black to-transparent">
+                <h2 class="font-cinematic text-3xl text-white uppercase tracking-widest mb-1" id="bo-title">MOVIE TITLE</h2>
+                <p class="text-xs text-studio-gold tracking-[0.2em] uppercase">Global Box Office Run</p>
+                <div class="absolute right-6 top-6 text-right">
+                    <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Day</p>
+                    <p id="bo-day" class="text-2xl font-bold text-white">0 / 14</p>
                 </div>
-
-                <div>
-                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-widest mb-3">Ticket Pricing Strategy</label>
-                    <div class="grid grid-cols-3 gap-3">
-                        <div class="select-card ticket-card rounded-lg p-3 text-center text-sm selected" data-price="150" data-tier="mass">
-                            <p class="font-bold text-white">Masses</p>
-                            <p class="text-[10px] text-gray-400 mt-1">₹150 (High Footfall)</p>
-                        </div>
-                        <div class="select-card ticket-card rounded-lg p-3 text-center text-sm" data-price="250" data-tier="standard">
-                            <p class="font-bold text-white">Standard</p>
-                            <p class="text-[10px] text-gray-400 mt-1">₹250 (Balanced)</p>
-                        </div>
-                        <div class="select-card ticket-card rounded-lg p-3 text-center text-sm" data-price="500" data-tier="premium">
-                            <p class="font-bold text-white">Premium</p>
-                            <p class="text-[10px] text-gray-400 mt-1">₹500 (High Revenue)</p>
-                        </div>
+            </div>
+            
+            <div class="p-8 flex flex-col lg:flex-row gap-8">
+                <!-- Chart Area -->
+                <div class="flex-1 glass-panel p-4 rounded-xl border border-white/5">
+                    <div class="chart-container">
+                        <canvas id="boChart"></canvas>
                     </div>
-                    <p class="text-[10px] text-gray-500 mt-3 text-center">Premium pricing requires high Star Power & Quality, or audiences will reject it.</p>
+                </div>
+                
+                <!-- Stats Area -->
+                <div class="w-full lg:w-72 flex flex-col gap-4">
+                    <div class="glass-panel p-5 rounded-xl border border-white/5 text-center">
+                        <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-2">Total Gross</p>
+                        <p id="bo-total-gross" class="text-3xl font-bold text-green-400 drop-shadow-[0_0_8px_rgba(74,222,128,0.2)]">₹0</p>
+                    </div>
+                    <div class="glass-panel p-5 rounded-xl border border-white/5 text-center">
+                        <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-2">Production Budget</p>
+                        <p id="bo-budget" class="text-xl font-bold text-red-400">₹0</p>
+                    </div>
+                    <div class="flex-1 glass-panel p-5 rounded-xl border border-white/5 flex flex-col justify-center items-center text-center transition-all duration-500" id="bo-verdict-box">
+                        <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-2">Current Status</p>
+                        <p id="bo-status" class="text-sm font-semibold text-gray-300">Simulating...</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="p-6 border-t border-white/10 bg-black/60 rounded-b-2xl">
-                <button id="btn-finalize-release" class="w-full bg-studio-gold hover:bg-white text-black font-cinematic font-bold tracking-[0.2em] py-4 rounded uppercase transition-colors">
-                    Lock Release & View Box Office
+            <div class="p-4 border-t border-white/5 bg-black text-center">
+                <button id="btn-close-bo" class="hidden px-8 py-3 bg-white/10 hover:bg-white text-white hover:text-black rounded font-cinematic uppercase tracking-widest text-sm transition font-bold w-full max-w-sm mx-auto">
+                    Conclude Theatrical Run
                 </button>
             </div>
         </div>
     </div>
 
 
-    <!-- FIREBASE V11.6.1 INTEGRATION & TYCOON ENGINE -->
+    <!-- FIREBASE & APP LOGIC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        const firebaseConfig = {
+        // Environment globals check (Platform specific)
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'urstudio-tycoon-v1';
+        let configStr = typeof __firebase_config !== 'undefined' ? __firebase_config : null;
+        
+        // Fallback config for direct testing (User provided)
+        const fallbackConfig = {
             apiKey: "AIzaSyClLSLmdoz5PHVVJrxkoqZ02Xmm-nwsNXQ",
             authDomain: "urstudio-f341c.firebaseapp.com",
             projectId: "urstudio-f341c",
@@ -490,98 +332,77 @@
             messagingSenderId: "1017863212287",
             appId: "1:1017863212287:web:2af7564d1aec2f02e310ca"
         };
-        const APP_ID = 'urstudio-v4';
+        const firebaseConfig = configStr ? JSON.parse(configStr) : fallbackConfig;
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
 
-        // --- DATA DICTIONARIES ---
-        const mockWriters = [
-            { id: 'w1', name: 'Aaron S.', pic: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&q=80', fee: 20000000, skill: 95, trait: 'Dialogue King' },
-            { id: 'w2', name: 'Gillian F.', pic: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&q=80', fee: 15000000, skill: 88, trait: 'Forensic Twists' },
-            { id: 'w3', name: 'Kashyap A.', pic: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&q=80', fee: 8000000, skill: 82, trait: 'Raw Realism' },
-            { id: 'w4', name: 'Newbie Sam', pic: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&q=80', fee: 1500000, skill: 65, trait: 'Cliché Tropes' }
+        // --- EXTENDED ROSTERS ---
+        const MOCK_DIRECTORS = [
+            { id: 'd1', name: 'Rajamouli S.', pic: 'https://placehold.co/150x150/111/D4AF37?text=RS', fee: 100000000, skill: 98, ego: 80 },
+            { id: 'd2', name: 'Nolan C.', pic: 'https://placehold.co/150x150/111/D4AF37?text=NC', fee: 150000000, skill: 99, ego: 90 },
+            { id: 'd3', name: 'Zoya A.', pic: 'https://placehold.co/150x150/111/D4AF37?text=ZA', fee: 50000000, skill: 88, ego: 60 },
+            { id: 'd4', name: 'Hirani R.', pic: 'https://placehold.co/150x150/111/D4AF37?text=HR', fee: 80000000, skill: 95, ego: 70 },
+            { id: 'd5', name: 'Kashyap A.', pic: 'https://placehold.co/150x150/111/D4AF37?text=AK', fee: 20000000, skill: 90, ego: 85 },
+            { id: 'd6', name: 'Prashanth N.', pic: 'https://placehold.co/150x150/111/D4AF37?text=PN', fee: 60000000, skill: 85, ego: 65 },
+            { id: 'd7', name: 'Indie Joe', pic: 'https://placehold.co/150x150/111/D4AF37?text=IJ', fee: 5000000, skill: 70, ego: 40 },
+            { id: 'd8', name: 'Debutant Sam', pic: 'https://placehold.co/150x150/111/D4AF37?text=DS', fee: 1500000, skill: 60, ego: 20 }
         ];
 
-        const mockDirectors = [
-            { id: 'd1', name: 'Christopher N.', pic: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&q=80', fee: 150000000, skill: 98, trait: 'Mind-Bending Epic' },
-            { id: 'd2', name: 'S.S. Rajamouli', pic: 'https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?w=150&q=80', fee: 250000000, skill: 96, trait: 'Grand Scale Vision' },
-            { id: 'd3', name: 'Zoya A.', pic: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&q=80', fee: 70000000, skill: 85, trait: 'Aesthetic Drama' },
-            { id: 'd4', name: 'Indie Joe', pic: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=150&q=80', fee: 5000000, skill: 72, trait: 'Shoestring Budget' }
+        const MOCK_ACTORS = [
+            { id: 'a1', name: 'Shahrukh K.', pic: 'https://placehold.co/150x150/111/fff?text=SK', fee: 150000000, fame: 99, skill: 92, ego: 75 },
+            { id: 'a2', name: 'Prabhas', pic: 'https://placehold.co/150x150/111/fff?text=PR', fee: 120000000, fame: 95, skill: 75, ego: 60 },
+            { id: 'a3', name: 'Deepika P.', pic: 'https://placehold.co/150x150/111/fff?text=DP', fee: 80000000, fame: 96, skill: 88, ego: 65 },
+            { id: 'a4', name: 'Fahadh F.', pic: 'https://placehold.co/150x150/111/fff?text=FF', fee: 40000000, fame: 82, skill: 98, ego: 40 },
+            { id: 'a5', name: 'Alia B.', pic: 'https://placehold.co/150x150/111/fff?text=AB', fee: 60000000, fame: 92, skill: 90, ego: 55 },
+            { id: 'a6', name: 'Vijay T.', pic: 'https://placehold.co/150x150/111/fff?text=VT', fee: 100000000, fame: 97, skill: 80, ego: 70 },
+            { id: 'a7', name: 'Ayushmann K.', pic: 'https://placehold.co/150x150/111/fff?text=AK', fee: 25000000, fame: 78, skill: 92, ego: 45 },
+            { id: 'a8', name: 'Newcomer Raj', pic: 'https://placehold.co/150x150/111/fff?text=NR', fee: 2000000, fame: 30, skill: 65, ego: 30 }
         ];
 
-        const mockActors = [
-            { id: 'a1', name: 'SRK', pic: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&q=80', fee: 500000000, star: 99, acting: 92 },
-            { id: 'a2', name: 'Fahadh F.', pic: 'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?w=150&q=80', fee: 100000000, star: 82, acting: 98 },
-            { id: 'a3', name: 'Deepika P.', pic: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&q=80', fee: 200000000, star: 95, acting: 88 },
-            { id: 'a4', name: 'Struggler Ayush', pic: 'https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=150&q=80', fee: 2500000, star: 30, acting: 75 }
-        ];
-
-        const prodEvents = [
-            {
-                desc: "Your Lead Actor hates the climax written by the writer and threatens to walk out unless it's changed.",
-                opts: [
-                    { text: "Change it (Appease Actor)", qualMod: -10, relAct: 15, relDir: -10 },
-                    { text: "Stick to script (Trust Writer)", qualMod: 10, relAct: -25, relDir: 5 }
-                ]
-            },
-            {
-                desc: "The Director wants an extra ₹5 Crore to shoot a massive explosion scene practically instead of CGI.",
-                opts: [
-                    { text: "Fund it (Spend ₹5 Cr)", cost: 50000000, qualMod: 15, relAct: 5, relDir: 20 },
-                    { text: "Use cheap CGI (Save Money)", cost: 0, qualMod: -15, relAct: -5, relDir: -15 }
-                ]
-            },
-            {
-                desc: "Leaked set photos are causing negative buzz online. PR team suggests a costly cover-up campaign.",
-                opts: [
-                    { text: "Pay for PR (₹2 Cr)", cost: 20000000, qualMod: 0, hypeMod: 10, relAct: 0, relDir: 0 },
-                    { text: "Ignore it", cost: 0, qualMod: 0, hypeMod: -15, relAct: -10, relDir: -5 }
-                ]
-            }
-        ];
+        const GENRES = ["Action Masala", "Thriller", "Sci-Fi Epic", "Rom-Com", "Historical Drama", "Horror"];
 
         // --- STATE ---
         let state = {
             name: '',
             funds: 0,
             reputation: 1,
-            relationships: {}, // { id: value (0-100) }
-            activeProject: null, // null | { phase: 'shooting' | 'release', ...data }
-            pastProjects: []
+            activeProject: null, // { id, title, genre, scriptQual, cost, dir, actor, phase: 'assembly'|'ready'|'ott', boxOffice: 0 }
+            pastProjects: [], // { id, title, genre, cost, gross, profit, verdict, poster }
+            mails: [] // { id, type: 'script'|'ott', read, title, body, data: {} }
         };
-        let glDraft = {}; // Greenlight Draft
-        let currentGlStep = 1;
-        
+
+        let assemblyDraft = { dir: null, actor: null };
+        let boChartInstance = null;
+        let mailInterval = null;
+
         // --- UTILS ---
         const formatINR = (num) => {
             if (num >= 10000000) return `₹${(num / 10000000).toFixed(2)} Cr`;
             if (num >= 100000) return `₹${(num / 100000).toFixed(2)} Lakh`;
-            return `₹${num.toLocaleString('en-IN')}`;
+            return `₹${Math.round(num).toLocaleString('en-IN')}`;
         };
-        
-        const getRel = (id) => state.relationships[id] || 50;
-        
+
         const showToast = (msg, type='info') => {
             const t = document.getElementById('toast');
             const icon = document.getElementById('toast-icon');
-            t.className = `fixed bottom-6 right-6 transform transition-all duration-400 z-[90] px-6 py-4 rounded-xl shadow-2xl backdrop-blur-md font-medium text-sm flex items-center gap-3 text-white`;
             
-            if(type === 'good') { t.classList.add('bg-green-900/90', 'border', 'border-green-500'); icon.className = 'fa-solid fa-circle-check text-green-400'; }
-            else if(type === 'bad') { t.classList.add('bg-red-900/90', 'border', 'border-red-500'); icon.className = 'fa-solid fa-triangle-exclamation text-red-400'; }
-            else { t.classList.add('bg-black/90', 'border', 'border-studio-gold/50'); icon.className = 'fa-solid fa-circle-info text-studio-gold'; }
+            t.className = `fixed bottom-6 right-6 transform transition-all duration-400 z-[90] px-6 py-4 rounded-xl shadow-2xl backdrop-blur-md font-medium text-sm flex items-center gap-3 text-white border`;
+            if(type === 'good') { t.classList.add('bg-green-900/90', 'border-green-500'); icon.className = 'fa-solid fa-circle-check text-green-400'; }
+            else if(type === 'bad') { t.classList.add('bg-red-900/90', 'border-red-500'); icon.className = 'fa-solid fa-triangle-exclamation text-red-400'; }
+            else { t.classList.add('bg-black/90', 'border-studio-gold/50'); icon.className = 'fa-solid fa-circle-info text-studio-gold'; }
             
             document.getElementById('toast-msg').innerText = msg;
             t.classList.remove('translate-y-24', 'opacity-0');
-            setTimeout(() => t.classList.add('translate-y-24', 'opacity-0'), 4000);
+            setTimeout(() => t.classList.add('translate-y-24', 'opacity-0'), 3000);
         };
 
         const toggleModal = (id, show) => {
             const m = document.getElementById(id);
             if(show) m.classList.add('active'); else m.classList.remove('active');
-        }
+        };
 
         const showView = (id) => {
             ['view-login', 'view-setup', 'view-dashboard'].forEach(v => {
@@ -592,26 +413,50 @@
             tgt.classList.remove('hidden'); tgt.classList.add('flex');
         };
 
-        // --- AUTH & DB ---
+        const genId = () => Math.random().toString(36).substr(2, 9);
+
+        // --- AUTH & DB INIT ---
         onAuthStateChanged(auth, async (user) => {
             if (user) {
+                // RULE 3: Ensure initial auth token handling if present (environment var check usually done before this block)
                 try {
-                    const docSnap = await getDoc(doc(db, 'artifacts', APP_ID, 'users', user.uid, 'studio', 'data'));
+                    // RULE 1: Strict Paths
+                    const docSnap = await getDoc(doc(db, 'artifacts', appId, 'users', user.uid, 'studio', 'data'));
                     if (docSnap.exists()) {
                         state = docSnap.data();
+                        if(!state.mails) state.mails = [];
                         renderDashboard();
+                        startMailEngine();
                         showView('view-dashboard');
                     } else {
                         showView('view-setup');
                     }
-                } catch (e) { console.error(e); showView('view-setup'); }
+                } catch (e) { 
+                    console.error("Firestore error:", e); 
+                    showToast("Database connection error.", "bad");
+                    showView('view-setup'); 
+                }
             } else {
+                stopMailEngine();
                 showView('view-login');
             }
             setTimeout(() => document.getElementById('loading-overlay').classList.add('opacity-0', 'pointer-events-none'), 500);
         });
 
-        document.getElementById('btn-google-login').addEventListener('click', () => signInWithPopup(auth, provider));
+        document.getElementById('btn-google-login').addEventListener('click', async () => {
+            // Check for __initial_auth_token logic here if required by environment, else fallback to popup
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                 import("https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js").then(({ signInWithCustomToken }) => {
+                     signInWithCustomToken(auth, __initial_auth_token).catch(e => {
+                         console.error("Custom token failed, trying popup", e);
+                         signInWithPopup(auth, provider);
+                     });
+                 });
+            } else {
+                try { await signInWithPopup(auth, provider); } catch(e) { console.error(e); }
+            }
+        });
+        
         document.getElementById('btn-logout').addEventListener('click', () => signOut(auth));
 
         // --- SETUP STUDIO ---
@@ -631,342 +476,490 @@
             state = {
                 name: document.getElementById('input-studio-name').value,
                 funds: parseInt(document.getElementById('input-funds').value),
-                reputation: 1, relationships: {}, activeProject: null, pastProjects: []
+                reputation: 1, activeProject: null, pastProjects: [],
+                mails: [{
+                    id: genId(), type: 'system', read: false,
+                    title: 'Welcome to the Industry',
+                    body: `Welcome CEO of ${document.getElementById('input-studio-name').value}.\n\nYour job is to greenlight scripts, hire the right talent, and dominate the box office. Keep an eye on your Inbox for script pitches from aspiring writers.\n\nGood luck.`
+                }]
             };
-            await setDoc(doc(db, 'artifacts', APP_ID, 'users', auth.currentUser.uid, 'studio', 'data'), state);
+            await saveState();
             renderDashboard();
+            startMailEngine();
             showView('view-dashboard');
         });
 
-        // --- GREENLIGHT WIZARD ---
-        document.getElementById('btn-new-project').addEventListener('click', () => {
-            if(state.activeProject) return showToast("Finish current production first!", "bad");
-            currentGlStep = 1;
-            glDraft = { title: '', genre: 'Action Masala', writer: null, dir: null, actor: null };
-            populateSelections();
-            updateGlUI();
-            toggleModal('modal-greenlight', true);
+        // --- DASHBOARD RENDERING ---
+        function renderDashboard() {
+            document.getElementById('dash-studio-name').innerText = state.name;
+            document.getElementById('dash-funds').innerText = formatINR(state.funds);
+            document.getElementById('dash-avatar').src = auth.currentUser?.photoURL || 'https://placehold.co/100/111/fff?text=U';
+            
+            let starsHtml = '';
+            for(let i=0; i<5; i++) starsHtml += i < state.reputation ? '<i class="fa-solid fa-star"></i>' : '<i class="fa-regular fa-star text-white/20"></i>';
+            document.getElementById('dash-reputation').innerHTML = starsHtml;
+
+            updateInboxBadge();
+            renderPipeline();
+            renderPastProjects();
+        }
+
+        function renderPipeline() {
+            const cont = document.getElementById('pipeline-container');
+            const p = state.activeProject;
+
+            if(!p) {
+                cont.innerHTML = `
+                    <div class="text-center">
+                        <i class="fa-solid fa-envelope-open-text text-5xl text-gray-700 mb-4"></i>
+                        <p class="text-gray-400 font-medium text-lg">Soundstages are empty.</p>
+                        <p class="text-sm text-gray-500 mt-2">Check your Inbox for new script pitches to start production.</p>
+                    </div>`;
+                return;
+            }
+
+            let actionBtn = '';
+            let phaseDesc = '';
+            
+            if(p.phase === 'assembly') {
+                phaseDesc = '<span class="text-blue-400 border border-blue-500/30 bg-blue-900/20 px-2 py-1 rounded text-[10px] uppercase tracking-widest font-bold">Phase: Casting & Crew</span>';
+                actionBtn = `<button onclick="openAssemblyWizard()" class="mt-6 bg-white text-black hover:bg-studio-gold font-cinematic font-bold tracking-widest py-3 px-6 rounded uppercase transition shadow-lg w-full max-w-md mx-auto">Assemble Production</button>`;
+            } else if (p.phase === 'ready') {
+                phaseDesc = '<span class="text-yellow-400 border border-yellow-500/30 bg-yellow-900/20 px-2 py-1 rounded text-[10px] uppercase tracking-widest font-bold animate-pulse">Phase: Ready for Release</span>';
+                actionBtn = `<button onclick="startTheatricalRun()" class="mt-6 bg-studio-gold text-black hover:bg-white font-cinematic font-bold tracking-[0.2em] py-4 px-6 rounded uppercase transition shadow-[0_0_20px_rgba(212,175,55,0.4)] w-full max-w-md mx-auto">Release in Theaters <i class="fa-solid fa-ticket ml-2"></i></button>`;
+            } else if (p.phase === 'ott') {
+                phaseDesc = '<span class="text-purple-400 border border-purple-500/30 bg-purple-900/20 px-2 py-1 rounded text-[10px] uppercase tracking-widest font-bold">Phase: Post-Theatrical / OTT</span>';
+                actionBtn = `<p class="mt-6 text-gray-400 text-sm text-center">Theatrical run complete. Awaiting OTT acquisition offers in Inbox...</p>`;
+            }
+
+            cont.innerHTML = `
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-0"></div>
+                <div class="relative z-10 flex flex-col items-center text-center">
+                    ${phaseDesc}
+                    <h3 class="font-cinematic text-4xl font-bold text-white uppercase mt-4 mb-1 drop-shadow-lg">${p.title}</h3>
+                    <p class="text-xs text-studio-gold uppercase tracking-[0.3em] font-bold">${p.genre}</p>
+                    
+                    ${p.dir ? `
+                    <div class="flex gap-8 mt-6">
+                        <div class="text-center"><img src="${p.dir.pic}" class="w-12 h-12 rounded-full mx-auto border-2 border-white/20 mb-2"><p class="text-[10px] text-gray-400 uppercase">Director</p><p class="text-xs font-bold text-white">${p.dir.name}</p></div>
+                        <div class="text-center"><img src="${p.actor.pic}" class="w-12 h-12 rounded-full mx-auto border-2 border-white/20 mb-2"><p class="text-[10px] text-gray-400 uppercase">Lead</p><p class="text-xs font-bold text-white">${p.actor.name}</p></div>
+                    </div>
+                    <p class="mt-6 text-sm text-gray-400 border-t border-white/10 pt-4 w-full max-w-md">Sunk Cost: <span class="text-red-400 font-bold">${formatINR(p.cost)}</span></p>
+                    ` : ''}
+                    
+                    ${actionBtn}
+                </div>
+            `;
+        }
+
+        function renderPastProjects() {
+            const grid = document.getElementById('past-projects-grid');
+            if(!state.pastProjects || state.pastProjects.length === 0) {
+                grid.innerHTML = '<p class="text-gray-600 text-center italic mt-10 text-xs">No projects in archive.</p>';
+                return;
+            }
+
+            grid.innerHTML = state.pastProjects.map(x => `
+                <div class="glass-panel p-3 rounded-xl border border-white/5 flex gap-4 hover:border-studio-gold/30 transition group">
+                    <img src="${x.poster}" class="w-16 h-24 object-cover rounded bg-black/50 border border-white/10 group-hover:border-studio-gold/50 transition">
+                    <div class="flex flex-col justify-center w-full py-1">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h5 class="font-cinematic font-bold text-white uppercase tracking-wider text-sm">${x.title}</h5>
+                                <p class="text-[9px] text-studio-gold uppercase tracking-widest">${x.genre}</p>
+                            </div>
+                            <span class="text-[10px] font-bold ${x.verdict==='BLOCKBUSTER'?'text-studio-gold animate-pulse':x.profit>=0?'text-green-400':'text-red-500'} bg-white/5 px-2 py-1 rounded border border-white/5">${x.verdict}</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 bg-black/40 rounded p-2 border border-white/5 text-[9px]">
+                            <div><span class="text-gray-500 uppercase">Budget</span> <span class="text-white float-right">${formatINR(x.cost)}</span></div>
+                            <div><span class="text-gray-500 uppercase">Total Rev</span> <span class="text-white float-right">${formatINR(x.gross)}</span></div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // --- MAIL SYSTEM ---
+        document.getElementById('btn-inbox').addEventListener('click', () => {
+            renderInbox();
+            toggleModal('modal-inbox', true);
         });
 
         document.querySelectorAll('.close-modal').forEach(b => b.addEventListener('click', () => {
             document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
         }));
 
-        document.querySelectorAll('.genre-card').forEach(c => c.addEventListener('click', (e) => {
-            document.querySelectorAll('.genre-card').forEach(el => el.classList.remove('selected'));
-            e.currentTarget.classList.add('selected');
-            glDraft.genre = e.currentTarget.getAttribute('data-genre');
-        }));
+        function updateInboxBadge() {
+            const unread = state.mails.filter(m => !m.read).length;
+            const badge = document.getElementById('inbox-badge');
+            if(unread > 0) {
+                badge.classList.remove('hidden');
+                badge.classList.add('pop');
+                setTimeout(()=>badge.classList.remove('pop'), 300);
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
 
-        document.getElementById('btn-gl-next').addEventListener('click', () => {
-            if(currentGlStep === 1) {
-                glDraft.title = document.getElementById('gl-title').value || 'Untitled Project';
-            } else if (currentGlStep === 2 && !glDraft.writer) return showToast("Select a writer.", "bad");
-            else if (currentGlStep === 3 && !glDraft.dir) return showToast("Select a director.", "bad");
-            else if (currentGlStep === 4 && !glDraft.actor) return showToast("Select a lead actor.", "bad");
+        function renderInbox() {
+            const list = document.getElementById('mail-list');
+            list.innerHTML = state.mails.slice().reverse().map((m, i) => `
+                <div class="p-3 border-b border-white/5 cursor-pointer hover:bg-white/5 transition ${m.read?'opacity-60':'bg-white/5 border-l-2 border-l-studio-gold'}" onclick="openMail('${m.id}')">
+                    <p class="text-xs font-bold text-white truncate">${m.title}</p>
+                    <p class="text-[10px] text-gray-400 uppercase mt-1">${m.type} EMAIL</p>
+                </div>
+            `).join('');
+            if(state.mails.length === 0) list.innerHTML = `<p class="text-gray-500 text-xs p-4 text-center">Inbox Empty</p>`;
+        }
 
-            if(currentGlStep < 5) currentGlStep++;
-            if(currentGlStep === 5) renderGlReview();
-            updateGlUI();
-        });
-        document.getElementById('btn-gl-prev').addEventListener('click', () => {
-            if(currentGlStep > 1) currentGlStep--; updateGlUI();
-        });
+        window.openMail = (id) => {
+            const mail = state.mails.find(m => m.id === id);
+            if(!mail) return;
+            mail.read = true;
+            updateInboxBadge();
+            renderInbox();
+            saveState();
 
-        function populateSelections() {
-            const createCard = (p, type) => `
-                <div class="select-card rounded-xl p-4 flex flex-col md:flex-row gap-4 items-center md:items-start text-center md:text-left" onclick="selectStaff('${type}', '${p.id}', this)">
-                    <img src="${p.pic}" class="w-16 h-16 rounded-full object-cover border-2 border-white/20">
-                    <div class="flex-1 w-full">
-                        <div class="flex justify-between items-start">
-                            <h4 class="font-cinematic text-white font-bold">${p.name}</h4>
-                            <span class="text-xs text-red-400 font-bold">${formatINR(p.fee)}</span>
+            const detail = document.getElementById('mail-detail');
+            let actions = '';
+
+            if(mail.type === 'script') {
+                const canAccept = !state.activeProject;
+                actions = `
+                    <div class="mt-8 pt-4 border-t border-white/10 flex gap-4">
+                        ${canAccept ? `<button onclick="acceptScript('${mail.id}')" class="bg-studio-gold text-black px-6 py-2 rounded text-xs font-bold uppercase tracking-widest hover:bg-white transition">Acquire Script (₹5L)</button>` 
+                        : `<p class="text-xs text-red-400 py-2">Finish current project to acquire new scripts.</p>`}
+                        <button onclick="deleteMail('${mail.id}')" class="bg-white/10 text-white px-4 py-2 rounded text-xs uppercase hover:bg-red-500/20 hover:text-red-400 transition">Pass</button>
+                    </div>
+                `;
+            } else if (mail.type === 'ott') {
+                actions = `
+                    <div class="mt-8 pt-4 border-t border-white/10 flex gap-4">
+                        <button onclick="acceptOTT('${mail.id}')" class="bg-green-600 text-white px-6 py-2 rounded text-xs font-bold uppercase tracking-widest hover:bg-green-500 transition">Sign Deal (+${formatINR(mail.data.offer)})</button>
+                        <button onclick="deleteMail('${mail.id}')" class="bg-white/10 text-white px-4 py-2 rounded text-xs uppercase hover:bg-red-500/20 transition">Reject</button>
+                    </div>
+                `;
+            } else {
+                actions = `<button onclick="deleteMail('${mail.id}')" class="mt-8 px-4 py-2 bg-white/10 rounded text-xs uppercase hover:bg-white/20">Delete</button>`;
+            }
+
+            detail.innerHTML = `
+                <div class="mb-6">
+                    <h3 class="text-2xl font-cinematic font-bold text-white">${mail.title}</h3>
+                    <p class="text-[10px] text-studio-gold uppercase tracking-widest mt-1">Sender: ${mail.type==='script'?'Literary Agent': mail.type==='ott'?'OTT Platform':'System'}</p>
+                </div>
+                <div class="text-sm text-gray-300 leading-relaxed whitespace-pre-wrap">${mail.body}</div>
+                ${actions}
+            `;
+        }
+
+        window.deleteMail = (id) => {
+            state.mails = state.mails.filter(m => m.id !== id);
+            document.getElementById('mail-detail').innerHTML = '<div class="absolute inset-0 flex items-center justify-center text-gray-600 opacity-50 flex-col"><i class="fa-regular fa-envelope text-6xl mb-4"></i><p class="font-cinematic tracking-widest uppercase">Deleted</p></div>';
+            renderInbox();
+            saveState();
+        }
+
+        window.acceptScript = (id) => {
+            const mail = state.mails.find(m => m.id === id);
+            if(state.funds < 500000) return showToast("Need ₹5 Lakhs to acquire script", "bad");
+            
+            state.funds -= 500000;
+            state.activeProject = {
+                id: genId(),
+                title: mail.data.title,
+                genre: mail.data.genre,
+                scriptQual: mail.data.qual,
+                cost: 500000,
+                phase: 'assembly'
+            };
+            
+            deleteMail(id);
+            toggleModal('modal-inbox', false);
+            renderDashboard();
+            showToast("Script Acquired! Proceed to Assembly.", "good");
+        }
+
+        window.acceptOTT = (id) => {
+            const mail = state.mails.find(m => m.id === id);
+            const p = state.activeProject;
+            if(!p || p.phase !== 'ott') return;
+
+            state.funds += mail.data.offer;
+            p.gross += mail.data.offer;
+            
+            const profit = p.gross - p.cost;
+            let verdict = 'FLOP';
+            if(profit > p.cost) verdict = 'BLOCKBUSTER';
+            else if(profit > 0) verdict = 'HIT';
+            else if(profit > -p.cost*0.2) verdict = 'AVERAGE';
+
+            // Generate Poster
+            const safeTitle = encodeURIComponent(p.title);
+            const poster = `https://placehold.co/400x600/0a0a0a/D4AF37?text=${safeTitle}%0A${encodeURIComponent(p.genre)}`;
+
+            state.pastProjects.unshift({
+                id: p.id, title: p.title, genre: p.genre,
+                cost: p.cost, gross: p.gross, profit, verdict, poster
+            });
+
+            // Adjust Reputation
+            if(verdict==='BLOCKBUSTER') state.reputation = Math.min(5, state.reputation+1);
+            if(verdict==='FLOP') state.reputation = Math.max(1, state.reputation-1);
+
+            state.activeProject = null;
+            deleteMail(id);
+            toggleModal('modal-inbox', false);
+            renderDashboard();
+            showToast(`OTT Deal Closed: +${formatINR(mail.data.offer)}`, "good");
+        }
+
+        function startMailEngine() {
+            if(mailInterval) clearInterval(mailInterval);
+            mailInterval = setInterval(() => {
+                if(!state.activeProject && Math.random() > 0.5) {
+                    generateScriptMail();
+                }
+            }, 15000); // Check every 15s
+        }
+        function stopMailEngine() { if(mailInterval) clearInterval(mailInterval); }
+
+        function generateScriptMail() {
+            if(state.mails.filter(m=>m.type==='script').length > 3) return; // Max 3 pending
+            
+            const prefixes = ["The Last", "Operation", "Secret of", "Midnight", "Return to", "Project"];
+            const nouns = ["Shadows", "Echo", "Tomorrow", "Mumbai", "Vengeance", "Love"];
+            const title = `${prefixes[Math.floor(Math.random()*prefixes.length)]} ${nouns[Math.floor(Math.random()*nouns.length)]}`;
+            const genre = GENRES[Math.floor(Math.random()*GENRES.length)];
+            const qual = Math.floor(Math.random()*60) + 20 + (state.reputation * 5); // Rep helps get better scripts
+
+            state.mails.push({
+                id: genId(), type: 'script', read: false,
+                title: `PITCH: ${title} (${genre})`,
+                body: `Hello,\n\nWe have a promising new screenplay.\n\nTitle: ${title}\nGenre: ${genre}\n\nOur writer is asking for a standard ₹5 Lakhs acquisition fee. If interested, accept the offer below.\n\nRegards,\nLiterary Agency`,
+                data: { title, genre, qual }
+            });
+            updateInboxBadge();
+            saveState();
+            showToast("New Script Pitch received!", "info");
+        }
+
+        // --- PRE-PRODUCTION ASSEMBLY ---
+        window.openAssemblyWizard = () => {
+            assemblyDraft = { dir: null, actor: null };
+            updateAssemblyUI();
+            toggleModal('modal-assembly', true);
+        }
+
+        function updateAssemblyUI() {
+            const p = state.activeProject;
+            document.getElementById('assembly-title').innerText = p.title;
+            
+            const createCard = (person, type) => `
+                <div class="select-card rounded-lg p-3 bg-black/40 flex flex-col gap-2 ${assemblyDraft[type]?.id === person.id ? 'selected' : ''}" onclick="selectAssembly('${type}', '${person.id}')">
+                    <div class="flex items-center gap-3 border-b border-white/5 pb-2">
+                        <img src="${person.pic}" class="w-10 h-10 rounded object-cover">
+                        <div>
+                            <p class="font-bold text-white text-xs">${person.name}</p>
+                            <p class="text-[9px] text-red-400 font-bold uppercase">${formatINR(person.fee)}</p>
                         </div>
-                        <p class="text-[9px] text-studio-gold uppercase tracking-widest mt-1 mb-2">${p.trait || 'Star Power: '+p.star}</p>
-                        <div class="w-full">
-                            <p class="text-[8px] text-gray-400 uppercase tracking-widest flex justify-between">
-                                <span>Relationship</span><span>${getRel(p.id)}/100</span>
-                            </p>
-                            <div class="rel-bar-bg"><div class="rel-bar-fill bg-${getRel(p.id)>40?'green':'red'}-500" style="width:${getRel(p.id)}%"></div></div>
-                        </div>
+                    </div>
+                    <div class="text-[9px] text-gray-400 uppercase tracking-widest space-y-1 pt-1">
+                        <div class="flex justify-between"><span>Skill</span><span>${person.skill}</span></div>
+                        <div class="stat-bar"><div class="stat-fill bg-blue-500" style="width:${person.skill}%"></div></div>
+                        <div class="flex justify-between mt-1"><span>${type==='actor'?'Fame':'Ego'}</span><span>${type==='actor'?person.fame:person.ego}</span></div>
+                        <div class="stat-bar"><div class="stat-fill ${type==='actor'?'bg-yellow-500':'bg-red-500'}" style="width:${type==='actor'?person.fame:person.ego}%"></div></div>
                     </div>
                 </div>
             `;
-            document.getElementById('grid-writers').innerHTML = mockWriters.map(w => createCard(w, 'writer')).join('');
-            document.getElementById('grid-directors').innerHTML = mockDirectors.map(d => createCard(d, 'dir')).join('');
-            document.getElementById('grid-actors').innerHTML = mockActors.map(a => createCard(a, 'actor')).join('');
-        }
-
-        window.selectStaff = (type, id, el) => {
-            el.parentElement.querySelectorAll('.select-card').forEach(c => c.classList.remove('selected'));
-            el.classList.add('selected');
-            if(type==='writer') glDraft.writer = mockWriters.find(x => x.id === id);
-            if(type==='dir') glDraft.dir = mockDirectors.find(x => x.id === id);
-            if(type==='actor') glDraft.actor = mockActors.find(x => x.id === id);
-        }
-
-        function updateGlUI() {
-            document.querySelectorAll('#modal-greenlight .wizard-step').forEach((el, idx) => el.classList.toggle('active', idx + 1 === currentGlStep));
-            document.getElementById('btn-gl-prev').classList.toggle('hidden', currentGlStep === 1);
-            document.getElementById('btn-gl-next').classList.toggle('hidden', currentGlStep === 5);
-            document.getElementById('btn-gl-start').classList.toggle('hidden', currentGlStep !== 5);
-            const titles = ["Concept", "Screenplay", "Director", "Casting", "Budget Review"];
-            document.getElementById('wizard-subtitle').innerText = `Phase ${currentGlStep}: ${titles[currentGlStep-1]}`;
-        }
-
-        function renderGlReview() {
-            // Base physical production cost based on genre
-            let baseCost = 25000000; // 2.5 Cr base
-            if(glDraft.genre.includes('Action') || glDraft.genre.includes('Epic') || glDraft.genre.includes('Sci-Fi')) baseCost = 150000000; // 15 Cr for VFX/Sets
-
-            glDraft.prodCost = baseCost;
-            glDraft.totalCost = baseCost + glDraft.writer.fee + glDraft.dir.fee + glDraft.actor.fee;
-
-            document.getElementById('rev-title').innerText = glDraft.title;
-            document.getElementById('rev-genre').innerText = glDraft.genre;
-            document.getElementById('rev-writer').innerText = glDraft.writer.name;
-            document.getElementById('rev-dir').innerText = glDraft.dir.name;
-            document.getElementById('rev-actor').innerText = glDraft.actor.name;
-            document.getElementById('rev-cost').innerText = formatINR(glDraft.totalCost);
-            document.getElementById('rev-funds').innerText = formatINR(state.funds);
-
-            const btn = document.getElementById('btn-gl-start');
-            const warn = document.getElementById('warn-funds');
-            if(state.funds < glDraft.totalCost) {
-                btn.disabled = true; btn.classList.add('opacity-50', 'cursor-not-allowed'); warn.classList.remove('hidden');
-            } else {
-                btn.disabled = false; btn.classList.remove('opacity-50', 'cursor-not-allowed'); warn.classList.add('hidden');
-            }
-        }
-
-        // --- START PRODUCTION ---
-        document.getElementById('btn-gl-start').addEventListener('click', async () => {
-            state.funds -= glDraft.totalCost;
-            showToast(`-${formatINR(glDraft.totalCost)} (Production Initialized)`, 'bad');
             
-            // Generate Cover
-            const cover = `https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=400&q=${Math.floor(Math.random()*100)}`;
+            document.getElementById('grid-directors').innerHTML = MOCK_DIRECTORS.map(d => createCard(d, 'dir')).join('');
+            document.getElementById('grid-actors').innerHTML = MOCK_ACTORS.map(a => createCard(a, 'actor')).join('');
+
+            // Calculate cost
+            let estCost = p.cost; // Base cost (script)
+            estCost += p.genre.includes('Sci-Fi') || p.genre.includes('Action') ? 100000000 : 30000000; // Base physical prod cost
+            if(assemblyDraft.dir) estCost += assemblyDraft.dir.fee;
+            if(assemblyDraft.actor) estCost += assemblyDraft.actor.fee;
+
+            const lbl = document.getElementById('lbl-est-budget');
+            lbl.innerText = formatINR(estCost);
             
-            state.activeProject = {
-                ...glDraft,
-                cover,
-                phase: 'shooting',
-                baseQual: (glDraft.writer.skill + glDraft.dir.skill + glDraft.actor.acting) / 3,
-                qualMod: 0,
-                hypeMod: 0,
-            };
-            
-            toggleModal('modal-greenlight', false);
-            renderDashboard();
-            saveState();
-        });
-
-        // --- DASHBOARD RENDER ---
-        function renderDashboard() {
-            document.getElementById('dash-studio-name').innerText = state.name;
-            document.getElementById('dash-funds').innerText = formatINR(state.funds);
-            document.getElementById('dash-avatar').src = auth.currentUser.photoURL;
-            
-            let starsHtml = '';
-            for(let i=0; i<5; i++) starsHtml += i < state.reputation ? '<i class="fa-solid fa-star"></i>' : '<i class="fa-regular fa-star text-white/20"></i>';
-            document.getElementById('dash-reputation').innerHTML = starsHtml;
-
-            // Active Project
-            const apCont = document.getElementById('active-project-container');
-            const noAp = document.getElementById('no-active-project');
-            const p = state.activeProject;
-
-            if(!p) {
-                apCont.classList.add('hidden'); noAp.classList.remove('hidden');
-            } else {
-                noAp.classList.add('hidden'); apCont.classList.remove('hidden');
-                document.getElementById('ap-title').innerText = p.title;
-                document.getElementById('ap-genre').innerText = p.genre;
-                document.getElementById('ap-dir-pic').src = p.dir.pic;
-                document.getElementById('ap-dir-name').innerText = p.dir.name;
-                document.getElementById('ap-act-pic').src = p.actor.pic;
-                document.getElementById('ap-act-name').innerText = p.actor.name;
-                document.getElementById('ap-budget').innerText = formatINR(p.totalCost);
-
-                const phaseBadge = document.getElementById('ap-phase-badge');
-                const btn = document.getElementById('btn-ap-action');
-
-                if(p.phase === 'shooting') {
-                    phaseBadge.innerText = 'Phase: Principal Photography';
-                    phaseBadge.className = 'bg-red-900/40 text-red-400 border border-red-500/30 px-2 py-1 text-[10px] rounded uppercase tracking-widest font-semibold animate-pulse';
-                    btn.innerText = 'Resolve Production Event';
-                    btn.onclick = triggerEvent;
-                } else if (p.phase === 'release') {
-                    phaseBadge.innerText = 'Phase: Post-Production / Release';
-                    phaseBadge.className = 'bg-green-900/40 text-green-400 border border-green-500/30 px-2 py-1 text-[10px] rounded uppercase tracking-widest font-semibold';
-                    btn.innerText = 'Strategize Theatrical Release';
-                    btn.onclick = openReleaseModal;
+            const btn = document.getElementById('btn-lock-assembly');
+            if(assemblyDraft.dir && assemblyDraft.actor) {
+                if(state.funds < estCost) {
+                    btn.innerText = "Insufficient Funds"; btn.disabled = true; btn.className = "bg-red-900/50 text-red-400 px-8 py-3 rounded font-cinematic uppercase tracking-widest cursor-not-allowed text-xs font-bold";
+                } else {
+                    btn.innerText = "Lock Budget & Shoot"; btn.disabled = false; btn.className = "bg-studio-gold text-black hover:bg-white px-8 py-3 rounded font-cinematic font-bold tracking-[0.2em] uppercase transition shadow-[0_0_15px_rgba(212,175,55,0.4)]";
+                    btn.onclick = () => lockAssembly(estCost);
                 }
-            }
-
-            // Past Projects
-            const ppGrid = document.getElementById('past-projects-grid');
-            if(state.pastProjects.length === 0) {
-                ppGrid.innerHTML = '<p class="text-gray-600 text-center italic mt-10">No history available.</p>';
             } else {
-                ppGrid.innerHTML = state.pastProjects.map(x => `
-                    <div class="glass-panel p-4 rounded-xl border border-white/5 flex gap-4 hover:border-studio-gold/30 transition">
-                        <div class="flex flex-col justify-center w-full">
-                            <div class="flex justify-between items-start">
-                                <h5 class="font-cinematic font-bold text-white uppercase tracking-wider">${x.title}</h5>
-                                <span class="text-[10px] font-bold ${x.profit >= 0 ? 'text-green-400' : 'text-red-500'} bg-white/5 px-2 py-1 rounded">${x.verdict}</span>
-                            </div>
-                            <div class="mt-3 grid grid-cols-3 gap-2 bg-black/40 rounded p-2 border border-white/5 text-[10px]">
-                                <div><span class="text-gray-500 block uppercase tracking-widest">Budget</span><span class="text-white">${formatINR(x.budget)}</span></div>
-                                <div><span class="text-gray-500 block uppercase tracking-widest">Gross</span><span class="text-white">${formatINR(x.gross)}</span></div>
-                                <div><span class="text-gray-500 block uppercase tracking-widest">Profit</span><span class="${x.profit >= 0 ? 'text-green-400' : 'text-red-500'} font-bold">${formatINR(x.profit)}</span></div>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
+                btn.innerText = "Select Cast & Crew"; btn.disabled = true; btn.className = "bg-white/10 text-gray-500 px-8 py-3 rounded font-cinematic uppercase tracking-widest cursor-not-allowed text-xs font-bold";
             }
         }
 
-        // --- PRODUCTION EVENT SYSTEM ---
-        let currentEvent = null;
-        function triggerEvent() {
-            currentEvent = prodEvents[Math.floor(Math.random() * prodEvents.length)];
-            document.getElementById('event-desc').innerText = currentEvent.desc;
-            
-            const optCont = document.getElementById('event-options');
-            optCont.innerHTML = currentEvent.opts.map((opt, i) => `
-                <button class="w-full bg-white/5 hover:bg-white/10 border border-white/10 p-4 rounded text-left transition" onclick="resolveEvent(${i})">
-                    <p class="font-bold text-white text-sm">${opt.text}</p>
-                    <p class="text-[10px] text-gray-400 mt-1">${opt.cost ? `Cost: ${formatINR(opt.cost)}` : 'Cost: ₹0'} | Rel Impact: Dir ${opt.relDir>0?'+':''}${opt.relDir}, Act ${opt.relAct>0?'+':''}${opt.relAct}</p>
-                </button>
-            `).join('');
-            
-            toggleModal('modal-event', true);
+        window.selectAssembly = (type, id) => {
+            const arr = type === 'dir' ? MOCK_DIRECTORS : MOCK_ACTORS;
+            assemblyDraft[type] = arr.find(x => x.id === id);
+            updateAssemblyUI();
         }
 
-        window.resolveEvent = (optIndex) => {
-            const opt = currentEvent.opts[optIndex];
-            const p = state.activeProject;
+        function lockAssembly(totalCost) {
+            state.funds -= totalCost;
+            state.activeProject.dir = assemblyDraft.dir;
+            state.activeProject.actor = assemblyDraft.actor;
+            state.activeProject.cost = totalCost;
+            state.activeProject.phase = 'ready';
             
-            if(opt.cost && state.funds < opt.cost) {
-                return showToast("Insufficient funds for this choice!", "bad");
-            }
-
-            if(opt.cost) {
-                state.funds -= opt.cost;
-                p.totalCost += opt.cost;
-                showToast(`-${formatINR(opt.cost)} deducted`, "bad");
-            }
-
-            p.qualMod += (opt.qualMod || 0);
-            p.hypeMod += (opt.hypeMod || 0);
-
-            // Update Rel
-            state.relationships[p.dir.id] = Math.max(0, Math.min(100, getRel(p.dir.id) + opt.relDir));
-            state.relationships[p.actor.id] = Math.max(0, Math.min(100, getRel(p.actor.id) + opt.relAct));
-
-            p.phase = 'release';
-            toggleModal('modal-event', false);
+            toggleModal('modal-assembly', false);
             renderDashboard();
             saveState();
+            showToast(`Budget Locked: -${formatINR(totalCost)}. Ready for release.`, "info");
         }
 
-        // --- RELEASE STRATEGY & ALGORITHM ---
-        let relDraft = { marketing: 50000000, tktPrice: 150, tktTier: 'mass' };
-        
-        function openReleaseModal() {
+        // --- THEATRICAL SIMULATOR ---
+        window.startTheatricalRun = () => {
             const p = state.activeProject;
-            const slider = document.getElementById('slider-marketing');
-            // Max marketing is current funds or 50Cr max, whichever is lower (to prevent lock)
-            slider.max = Math.max(1000000, Math.min(500000000, state.funds)); 
-            slider.value = Math.min(50000000, slider.max);
-            updateRelDraft();
-            toggleModal('modal-release', true);
-        }
-
-        document.getElementById('slider-marketing').addEventListener('input', (e) => {
-            relDraft.marketing = parseInt(e.target.value);
-            document.getElementById('lbl-marketing').innerText = formatINR(relDraft.marketing);
-        });
-
-        document.querySelectorAll('.ticket-card').forEach(c => c.addEventListener('click', (e) => {
-            document.querySelectorAll('.ticket-card').forEach(el => el.classList.remove('selected'));
-            e.currentTarget.classList.add('selected');
-            relDraft.tktPrice = parseInt(e.currentTarget.getAttribute('data-price'));
-            relDraft.tktTier = e.currentTarget.getAttribute('data-tier');
-        }));
-
-        function updateRelDraft() {
-            document.getElementById('lbl-marketing').innerText = formatINR(relDraft.marketing);
-        }
-
-        document.getElementById('btn-finalize-release').addEventListener('click', () => {
-            const p = state.activeProject;
+            document.getElementById('bo-title').innerText = p.title;
+            document.getElementById('bo-budget').innerText = formatINR(p.cost);
+            document.getElementById('bo-total-gross').innerText = '₹0';
+            document.getElementById('bo-day').innerText = '0 / 14';
+            document.getElementById('btn-close-bo').classList.add('hidden');
             
-            if(state.funds < relDraft.marketing) return showToast("Not enough funds for marketing!", "bad");
-            state.funds -= relDraft.marketing;
-            p.totalCost += relDraft.marketing;
+            const vb = document.getElementById('bo-verdict-box');
+            vb.className = 'flex-1 glass-panel p-5 rounded-xl border border-white/5 flex flex-col justify-center items-center text-center transition-all duration-500';
+            document.getElementById('bo-status').innerText = 'Simulating...';
+            document.getElementById('bo-status').className = 'text-sm font-semibold text-gray-300 animate-pulse';
 
-            // Algorithm
-            const finalQuality = Math.max(10, Math.min(100, p.baseQual + p.qualMod));
-            // Hype driven by star power + marketing (1 Cr = 1 Hype point up to 50) + random event mod
-            const mktHype = Math.min(50, relDraft.marketing / 10000000);
-            const totalHype = Math.max(10, Math.min(100, p.actor.star + mktHype + p.hypeMod));
-
-            // Footfall logic:
-            // Base audience pool is based on Hype (0-100 scales to 1M-10M people)
-            let audiencePool = (totalHype / 100) * 10000000;
+            toggleModal('modal-theatrical', true);
             
-            // Ticket pricing effect on footfall
-            if(relDraft.tktTier === 'premium') {
-                if(totalHype < 80 || finalQuality < 70) audiencePool *= 0.3; // Huge drop if movie is bad/unhyped
-                else audiencePool *= 0.8; // Minor drop for good movies
-            } else if (relDraft.tktTier === 'standard') {
-                audiencePool *= 0.9;
-            } else {
-                audiencePool *= 1.2; // Masses boost
-            }
-
-            // Word of mouth (Quality dictates legs)
-            const legsMultiplier = finalQuality / 50; // <50 decreases, >50 increases run
-            const totalFootfall = audiencePool * legsMultiplier;
-
-            const grossTheatrical = totalFootfall * relDraft.tktPrice;
-            const netTheatrical = grossTheatrical * 0.5; // Distributors take 50%
-
-            const ottValue = finalQuality * p.actor.star * 10000; // Base OTT rights
-
-            const totalRev = netTheatrical + ottValue;
-            const profit = totalRev - p.totalCost;
-
-            let verdict = 'DISASTER';
-            if (profit > p.totalCost * 2) { verdict = 'BLOCKBUSTER'; state.reputation = Math.min(5, state.reputation+1); }
-            else if (profit > 0) { verdict = 'HIT'; }
-            else if (profit > -p.totalCost * 0.2) { verdict = 'AVERAGE'; }
-            else { state.reputation = Math.max(1, state.reputation-1); }
-
-            state.funds += totalRev;
-
-            state.pastProjects.unshift({
-                title: p.title,
-                verdict,
-                budget: p.totalCost,
-                gross: totalRev,
-                profit
+            if(boChartInstance) boChartInstance.destroy();
+            
+            const ctx = document.getElementById('boChart').getContext('2d');
+            boChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: { labels: [], datasets: [{ label: 'Daily Collection (Crores)', data: [], borderColor: '#D4AF37', backgroundColor: 'rgba(212, 175, 55, 0.1)', borderWidth: 3, tension: 0.4, fill: true, pointBackgroundColor: '#fff', pointRadius: 4 }] },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false, backgroundColor: 'rgba(0,0,0,0.8)', titleFont: {family: 'Inter'}, bodyFont: {family: 'Inter'} } },
+                    scales: {
+                        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#888', font: {family: 'Inter'} } },
+                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#888', font: {family: 'Inter'}, callback: (val) => '₹' + val + 'Cr' } }
+                    },
+                    animation: { duration: 400 }
+                }
             });
 
-            state.activeProject = null;
-            toggleModal('modal-release', false);
-            renderDashboard();
-            saveState();
+            // Math
+            const qual = (p.scriptQual + p.dir.skill + p.actor.skill) / 3;
+            let hype = (p.actor.fame * 0.7) + (p.dir.skill * 0.3);
+            
+            let currentDay = 1;
+            let totalGross = 0;
+            
+            // Base starting multiplier (1 Cr base * hype factor)
+            let dailyCollection = (hype / 100) * (p.cost * 0.15); // Day 1 target is roughly 15% of budget if max hype
 
-            // Result Alert
-            alert(`BOX OFFICE REPORT\n\nQuality: ${finalQuality.toFixed(0)}/100 | Hype: ${totalHype.toFixed(0)}/100\nTickets Sold: ${(totalFootfall/100000).toFixed(2)} Lakhs\n\nTotal Budget: ${formatINR(p.totalCost)}\nTheatrical Share: ${formatINR(netTheatrical)}\nOTT Rights: ${formatINR(ottValue)}\n\nPROFIT/LOSS: ${formatINR(profit)}\nVERDICT: ${verdict}`);
-        });
+            const simInterval = setInterval(() => {
+                if(currentDay > 14) {
+                    clearInterval(simInterval);
+                    finishTheatricalRun(totalGross);
+                    return;
+                }
+
+                // Add weekend bumps (Day 3, Day 10)
+                let dropMod = (100 - qual) / 100; // Better quality = lower drop
+                if(currentDay === 3 || currentDay === 10) { dailyCollection *= 1.3; } // Weekend
+                else if (currentDay === 4 || currentDay === 11) { dailyCollection *= 0.5; } // Monday drop
+                else { dailyCollection *= (1 - (dropMod * 0.4)); } // Daily decay
+
+                // Random variance
+                dailyCollection *= (0.9 + Math.random() * 0.2);
+                if(dailyCollection < 100000) dailyCollection = 100000; // Floor
+
+                totalGross += dailyCollection;
+                
+                // Update UI
+                boChartInstance.data.labels.push(`Day ${currentDay}`);
+                boChartInstance.data.datasets[0].data.push((dailyCollection / 10000000).toFixed(2));
+                boChartInstance.update();
+
+                document.getElementById('bo-day').innerText = `${currentDay} / 14`;
+                document.getElementById('bo-total-gross').innerText = formatINR(totalGross);
+
+                currentDay++;
+            }, 600); // 600ms per day
+        }
+
+        function finishTheatricalRun(finalGross) {
+            const p = state.activeProject;
+            p.gross = finalGross;
+            p.phase = 'ott';
+            
+            // Distributor share (you get roughly 50%)
+            const netStudio = finalGross * 0.5;
+            state.funds += netStudio;
+
+            const profitStatus = netStudio - p.cost;
+            const vb = document.getElementById('bo-verdict-box');
+            const st = document.getElementById('bo-status');
+            
+            st.classList.remove('animate-pulse');
+            
+            if(profitStatus > p.cost) {
+                vb.classList.add('border-studio-gold', 'bg-studio-gold/10');
+                st.innerText = 'MASSIVE SUCCESS'; st.className = 'text-xl font-bold text-studio-gold font-cinematic tracking-widest';
+            } else if(profitStatus > 0) {
+                vb.classList.add('border-green-500', 'bg-green-900/20');
+                st.innerText = 'PROFITABLE RUN'; st.className = 'text-lg font-bold text-green-400 font-cinematic tracking-widest';
+            } else {
+                vb.classList.add('border-red-500', 'bg-red-900/20');
+                st.innerText = 'BOX OFFICE BOMB'; st.className = 'text-lg font-bold text-red-500 font-cinematic tracking-widest';
+            }
+
+            const btn = document.getElementById('btn-close-bo');
+            btn.classList.remove('hidden');
+            btn.onclick = () => {
+                toggleModal('modal-theatrical', false);
+                renderDashboard();
+                saveState();
+                showToast(`Theatrical run ended. Studio Share: ${formatINR(netStudio)}. Awaiting OTT offers.`, 'info');
+                
+                // Trigger OTT Mail shortly after
+                setTimeout(generateOTTMail, 3000);
+            };
+        }
+
+        function generateOTTMail() {
+            const p = state.activeProject;
+            if(!p || p.phase !== 'ott') return;
+
+            const platforms = ["StreamFlix", "PrimeView", "BingeMax"];
+            const platform = platforms[Math.floor(Math.random()*platforms.length)];
+            
+            // Base OTT offer based on box office + cast fame
+            let baseOffer = p.cost * 0.2; // 20% of cost base
+            if(p.gross > p.cost * 2) baseOffer = p.cost * 0.8; // Huge offer if hit
+            if(p.actor.fame > 90) baseOffer += 50000000; // 5 Cr bonus for superstars
+
+            state.mails.push({
+                id: genId(), type: 'ott', read: false,
+                title: `OTT Rights: ${p.title}`,
+                body: `Dear Studio Head,\n\nWe tracked the theatrical run of '${p.title}'.\n\n${platform} is willing to acquire exclusive digital streaming rights for a one-time fee.\n\nOffer Amount: ${formatINR(baseOffer)}\n\nPlease sign below to close out the project.`,
+                data: { offer: baseOffer, platform }
+            });
+            updateInboxBadge();
+            saveState();
+            showToast("New OTT Offer in Inbox!", "good");
+        }
 
         // --- CLOUD SAVE ---
         async function saveState() {
-            if(auth.currentUser) await setDoc(doc(db, 'artifacts', APP_ID, 'users', auth.currentUser.uid, 'studio', 'data'), state);
+            if(auth.currentUser) {
+                try {
+                    await setDoc(doc(db, 'artifacts', appId, 'users', auth.currentUser.uid, 'studio', 'data'), state);
+                } catch(e) { console.error("Save error:", e); }
+            }
         }
     </script>
 </body>
