@@ -3,14 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UR STUDIO | Cinematic Hub</title>
-    <!-- Tailwind CSS -->
+    <title>UR STUDIO | Cinematic Tycoon</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Cinzel for cinematic titles, Inter for UI -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <script>
@@ -24,15 +21,13 @@
                     },
                     colors: {
                         studio: {
-                            black: '#0a0a0a',
-                            dark: '#121212',
+                            black: '#050505',
+                            dark: '#111111',
                             gold: '#d4af37',
                             golddim: '#b3922c',
                             crimson: '#8b0000',
+                            panel: 'rgba(15, 15, 15, 0.7)',
                         }
-                    },
-                    backgroundImage: {
-                        'cinematic-gradient': 'linear-gradient(to bottom, rgba(10,10,10,0.4), rgba(10,10,10,0.95))',
                     }
                 }
             }
@@ -41,276 +36,406 @@
 
     <style>
         body {
-            background-color: #0a0a0a;
+            background-color: #050505;
             color: #ffffff;
             overflow-x: hidden;
         }
 
-        /* Cinematic Background Image with Overlay */
+        /* Cinematic Studio Background */
         .bg-layer {
             position: fixed;
             inset: 0;
             z-index: -2;
-            background-image: url('https://images.unsplash.com/photo-1604975701397-6365cbdb65f4?q=80&w=2070&auto=format&fit=crop');
+            background-image: url('https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?q=80&w=2056&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
-            opacity: 0.4;
-            transition: opacity 1.5s ease;
+            opacity: 0.15; /* Subtly visible */
         }
         
-        .bg-layer.dim {
-            opacity: 0.15;
-        }
-
         .bg-overlay {
             position: fixed;
             inset: 0;
             z-index: -1;
-            background: linear-gradient(180deg, rgba(10,10,10,0.3) 0%, rgba(10,10,10,0.9) 100%),
-                        radial-gradient(circle at center, transparent 0%, #0a0a0a 100%);
+            background: radial-gradient(circle at 50% 30%, rgba(10,10,10,0.4) 0%, rgba(5,5,5,1) 80%);
         }
 
-        /* Smooth UI Transitions */
-        .view-container {
-            display: none;
-            opacity: 0;
-            transform: translateY(15px);
-            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        /* Glassmorphism Panels */
+        .glass-panel {
+            background: var(--tw-colors-studio-panel);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
         }
 
-        .view-container.active {
-            display: flex;
-            opacity: 1;
-            transform: translateY(0);
-        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #d4af37; }
 
-        /* Custom Inputs & Cards */
+        /* Premium Inputs */
         .premium-input {
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
-            border-radius: 0;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
             color: white;
+            padding: 12px 16px;
             transition: all 0.3s ease;
+            width: 100%;
         }
         .premium-input:focus {
             outline: none;
-            border-bottom-color: #d4af37;
-            box-shadow: 0 4px 15px -10px rgba(212, 175, 55, 0.5);
-        }
-
-        .difficulty-card {
-            border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(25,25,25,0.4);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .difficulty-card:hover {
-            border-color: rgba(212, 175, 55, 0.5);
-            background: rgba(212, 175, 55, 0.05);
-        }
-        .difficulty-card.selected {
             border-color: #d4af37;
-            background: rgba(212, 175, 55, 0.1);
-            box-shadow: 0 0 20px -5px rgba(212, 175, 55, 0.3);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
         }
 
-        /* Loading Overlay */
-        #loading-overlay {
-            position: fixed;
-            inset: 0;
-            background: #0a0a0a;
-            z-index: 50;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 0.5s ease;
+        /* Selectable Cards */
+        .select-card {
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
         }
-        .film-loader {
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(212,175,55,0.2);
-            border-top-color: #d4af37;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+        .select-card:hover {
+            border-color: rgba(212, 175, 55, 0.5);
+            transform: translateY(-2px);
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        .select-card.selected {
+            border-color: #d4af37;
+            background: rgba(212, 175, 55, 0.05);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
+        }
+        .select-card.selected::after {
+            content: '\f00c';
+            font-family: 'FontAwesome';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #d4af37;
+        }
 
-        /* Error Toast */
-        #error-toast {
+        /* Modal Transitions */
+        .modal-overlay {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .wizard-step {
+            display: none;
+            animation: fadeIn 0.4s ease forwards;
+        }
+        .wizard-step.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Toast */
+        #finance-toast {
             position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-100px);
-            background: rgba(139, 0, 0, 0.9);
-            border: 1px solid #ff4c4c;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 8px;
-            backdrop-filter: blur(10px);
+            bottom: 20px;
+            right: 20px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s ease;
             z-index: 100;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        #error-toast.show {
-            transform: translateX(-50%) translateY(0);
+        #finance-toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .text-inr {
+            font-family: 'Inter', sans-serif; /* INR symbol looks better in sans */
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col font-sans selection:bg-studio-gold selection:text-black">
+<body class="min-h-screen flex flex-col selection:bg-studio-gold selection:text-black">
 
-    <!-- Global Backgrounds -->
-    <div id="bg-layer" class="bg-layer"></div>
+    <div class="bg-layer"></div>
     <div class="bg-overlay"></div>
 
     <!-- Loading Overlay -->
-    <div id="loading-overlay">
-        <div class="flex flex-col items-center gap-4">
-            <div class="film-loader"></div>
-            <p class="font-cinematic text-studio-gold tracking-widest text-sm uppercase">Loading Set...</p>
-        </div>
-    </div>
-
-    <!-- Error Toast -->
-    <div id="error-toast" class="flex items-center gap-3 shadow-2xl">
-        <i class="fa-solid fa-triangle-exclamation"></i>
-        <span id="error-message" class="text-sm font-medium">An error occurred.</span>
+    <div id="loading-overlay" class="fixed inset-0 bg-[#050505] z-50 flex items-center justify-center transition-opacity duration-500">
+        <div class="w-12 h-12 border-4 border-studio-gold/20 border-t-studio-gold rounded-full animate-spin"></div>
     </div>
 
     <!-- ================= VIEW: LOGIN ================= -->
-    <main id="view-login" class="view-container flex-1 flex-col items-center justify-center p-6 w-full max-w-md mx-auto relative z-10">
+    <main id="view-login" class="flex-1 flex flex-col items-center justify-center p-6 hidden relative z-10 w-full max-w-md mx-auto h-screen">
         <div class="text-center mb-12">
-            <i class="fa-solid fa-film text-4xl text-studio-gold mb-6 drop-shadow-[0_0_15px_rgba(212,175,55,0.4)]"></i>
-            <h1 class="font-cinematic text-4xl md:text-5xl font-bold tracking-[0.2em] text-white mb-2 uppercase">UR Studio</h1>
-            <div class="h-[1px] w-24 bg-studio-gold/50 mx-auto mb-4"></div>
-            <p class="text-sm text-gray-400 font-light tracking-wide uppercase">The Director's Suite</p>
+            <i class="fa-solid fa-film text-5xl text-studio-gold mb-6 drop-shadow-[0_0_15px_rgba(212,175,55,0.4)]"></i>
+            <h1 class="font-cinematic text-5xl font-bold tracking-[0.2em] text-white mb-2 uppercase">UR Studio</h1>
+            <p class="text-xs text-gray-400 font-light tracking-[0.3em] uppercase mt-4">The Director's Suite</p>
         </div>
-
-        <button id="btn-google-login" class="w-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-studio-gold/50 text-white font-medium py-4 px-6 rounded-lg flex items-center justify-center gap-4 transition-all duration-300 backdrop-blur-md group relative overflow-hidden">
-            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-            <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5 transition-transform group-hover:scale-110">
-            <span class="tracking-wide">Authorize Access</span>
+        <button id="btn-google-login" class="w-full glass-panel hover:bg-white/5 border border-white/10 text-white py-4 px-6 rounded-xl flex items-center justify-center gap-4 transition-all duration-300 group">
+            <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5 group-hover:scale-110 transition-transform">
+            <span class="tracking-wide text-sm font-medium uppercase">Authorize System Access</span>
         </button>
     </main>
 
     <!-- ================= VIEW: SETUP ================= -->
-    <main id="view-setup" class="view-container flex-1 flex-col justify-center p-6 w-full max-w-2xl mx-auto relative z-10">
-        <div class="bg-studio-dark/80 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
-            <div class="mb-8">
-                <h2 class="font-cinematic text-3xl text-studio-gold mb-2">Establish Studio</h2>
-                <p class="text-sm text-gray-400">Initialize your production house to begin.</p>
+    <main id="view-setup" class="flex-1 flex flex-col items-center justify-center p-6 hidden relative z-10 w-full max-w-2xl mx-auto h-screen">
+        <div class="glass-panel rounded-2xl p-10 w-full border-t-2 border-t-studio-gold">
+            <div class="mb-8 text-center">
+                <h2 class="font-cinematic text-3xl text-studio-gold mb-2 uppercase tracking-widest">Establish Studio</h2>
+                <p class="text-sm text-gray-400">Initialize your production house to begin your cinematic journey.</p>
             </div>
 
             <form id="form-setup" class="space-y-8">
-                <!-- Studio Name -->
                 <div>
-                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2">Production House Name</label>
-                    <input type="text" id="input-studio-name" required placeholder="e.g. Dreamscape Films" class="premium-input w-full py-3 text-xl font-cinematic placeholder-gray-600">
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-[0.1em] mb-2">Production House Name</label>
+                    <input type="text" id="input-studio-name" required placeholder="e.g. Dreamscape Films" class="premium-input font-cinematic text-xl">
                 </div>
 
-                <!-- Difficulty Select -->
                 <div>
-                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-widest mb-4">Production Difficulty</label>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-[0.1em] mb-4">Initial Funding & Difficulty</label>
                     <div class="grid grid-cols-2 gap-4">
-                        <div class="difficulty-card rounded-xl p-4 selected" data-value="Normal">
+                        <!-- Funding adjusted to INR (Cr = Crores) -->
+                        <div class="select-card difficulty-card rounded-xl p-4 selected" data-value="Normal" data-funds="500000000">
                             <h3 class="font-cinematic text-lg text-white mb-1">Normal</h3>
-                            <p class="text-[10px] text-gray-400 leading-relaxed">Standard production budgets and timelines. Recommended for established directors.</p>
+                            <p class="text-[10px] text-gray-400">₹50 Cr Budget. Standard market competition.</p>
                         </div>
-                        <div class="difficulty-card rounded-xl p-4" data-value="Easy">
+                        <div class="select-card difficulty-card rounded-xl p-4" data-value="Easy" data-funds="2000000000">
                             <h3 class="font-cinematic text-lg text-white mb-1">Easy</h3>
-                            <p class="text-[10px] text-gray-400 leading-relaxed">Relaxed deadlines and abundant funding. Focus purely on creativity.</p>
+                            <p class="text-[10px] text-gray-400">₹200 Cr Budget. Relaxed deadlines.</p>
                         </div>
-                        <div class="difficulty-card rounded-xl p-4 border-t border-t-studio-crimson/30" data-value="Hard">
+                        <div class="select-card difficulty-card rounded-xl p-4 border-t-studio-crimson/50" data-value="Hard" data-funds="150000000">
                             <h3 class="font-cinematic text-lg text-white mb-1">Hard</h3>
-                            <p class="text-[10px] text-gray-400 leading-relaxed">Strict budgets and tight schedules. Box office pressure is high.</p>
+                            <p class="text-[10px] text-gray-400">₹15 Cr Budget. Tight schedules.</p>
                         </div>
-                        <div class="difficulty-card rounded-xl p-4 border border-studio-crimson/50 hover:bg-studio-crimson/10" data-value="Hardcore">
+                        <div class="select-card difficulty-card rounded-xl p-4 border border-red-900/50 hover:border-red-500" data-value="Hardcore" data-funds="50000000">
                             <h3 class="font-cinematic text-lg text-red-500 mb-1">Hardcore</h3>
-                            <p class="text-[10px] text-gray-400 leading-relaxed">Indie survival. One box office flop ruins the studio. Permadeath mode.</p>
+                            <p class="text-[10px] text-gray-400">₹5 Cr Budget. Permadeath mode.</p>
                         </div>
                     </div>
                     <input type="hidden" id="input-difficulty" value="Normal">
+                    <input type="hidden" id="input-funds" value="500000000">
                 </div>
 
-                <div class="pt-4 flex justify-end">
-                    <button type="submit" id="btn-submit-setup" class="bg-studio-gold hover:bg-studio-golddim text-studio-black font-cinematic font-bold tracking-widest py-3 px-8 rounded px-8 transition-colors flex items-center gap-2">
-                        <span>Initialize</span> <i class="fa-solid fa-chevron-right text-sm"></i>
-                    </button>
-                </div>
+                <button type="submit" id="btn-submit-setup" class="w-full bg-studio-gold hover:bg-studio-golddim text-black font-cinematic font-bold tracking-[0.2em] py-4 rounded-lg uppercase transition-colors">
+                    Initialize Studio
+                </button>
             </form>
         </div>
     </main>
 
     <!-- ================= VIEW: DASHBOARD ================= -->
-    <div id="view-dashboard" class="view-container flex-col min-h-screen w-full relative z-10 hidden">
-        <!-- Top Navbar -->
-        <nav class="w-full px-6 py-4 flex items-center justify-between border-b border-white/5 bg-black/30 backdrop-blur-md">
-            <div class="flex items-center gap-3">
-                <i class="fa-solid fa-film text-studio-gold"></i>
-                <span class="font-cinematic font-bold tracking-widest text-lg hidden sm:inline">UR STUDIO</span>
+    <div id="view-dashboard" class="flex-col min-h-screen w-full relative z-10 hidden">
+        <!-- Top Executive Navbar -->
+        <nav class="w-full px-8 py-5 flex items-center justify-between bg-black/60 backdrop-blur-xl border-b border-white/5 sticky top-0 z-40">
+            <div class="flex flex-col">
+                <span id="dash-studio-name" class="font-cinematic font-bold tracking-[0.15em] text-xl text-white uppercase">STUDIO NAME</span>
+                <span id="dash-difficulty-badge" class="text-[10px] text-studio-gold uppercase tracking-widest mt-1">Normal Mode</span>
             </div>
             
-            <div class="flex items-center gap-6">
-                <div class="text-right hidden md:block">
-                    <p id="dash-user-name" class="text-sm font-medium text-white"></p>
-                    <p class="text-[10px] text-studio-gold uppercase tracking-widest">Executive Producer</p>
+            <div class="flex items-center gap-12">
+                <!-- Core Stats -->
+                <div class="flex items-center gap-8">
+                    <div class="text-right">
+                        <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">Net Worth</p>
+                        <p id="dash-funds" class="font-cinematic font-bold text-2xl text-green-400 text-inr shadow-green-500/20 drop-shadow-md">₹0</p>
+                    </div>
+                    <div class="h-10 w-px bg-white/10"></div>
+                    <div class="text-right">
+                        <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">Reputation</p>
+                        <div class="flex items-center gap-1 text-studio-gold text-sm" id="dash-reputation">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-regular fa-star"></i>
+                            <i class="fa-regular fa-star"></i>
+                        </div>
+                    </div>
                 </div>
-                <div class="relative group">
-                    <img id="dash-avatar" src="" alt="Profile" class="w-10 h-10 rounded-full border border-studio-gold/50 cursor-pointer object-cover">
-                    <!-- Dropdown -->
-                    <div class="absolute right-0 mt-2 w-48 bg-studio-dark border border-white/10 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                        <button id="btn-logout" class="w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-white/5 rounded-lg transition-colors flex items-center gap-2">
-                            <i class="fa-solid fa-power-off"></i> Terminate Session
+
+                <!-- Profile -->
+                <div class="relative group cursor-pointer flex items-center gap-3 border-l border-white/10 pl-8">
+                    <div class="text-right hidden md:block">
+                        <p id="dash-user-name" class="text-sm font-medium text-white"></p>
+                        <p class="text-[10px] text-gray-400 uppercase">Exec. Producer</p>
+                    </div>
+                    <img id="dash-avatar" src="" class="w-10 h-10 rounded-full border-2 border-studio-gold/30 object-cover">
+                    <div class="absolute right-0 top-full mt-4 w-48 glass-panel rounded-lg shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                        <button id="btn-logout" class="w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-white/5 rounded-lg flex items-center gap-2">
+                            <i class="fa-solid fa-power-off"></i> Logout
                         </button>
                     </div>
                 </div>
             </div>
         </nav>
 
-        <!-- Main Dashboard Content -->
-        <main class="flex-1 flex flex-col items-center justify-center p-6 text-center">
-            <div class="mb-4">
-                <span id="dash-difficulty-badge" class="inline-block px-3 py-1 rounded-full border border-white/20 bg-white/5 text-[10px] uppercase tracking-[0.2em] text-gray-300">
-                    Difficulty: Unknown
-                </span>
-            </div>
-            <h1 id="dash-studio-name" class="font-cinematic text-5xl md:text-7xl font-bold tracking-[0.1em] text-white drop-shadow-2xl mb-8">
-                Studio Name
-            </h1>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl mt-12">
-                <!-- Dummy Stat Cards for UI aesthetics -->
-                <div class="bg-black/40 border border-white/5 rounded-xl p-6 backdrop-blur-sm">
-                    <i class="fa-solid fa-clapperboard text-studio-gold text-2xl mb-3"></i>
-                    <p class="text-3xl font-cinematic font-bold">0</p>
-                    <p class="text-xs text-gray-500 uppercase tracking-widest mt-1">Active Projects</p>
-                </div>
-                <div class="bg-black/40 border border-white/5 rounded-xl p-6 backdrop-blur-sm">
-                    <i class="fa-solid fa-vault text-studio-gold text-2xl mb-3"></i>
-                    <p class="text-3xl font-cinematic font-bold text-green-500">$50M</p>
-                    <p class="text-xs text-gray-500 uppercase tracking-widest mt-1">Studio Funds</p>
-                </div>
-                <div class="bg-black/40 border border-white/5 rounded-xl p-6 backdrop-blur-sm">
-                    <i class="fa-solid fa-star text-studio-gold text-2xl mb-3"></i>
-                    <p class="text-3xl font-cinematic font-bold">New</p>
-                    <p class="text-xs text-gray-500 uppercase tracking-widest mt-1">Reputation</p>
-                </div>
-            </div>
+        <!-- Dashboard Content -->
+        <main class="flex-1 p-8 max-w-7xl mx-auto w-full">
             
-            <button class="mt-12 border border-studio-gold/50 text-studio-gold hover:bg-studio-gold hover:text-black font-cinematic font-bold tracking-widest py-3 px-8 rounded transition-all duration-300">
-                Start New Production
-            </button>
+            <!-- Action Header -->
+            <div class="flex justify-between items-end mb-10 border-b border-white/10 pb-6">
+                <div>
+                    <h1 class="font-cinematic text-3xl text-white tracking-wider mb-2">Production Slate</h1>
+                    <p class="text-sm text-gray-400">Manage your active and completed projects.</p>
+                </div>
+                <button id="btn-new-project" class="bg-white text-black hover:bg-studio-gold font-cinematic font-bold tracking-[0.1em] py-3 px-8 rounded uppercase transition-colors shadow-[0_0_20px_rgba(255,255,255,0.1)] flex items-center gap-2">
+                    <i class="fa-solid fa-plus"></i> New Project
+                </button>
+            </div>
+
+            <!-- Active Project Section -->
+            <div class="mb-12">
+                <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-[0.2em] mb-4">In Production</h3>
+                <div id="active-project-container" class="glass-panel rounded-xl p-6 border-l-4 border-l-studio-gold hidden flex-col md:flex-row items-center gap-6">
+                    <!-- Populated dynamically -->
+                </div>
+                <div id="no-active-project" class="glass-panel rounded-xl p-10 text-center border border-dashed border-white/20">
+                    <i class="fa-solid fa-video-slash text-3xl text-gray-600 mb-3"></i>
+                    <p class="text-gray-400 font-medium">No active production.</p>
+                    <p class="text-xs text-gray-500 mt-1">Start a new project to generate revenue.</p>
+                </div>
+            </div>
+
+            <!-- Past Projects Section -->
+            <div>
+                <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-[0.2em] mb-4">Theatrical History</h3>
+                <div id="past-projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
         </main>
     </div>
 
-    <!-- FIREBASE V11.6.1 INTEGRATION -->
+    <!-- ================= NEW PROJECT MODAL WIZARD ================= -->
+    <div id="modal-new-project" class="modal-overlay fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-4xl rounded-2xl border border-white/10 shadow-2xl flex flex-col max-h-[90vh]">
+            
+            <!-- Modal Header -->
+            <div class="p-6 border-b border-white/10 flex justify-between items-center bg-black/40 rounded-t-2xl">
+                <div>
+                    <h2 class="font-cinematic text-2xl text-studio-gold">Greenlight Production</h2>
+                    <p id="wizard-subtitle" class="text-xs text-gray-400 tracking-widest uppercase mt-1">Step 1: Project Type</p>
+                </div>
+                <button id="btn-close-modal" class="text-gray-400 hover:text-white transition">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-8 overflow-y-auto flex-1 custom-scrollbar">
+                
+                <!-- STEP 1: Type -->
+                <div id="step-1" class="wizard-step active">
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="select-card type-card rounded-xl p-8 text-center selected" data-type="Film">
+                            <i class="fa-solid fa-film text-4xl text-white mb-4"></i>
+                            <h3 class="font-cinematic text-xl text-white mb-2">Feature Film</h3>
+                            <p class="text-xs text-gray-400">High risk, high reward. Theatrical release.</p>
+                        </div>
+                        <div class="select-card type-card rounded-xl p-8 text-center opacity-50 cursor-not-allowed" data-type="WebSeries" title="Unlocks at 2 Stars Reputation">
+                            <i class="fa-solid fa-tv text-4xl text-white mb-4"></i>
+                            <h3 class="font-cinematic text-xl text-white mb-2">Web Series</h3>
+                            <p class="text-xs text-gray-400 text-red-400 mt-2"><i class="fa-solid fa-lock"></i> Unlocks Later</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 2: Details -->
+                <div id="step-2" class="wizard-step">
+                    <div class="space-y-6 max-w-xl mx-auto">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2">Title</label>
+                            <input type="text" id="proj-title" class="premium-input font-cinematic text-2xl" placeholder="Enter Title...">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-400 uppercase tracking-widest mb-2">Genre</label>
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                <div class="select-card genre-card rounded p-3 text-center text-sm selected" data-genre="Action">Action</div>
+                                <div class="select-card genre-card rounded p-3 text-center text-sm" data-genre="Psychological Thriller">Thriller</div>
+                                <div class="select-card genre-card rounded p-3 text-center text-sm" data-genre="Crime Drama">Crime</div>
+                                <div class="select-card genre-card rounded p-3 text-center text-sm" data-genre="Sci-Fi">Sci-Fi</div>
+                                <div class="select-card genre-card rounded p-3 text-center text-sm" data-genre="Horror">Horror</div>
+                                <div class="select-card genre-card rounded p-3 text-center text-sm" data-genre="Romance">Romance</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 3: Director -->
+                <div id="step-3" class="wizard-step">
+                    <p class="text-sm text-gray-400 mb-6 text-center">A director sets the vision. Higher fees generally mean better quality.</p>
+                    <div id="director-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- STEP 4: Cast -->
+                <div id="step-4" class="wizard-step">
+                    <p class="text-sm text-gray-400 mb-6 text-center">Select your Lead Actor. Star power drives box office openings.</p>
+                    <div id="actor-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- STEP 5: Review -->
+                <div id="step-5" class="wizard-step">
+                    <div class="bg-black/50 border border-studio-gold/20 rounded-xl p-8 max-w-2xl mx-auto">
+                        <h3 class="font-cinematic text-3xl text-center text-white mb-6" id="review-title">Title</h3>
+                        
+                        <div class="space-y-4">
+                            <div class="flex justify-between border-b border-white/5 pb-2">
+                                <span class="text-gray-400">Genre</span>
+                                <span class="text-white" id="review-genre">-</span>
+                            </div>
+                            <div class="flex justify-between border-b border-white/5 pb-2">
+                                <span class="text-gray-400">Director</span>
+                                <span class="text-white" id="review-dir">-</span>
+                            </div>
+                            <div class="flex justify-between border-b border-white/5 pb-2">
+                                <span class="text-gray-400">Lead Actor</span>
+                                <span class="text-white" id="review-actor">-</span>
+                            </div>
+                            <div class="flex justify-between pt-4">
+                                <span class="text-studio-gold font-bold uppercase tracking-widest">Total Production Cost</span>
+                                <span class="text-red-400 font-bold text-xl text-inr" id="review-cost">₹0</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-8 p-4 bg-white/5 rounded border border-white/10 text-center">
+                            <p class="text-xs text-gray-400">Current Studio Funds: <span id="review-funds" class="text-white"></span></p>
+                            <p id="fund-warning" class="text-xs text-red-500 mt-2 hidden"><i class="fa-solid fa-triangle-exclamation"></i> Insufficient Funds!</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Modal Footer (Navigation) -->
+            <div class="p-6 border-t border-white/10 bg-black/40 rounded-b-2xl flex justify-between items-center">
+                <button id="btn-prev-step" class="px-6 py-2 rounded text-gray-400 hover:text-white hover:bg-white/5 transition hidden">Back</button>
+                <div class="flex-1"></div> <!-- Spacer -->
+                <button id="btn-next-step" class="bg-white text-black hover:bg-studio-gold px-8 py-2 rounded font-medium transition">Next <i class="fa-solid fa-arrow-right ml-2 text-sm"></i></button>
+                <button id="btn-start-prod" class="bg-studio-gold text-black hover:bg-white px-8 py-3 rounded font-cinematic font-bold tracking-widest uppercase transition hidden shadow-[0_0_15px_rgba(212,175,55,0.4)]">Commence Production</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="finance-toast" class="bg-red-900/90 border border-red-500 text-white px-6 py-3 rounded-lg shadow-2xl flex items-center gap-3 backdrop-blur-md">
+        <i class="fa-solid fa-money-bill-transfer"></i>
+        <span id="finance-toast-msg" class="text-sm font-medium">Funds deducted</span>
+    </div>
+
+    <!-- FIREBASE V11.6.1 INTEGRATION & GAME LOGIC -->
     <script type="module">
-        // Strictly using v11.6.1 as per requirements
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Environment variables / Config provided by user
+        // Firebase Config Placeholder (User's real config should be pasted here in their environment)
         const firebaseConfig = {
             apiKey: "AIzaSyClLSLmdoz5PHVVJrxkoqZ02Xmm-nwsNXQ",
             authDomain: "urstudio-f341c.firebaseapp.com",
@@ -319,182 +444,398 @@
             messagingSenderId: "1017863212287",
             appId: "1:1017863212287:web:2af7564d1aec2f02e310ca"
         };
-        const APP_ID = 'urstudio-v2'; // unique app id for rules
+        const APP_ID = 'urstudio-v3';
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
 
-        // UI Elements Cache
-        const views = {
-            login: document.getElementById('view-login'),
-            setup: document.getElementById('view-setup'),
-            dashboard: document.getElementById('view-dashboard')
+        // --- GAME DATA STRUCTURES ---
+        let studioData = { funds: 0, reputation: 1, name: '', pastProjects: [], activeProject: null };
+        let newProjectDraft = { type: 'Film', title: '', genre: 'Action', director: null, actor: null, totalCost: 0 };
+        
+        // Mock Databases (In a full app, these would come from Firestore collections)
+        const mockDirectors = [
+            { id: 'd1', name: 'Nolan V.', pic: 'https://i.pravatar.cc/150?img=11', fee: 150000000, skill: 95, trait: 'Master of Time/Mind-Bending' },
+            { id: 'd2', name: 'Anurag K.', pic: 'https://i.pravatar.cc/150?img=60', fee: 50000000, skill: 85, trait: 'Gritty Crime Realism' },
+            { id: 'd3', name: 'Zoya A.', pic: 'https://i.pravatar.cc/150?img=42', fee: 80000000, skill: 88, trait: 'High Society Drama' },
+            { id: 'd4', name: 'Raj S.', pic: 'https://i.pravatar.cc/150?img=59', fee: 20000000, skill: 70, trait: 'Mass Action Masala' }
+        ];
+
+        const mockActors = [
+            { id: 'a1', name: 'Shahrukh K.', pic: 'https://i.pravatar.cc/150?img=68', fee: 400000000, star: 99, acting: 90 },
+            { id: 'a2', name: 'Fahadh F.', pic: 'https://i.pravatar.cc/150?img=53', fee: 80000000, star: 80, acting: 98 },
+            { id: 'a3', name: 'Alia B.', pic: 'https://i.pravatar.cc/150?img=44', fee: 150000000, star: 95, acting: 92 },
+            { id: 'a4', name: 'Newcomer Dev', pic: 'https://i.pravatar.cc/150?img=12', fee: 5000000, star: 20, acting: 60 }
+        ];
+
+        // Formatters
+        const formatINR = (num) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(num);
+
+        // UI Helpers
+        const hideAll = () => ['view-login', 'view-setup', 'view-dashboard'].forEach(id => {
+            document.getElementById(id).classList.add('hidden');
+            document.getElementById(id).classList.remove('flex');
+        });
+        const showView = (id) => { hideAll(); document.getElementById(id).classList.remove('hidden'); document.getElementById(id).classList.add('flex'); };
+        const toggleLoader = (show) => document.getElementById('loading-overlay').style.opacity = show ? '1' : '0';
+        const showToast = (msg, isPositive = false) => {
+            const t = document.getElementById('finance-toast');
+            t.className = `fixed bottom-5 right-5 px-6 py-3 rounded-lg shadow-2xl flex items-center gap-3 backdrop-blur-md transition-all z-50 ${isPositive ? 'bg-green-900/90 border border-green-500' : 'bg-red-900/90 border border-red-500'} text-white`;
+            document.getElementById('finance-toast-msg').innerText = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 4000);
         };
-        const loader = document.getElementById('loading-overlay');
-        const bgLayer = document.getElementById('bg-layer');
-        
-        // --- Helper Functions ---
-        function switchView(viewName) {
-            // Hide all
-            Object.values(views).forEach(v => {
-                v.classList.remove('active');
-                setTimeout(() => { if(!v.classList.contains('active')) v.style.display = 'none'; }, 600); // wait for fade out
-            });
-            
-            // Show target
-            const target = views[viewName];
-            target.style.display = viewName === 'dashboard' ? 'flex' : 'flex';
-            // slight delay to allow display:flex to apply before opacity transition
-            setTimeout(() => target.classList.add('active'), 50);
 
-            // Handle background dimming
-            if (viewName === 'dashboard') {
-                bgLayer.classList.add('dim');
+        // --- AUTH & INITIALIZATION ---
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                try {
+                    const docRef = doc(db, 'artifacts', APP_ID, 'users', user.uid, 'studio', 'data');
+                    const docSnap = await getDoc(docRef);
+                    if (docSnap.exists()) {
+                        studioData = docSnap.data();
+                        updateDashboardUI();
+                        showView('view-dashboard');
+                    } else {
+                        showView('view-setup');
+                    }
+                } catch (error) {
+                    console.error("DB Error", error);
+                    showView('view-setup');
+                }
             } else {
-                bgLayer.classList.remove('dim');
+                showView('view-login');
             }
-        }
+            setTimeout(() => toggleLoader(false), 500);
+            setTimeout(() => document.getElementById('loading-overlay').style.display = 'none', 1000);
+        });
 
-        function showLoader(show) {
-            loader.style.opacity = show ? '1' : '0';
-            loader.style.pointerEvents = show ? 'all' : 'none';
-        }
+        document.getElementById('btn-google-login').addEventListener('click', () => signInWithPopup(auth, provider));
+        document.getElementById('btn-logout').addEventListener('click', () => signOut(auth));
 
-        function showError(msg) {
-            const toast = document.getElementById('error-toast');
-            document.getElementById('error-message').innerText = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 4000);
-        }
-
-        // --- Difficulty Selector Logic ---
+        // Setup Forms
         const diffCards = document.querySelectorAll('.difficulty-card');
-        const diffInput = document.getElementById('input-difficulty');
-        
         diffCards.forEach(card => {
             card.addEventListener('click', () => {
                 diffCards.forEach(c => c.classList.remove('selected'));
                 card.classList.add('selected');
-                diffInput.value = card.getAttribute('data-value');
+                document.getElementById('input-funds').value = card.getAttribute('data-funds');
             });
         });
 
-        // --- Auth & Firestore Logic ---
-
-        // 1. Google Login
-        document.getElementById('btn-google-login').addEventListener('click', async () => {
-            showLoader(true);
-            try {
-                await signInWithPopup(auth, provider);
-                // The onAuthStateChanged listener handles the rest
-            } catch (error) {
-                console.error(error);
-                showError(error.message);
-                showLoader(false);
-            }
-        });
-
-        // 2. Logout
-        document.getElementById('btn-logout').addEventListener('click', async () => {
-            showLoader(true);
-            await signOut(auth);
-        });
-
-        // 3. Setup Form Submit (Save to Firestore)
         document.getElementById('form-setup').addEventListener('submit', async (e) => {
             e.preventDefault();
+            const name = document.getElementById('input-studio-name').value;
+            const funds = parseInt(document.getElementById('input-funds').value);
             const user = auth.currentUser;
-            if (!user) return;
+            
+            document.getElementById('btn-submit-setup').innerText = 'INITIALIZING...';
+            
+            studioData = { name, funds, reputation: 1, pastProjects: [], activeProject: null };
+            await setDoc(doc(db, 'artifacts', APP_ID, 'users', user.uid, 'studio', 'data'), studioData);
+            
+            updateDashboardUI();
+            showView('view-dashboard');
+        });
 
-            const studioName = document.getElementById('input-studio-name').value.trim();
-            const difficulty = diffInput.value;
-            const btn = document.getElementById('btn-submit-setup');
+        // --- DASHBOARD UPDATES ---
+        function updateDashboardUI() {
+            document.getElementById('dash-studio-name').innerText = studioData.name;
+            document.getElementById('dash-funds').innerText = formatINR(studioData.funds);
+            document.getElementById('dash-user-name').innerText = auth.currentUser.displayName;
+            document.getElementById('dash-avatar').src = auth.currentUser.photoURL;
+            
+            // Rep stars
+            let starsHtml = '';
+            for(let i=0; i<5; i++) {
+                starsHtml += i < studioData.reputation ? '<i class="fa-solid fa-star"></i>' : '<i class="fa-regular fa-star text-white/20"></i>';
+            }
+            document.getElementById('dash-reputation').innerHTML = starsHtml;
 
-            if (!studioName) {
-                showError("Please enter a Studio Name");
+            renderActiveProject();
+            renderPastProjects();
+        }
+
+        // --- MODAL WIZARD LOGIC ---
+        let currentStep = 1;
+        const totalSteps = 5;
+        const modal = document.getElementById('modal-new-project');
+        
+        document.getElementById('btn-new-project').addEventListener('click', () => {
+            if(studioData.activeProject) {
+                alert("You already have an active production!");
+                return;
+            }
+            modal.classList.add('active');
+            currentStep = 1;
+            updateWizardUI();
+            populateSelections();
+        });
+
+        document.getElementById('btn-close-modal').addEventListener('click', () => modal.classList.remove('active'));
+
+        document.getElementById('btn-next-step').addEventListener('click', () => {
+            // Validation before moving next
+            if(currentStep === 2 && !document.getElementById('proj-title').value.trim()) {
+                alert("Enter a title for your project."); return;
+            }
+            if(currentStep === 3 && !newProjectDraft.director) {
+                alert("Select a Director."); return;
+            }
+            if(currentStep === 4 && !newProjectDraft.actor) {
+                alert("Select a Lead Actor."); return;
+            }
+
+            if(currentStep < totalSteps) currentStep++;
+            if(currentStep === 5) generateReview();
+            updateWizardUI();
+        });
+
+        document.getElementById('btn-prev-step').addEventListener('click', () => {
+            if(currentStep > 1) currentStep--;
+            updateWizardUI();
+        });
+
+        function updateWizardUI() {
+            document.querySelectorAll('.wizard-step').forEach((el, idx) => {
+                el.classList.toggle('active', idx + 1 === currentStep);
+            });
+            
+            document.getElementById('btn-prev-step').classList.toggle('hidden', currentStep === 1);
+            document.getElementById('btn-next-step').classList.toggle('hidden', currentStep === totalSteps);
+            document.getElementById('btn-start-prod').classList.toggle('hidden', currentStep !== totalSteps);
+            
+            const titles = ["Project Type", "Details", "Hire Director", "Cast Lead Actor", "Final Review"];
+            document.getElementById('wizard-subtitle').innerText = `Step ${currentStep}: ${titles[currentStep-1]}`;
+        }
+
+        // Card Selection Logic (Type & Genre)
+        document.querySelectorAll('.genre-card').forEach(c => {
+            c.addEventListener('click', (e) => {
+                document.querySelectorAll('.genre-card').forEach(el => el.classList.remove('selected'));
+                e.currentTarget.classList.add('selected');
+                newProjectDraft.genre = e.currentTarget.getAttribute('data-genre');
+            });
+        });
+
+        function populateSelections() {
+            // Directors
+            const dGrid = document.getElementById('director-grid');
+            dGrid.innerHTML = mockDirectors.map(d => `
+                <div class="select-card rounded-xl p-4 flex gap-4" onclick="selectStaff('director', '${d.id}', this)">
+                    <img src="${d.pic}" class="w-16 h-16 rounded object-cover border border-white/20">
+                    <div>
+                        <h4 class="font-cinematic text-white font-bold text-lg">${d.name}</h4>
+                        <p class="text-[10px] text-studio-gold uppercase tracking-widest">${d.trait}</p>
+                        <p class="text-sm text-red-400 mt-1">Fee: ${formatINR(d.fee)}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            // Actors
+            const aGrid = document.getElementById('actor-grid');
+            aGrid.innerHTML = mockActors.map(a => `
+                <div class="select-card rounded-xl p-4 flex gap-4" onclick="selectStaff('actor', '${a.id}', this)">
+                    <img src="${a.pic}" class="w-16 h-16 rounded object-cover border border-white/20">
+                    <div>
+                        <h4 class="font-cinematic text-white font-bold text-lg">${a.name}</h4>
+                        <p class="text-[10px] text-blue-400 uppercase tracking-widest">Star Power: ${a.star}/100</p>
+                        <p class="text-sm text-red-400 mt-1">Fee: ${formatINR(a.fee)}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        window.selectStaff = (type, id, el) => {
+            el.parentElement.querySelectorAll('.select-card').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            if(type === 'director') newProjectDraft.director = mockDirectors.find(d => d.id === id);
+            if(type === 'actor') newProjectDraft.actor = mockActors.find(a => a.id === id);
+        }
+
+        function generateReview() {
+            newProjectDraft.title = document.getElementById('proj-title').value;
+            // Base production cost based on genre + talent fees
+            const baseCost = 20000000; // 2 Cr base cost for cameras/crew etc.
+            newProjectDraft.totalCost = baseCost + newProjectDraft.director.fee + newProjectDraft.actor.fee;
+
+            document.getElementById('review-title').innerText = newProjectDraft.title.toUpperCase();
+            document.getElementById('review-genre').innerText = newProjectDraft.genre;
+            document.getElementById('review-dir').innerText = newProjectDraft.director.name;
+            document.getElementById('review-actor').innerText = newProjectDraft.actor.name;
+            document.getElementById('review-cost').innerText = formatINR(newProjectDraft.totalCost);
+            document.getElementById('review-funds').innerText = formatINR(studioData.funds);
+
+            const btnStart = document.getElementById('btn-start-prod');
+            const warning = document.getElementById('fund-warning');
+
+            if(studioData.funds < newProjectDraft.totalCost) {
+                btnStart.disabled = true;
+                btnStart.classList.add('opacity-50', 'cursor-not-allowed');
+                warning.classList.remove('hidden');
+            } else {
+                btnStart.disabled = false;
+                btnStart.classList.remove('opacity-50', 'cursor-not-allowed');
+                warning.classList.add('hidden');
+            }
+        }
+
+        // --- PRODUCTION LOGIC ---
+        document.getElementById('btn-start-prod').addEventListener('click', async () => {
+            modal.classList.remove('active');
+            
+            // Deduct funds
+            studioData.funds -= newProjectDraft.totalCost;
+            showToast(`-${formatINR(newProjectDraft.totalCost)} (Production Budget)`);
+            
+            // Generate Cover Image (Random Unsplash cinematic)
+            const randomCover = `https://images.unsplash.com/photo-1485846234645-a62644f84728?w=500&q=${Math.floor(Math.random()*100)}`;
+            
+            studioData.activeProject = {
+                ...newProjectDraft,
+                cover: randomCover,
+                status: 'Shooting'
+            };
+
+            updateDashboardUI();
+            await saveToCloud();
+        });
+
+        function renderActiveProject() {
+            const container = document.getElementById('active-project-container');
+            const empty = document.getElementById('no-active-project');
+            
+            if(!studioData.activeProject) {
+                container.classList.add('hidden');
+                empty.classList.remove('hidden');
                 return;
             }
 
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Initializing...';
+            const p = studioData.activeProject;
+            empty.classList.add('hidden');
+            container.classList.remove('hidden');
 
-            try {
-                // RULE 1 Strict Path: /artifacts/{appId}/users/{userId}/{collectionName}
-                const docRef = doc(db, 'artifacts', APP_ID, 'users', user.uid, 'studio', 'config');
-                await setDoc(docRef, {
-                    studioName: studioName,
-                    difficulty: difficulty,
-                    createdAt: new Date().toISOString(),
-                    funds: difficulty === 'Hardcore' ? 5000000 : difficulty === 'Hard' ? 15000000 : difficulty === 'Normal' ? 50000000 : 100000000,
-                    reputation: 'Unknown'
-                });
-
-                // Transition to Dashboard
-                loadDashboard(user, { studioName, difficulty });
-                
-            } catch (error) {
-                console.error("Firestore Error:", error);
-                showError("Failed to initialize studio: " + error.message);
-                btn.disabled = false;
-                btn.innerHTML = '<span>Initialize</span> <i class="fa-solid fa-chevron-right text-sm"></i>';
-            }
-        });
-
-        // 4. Load Dashboard UI
-        function loadDashboard(user, data) {
-            // Setup Profile Info
-            document.getElementById('dash-user-name').innerText = user.displayName || 'Director';
-            document.getElementById('dash-avatar').src = user.photoURL || 'https://ui-avatars.com/api/?name=Director&background=121212&color=d4af37';
-            
-            // Setup Studio Info
-            document.getElementById('dash-studio-name').innerText = data.studioName;
-            
-            // Setup Difficulty Badge styling
-            const badge = document.getElementById('dash-difficulty-badge');
-            badge.innerText = `Difficulty: ${data.difficulty}`;
-            if(data.difficulty === 'Hardcore') {
-                badge.className = 'inline-block px-3 py-1 rounded-full border border-red-500/50 bg-red-500/10 text-[10px] uppercase tracking-[0.2em] text-red-400';
-            } else {
-                badge.className = 'inline-block px-3 py-1 rounded-full border border-white/20 bg-white/5 text-[10px] uppercase tracking-[0.2em] text-gray-300';
-            }
-
-            switchView('dashboard');
-            showLoader(false);
+            container.innerHTML = `
+                <img src="${p.cover}" class="w-32 h-44 object-cover rounded-lg border border-white/20 shadow-lg">
+                <div class="flex-1 w-full">
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <h4 class="font-cinematic text-2xl font-bold text-white uppercase">${p.title}</h4>
+                            <p class="text-xs text-studio-gold uppercase tracking-widest">${p.genre} • Dir: ${p.director.name}</p>
+                        </div>
+                        <span class="bg-blue-900/50 text-blue-300 border border-blue-500/30 px-3 py-1 text-[10px] rounded uppercase tracking-widest animate-pulse">In Production</span>
+                    </div>
+                    <div class="mt-4 bg-black/50 p-3 rounded border border-white/5">
+                        <div class="flex justify-between text-xs text-gray-400 mb-1">
+                            <span>Budget Spent</span>
+                            <span class="text-white">${formatINR(p.totalCost)}</span>
+                        </div>
+                        <div class="flex justify-between text-xs text-gray-400">
+                            <span>Lead Actor</span>
+                            <span class="text-white">${p.actor.name}</span>
+                        </div>
+                    </div>
+                    <button onclick="releaseMovie()" class="w-full mt-4 bg-studio-gold hover:bg-white text-black font-cinematic font-bold py-3 rounded transition-colors uppercase tracking-widest">
+                        Theatrical Release <i class="fa-solid fa-film ml-2"></i>
+                    </button>
+                </div>
+            `;
         }
 
-        // 5. Global Auth State Listener
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                showLoader(true);
-                try {
-                    // Check Firestore for existing studio setup
-                    // RULE 1 Strict Path: /artifacts/{appId}/users/{userId}/{collectionName}
-                    const docRef = doc(db, 'artifacts', APP_ID, 'users', user.uid, 'studio', 'config');
-                    const docSnap = await getDoc(docRef);
+        // --- RELEASE & BOX OFFICE SIMULATION ---
+        window.releaseMovie = async () => {
+            const p = studioData.activeProject;
+            
+            // Basic Algorithm: Score based on Dir Skill + Actor Star Power + Actor Acting
+            const score = (p.director.skill + p.actor.star + p.actor.acting) / 3;
+            let multiplier = 0;
+            let verdict = '';
+            let verdictColor = '';
 
-                    if (docSnap.exists()) {
-                        // Data exists, go to Dashboard
-                        loadDashboard(user, docSnap.data());
-                    } else {
-                        // No data, go to Setup Screen
-                        switchView('setup');
-                        showLoader(false);
-                    }
-                } catch (error) {
-                    console.error("Data Fetch Error:", error);
-                    showError("Error connecting to studio database.");
-                    showLoader(false);
-                    switchView('setup'); // Fallback to setup on fail just in case
-                }
-            } else {
-                // Logged out
-                switchView('login');
-                showLoader(false);
+            // Randomness factor (luck)
+            const luck = Math.random() * 20 - 10; // -10 to +10
+            const finalScore = score + luck;
+
+            if (finalScore > 90) { multiplier = 3.5; verdict = 'BLOCKBUSTER'; verdictColor = 'text-green-400'; studioData.reputation = Math.min(5, studioData.reputation + 1); }
+            else if (finalScore > 75) { multiplier = 1.8; verdict = 'HIT'; verdictColor = 'text-blue-400'; }
+            else if (finalScore > 60) { multiplier = 1.1; verdict = 'AVERAGE'; verdictColor = 'text-gray-400'; }
+            else { multiplier = 0.4; verdict = 'FLOP'; verdictColor = 'text-red-500'; studioData.reputation = Math.max(1, studioData.reputation - 1); }
+
+            const grossBoxOffice = p.totalCost * multiplier;
+            // Tax / Distributor Cut (40%)
+            const netBoxOffice = grossBoxOffice * 0.6;
+            // OTT Sale (Fixed bonus based on star power)
+            const ottSale = p.actor.star * 1000000; 
+
+            const totalRevenue = netBoxOffice + ottSale;
+            const profit = totalRevenue - p.totalCost;
+
+            studioData.funds += totalRevenue;
+            
+            showToast(`+${formatINR(totalRevenue)} (Box Office & OTT Revenue)`, true);
+
+            // Move to past projects
+            studioData.pastProjects.unshift({
+                title: p.title,
+                cover: p.cover,
+                verdict: verdict,
+                verdictColor: verdictColor,
+                budget: p.totalCost,
+                collection: totalRevenue,
+                profit: profit
+            });
+
+            studioData.activeProject = null;
+            updateDashboardUI();
+            await saveToCloud();
+
+            // Simple alert for now, can be a modal later
+            setTimeout(() => {
+                alert(`MOVIE VERDICT: ${verdict}\n\nBudget: ${formatINR(p.totalCost)}\nGross Collection: ${formatINR(grossBoxOffice)}\nNet Share + OTT: ${formatINR(totalRevenue)}\n\nProfit/Loss: ${formatINR(profit)}`);
+            }, 500);
+        }
+
+        function renderPastProjects() {
+            const grid = document.getElementById('past-projects-grid');
+            if(studioData.pastProjects.length === 0) {
+                grid.innerHTML = '<p class="text-gray-600 col-span-full italic">No projects released yet.</p>';
+                return;
             }
-        });
+
+            grid.innerHTML = studioData.pastProjects.map(p => `
+                <div class="glass-panel p-4 rounded-xl border border-white/5 flex gap-4 group hover:border-studio-gold/30 transition">
+                    <img src="${p.cover}" class="w-20 h-28 object-cover rounded shadow-lg">
+                    <div class="flex flex-col justify-center w-full">
+                        <h5 class="font-cinematic font-bold text-white uppercase text-sm truncate">${p.title}</h5>
+                        <p class="font-bold ${p.verdictColor} text-[10px] tracking-widest uppercase mt-1 mb-2">${p.verdict}</p>
+                        
+                        <div class="bg-black/40 rounded p-2 border border-white/5">
+                            <div class="flex justify-between text-[10px] text-gray-400">
+                                <span>Budget</span>
+                                <span>${formatINR(p.budget)}</span>
+                            </div>
+                            <div class="flex justify-between text-[10px] text-gray-400 mt-1">
+                                <span>Revenue</span>
+                                <span class="text-white">${formatINR(p.collection)}</span>
+                            </div>
+                            <div class="flex justify-between text-[10px] font-bold mt-1 pt-1 border-t border-white/10">
+                                <span>Profit</span>
+                                <span class="${p.profit >= 0 ? 'text-green-400' : 'text-red-500'}">${formatINR(p.profit)}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function saveToCloud() {
+            const user = auth.currentUser;
+            if(user) {
+                await updateDoc(doc(db, 'artifacts', APP_ID, 'users', user.uid, 'studio', 'data'), studioData);
+            }
+        }
     </script>
 </body>
 </html>
