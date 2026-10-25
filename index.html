@@ -25,10 +25,11 @@
                     },
                     colors: {
                         studio: {
-                            bg: '#0a0a0a', /* True deep dark */
-                            gold: '#d4af37', /* Luxury Gold */
+                            bg: '#050505',
+                            gold: '#d4af37',
                             goldglow: 'rgba(212, 175, 55, 0.2)',
-                            crimson: '#9e1b32', /* Deep Cinematic Red */
+                            crimson: '#9e1b32',
+                            slate: '#0f172a'
                         }
                     }
                 }
@@ -43,56 +44,57 @@
             overflow-x: hidden; 
         }
         
-        /* Premium Cinematic Background */
+        /* Premium Cinematic Backgrounds */
         .bg-cinema {
             position: fixed; inset: 0; z-index: -2;
-            background: radial-gradient(ellipse at top, #1a1a2e 0%, #050505 80%);
+            background: radial-gradient(circle at 50% 0%, #1e293b 0%, #050505 80%);
         }
         .bg-overlay { 
             position: fixed; inset: 0; z-index: -1; 
             background-image: url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=2070&auto=format&fit=crop');
             background-size: cover; background-position: center;
-            opacity: 0.15; filter: grayscale(80%); mix-blend-mode: overlay;
+            opacity: 0.12; filter: grayscale(100%); mix-blend-mode: overlay;
         }
         
-        /* Premium Glassmorphism */
+        /* Glassmorphism Classes */
         .glass-panel { 
-            background: rgba(10, 10, 10, 0.7); 
+            background: rgba(10, 10, 10, 0.6); 
             backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); 
             border: 1px solid rgba(255, 255, 255, 0.05); 
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); 
         }
         .glass-card { 
-            background: linear-gradient(145deg, rgba(20, 20, 20, 0.8), rgba(5, 5, 5, 0.95)); 
+            background: linear-gradient(145deg, rgba(30, 30, 30, 0.6), rgba(5, 5, 5, 0.9)); 
             border: 1px solid rgba(212, 175, 55, 0.15); 
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255,255,255,0.05); 
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255,255,255,0.05); 
+            backdrop-filter: blur(20px);
         }
         
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 5px; }
+        /* Scrollbar styling */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.3); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #d4af37; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
 
-        /* Custom UI Inputs */
+        /* UI Interactions */
         .nav-item { border-left: 3px solid transparent; transition: all 0.3s ease; }
         .nav-item.active { background: linear-gradient(90deg, rgba(212, 175, 55, 0.1) 0%, transparent 100%); border-left-color: #d4af37; color: #d4af37; }
         .nav-item:hover:not(.active) { background: rgba(255,255,255,0.03); }
 
         .diff-card { border: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: all 0.3s; }
         .diff-card:hover { border-color: rgba(212, 175, 55, 0.5); transform: translateY(-3px); }
-        .diff-card.selected { border-color: #d4af37; background: rgba(212, 175, 55, 0.05); box-shadow: 0 0 20px rgba(212, 175, 55, 0.15); }
+        .diff-card.selected { border-color: #d4af37; background: rgba(212, 175, 55, 0.08); box-shadow: 0 0 20px rgba(212, 175, 55, 0.15); }
 
         .talent-card { border: 1px solid rgba(255,255,255,0.08); cursor: pointer; transition: all 0.2s; background: rgba(0,0,0,0.6); }
         .talent-card:hover { border-color: #d4af37; transform: scale(1.03); }
-        .talent-card.selected { border-color: #d4af37; background: rgba(212, 175, 55, 0.1); box-shadow: 0 0 15px rgba(212, 175, 55, 0.2); }
+        .talent-card.selected { border-color: #d4af37; background: rgba(212, 175, 55, 0.15); box-shadow: 0 0 20px rgba(212, 175, 55, 0.25); }
 
+        /* Charts & Video Elements */
         .chart-container { position: relative; height: 350px; width: 100%; }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-
-        /* Video Background for Production */
+        
         .prod-video-bg {
-            position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; opacity: 0.25; filter: grayscale(30%) contrast(120%);
+            position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; opacity: 0.15; filter: grayscale(50%) contrast(120%);
         }
         .prod-overlay {
             position: absolute; inset: 0; background: linear-gradient(to top, #050505 15%, transparent 50%, #050505 95%); z-index: 1;
@@ -102,309 +104,308 @@
         @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="flex min-h-screen text-sm selection:bg-studio-gold selection:text-black">
+<body class="flex min-h-screen text-sm selection:bg-studio-gold selection:text-black antialiased">
 
+    <!-- Global Backgrounds -->
     <div class="bg-cinema"></div>
     <div class="bg-overlay"></div>
 
-    <!-- Toast Notification -->
-    <div id="toast" class="fixed top-6 right-6 transform -translate-y-24 opacity-0 transition-all duration-400 z-[9999] px-5 py-4 rounded-xl shadow-2xl backdrop-blur-xl font-medium text-sm flex items-center gap-3 border pointer-events-none min-w-[300px]">
-        <i id="toast-icon" class="fa-solid fa-circle-info text-xl"></i>
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed top-6 right-6 transform -translate-y-24 opacity-0 transition-all duration-500 z-[9999] px-6 py-4 rounded-xl shadow-2xl backdrop-blur-2xl font-medium text-sm flex items-center gap-4 border pointer-events-none min-w-[320px]">
+        <i id="toast-icon" class="fa-solid fa-circle-info text-2xl"></i>
         <div class="flex flex-col">
             <span id="toast-title" class="font-bold text-xs uppercase tracking-widest opacity-80 mb-0.5">Notification</span>
-            <span id="toast-msg" class="text-sm text-gray-300">Message</span>
+            <span id="toast-msg" class="text-sm text-white">Message</span>
         </div>
     </div>
 
-    <!-- ================= VIEW 1: LOGIN ================= -->
+    <!-- ================= 1. LOGIN VIEW ================= -->
     <main id="view-login" class="flex-1 flex flex-col items-center justify-center p-6 relative z-50 w-full">
-        <div class="glass-card w-full max-w-md rounded-3xl p-10 text-center relative z-10 mx-4 backdrop-blur-3xl">
-            <i class="fa-solid fa-film text-5xl text-studio-gold mb-6 drop-shadow-[0_0_15px_rgba(212,175,55,0.4)]"></i>
+        <div class="glass-card w-full max-w-md rounded-3xl p-10 text-center relative z-10 mx-4 border-t-2 border-t-studio-gold">
+            <i class="fa-solid fa-film text-6xl text-studio-gold mb-6 drop-shadow-[0_0_20px_rgba(212,175,55,0.5)]"></i>
             <h1 class="text-4xl font-bold tracking-[0.2em] text-white mb-2 font-cinematic uppercase">UR STUDIO</h1>
-            <p class="text-xs text-gray-400 mb-10 tracking-[0.3em] uppercase">Executive Tycoon Simulator</p>
+            <p class="text-xs text-gray-400 mb-12 tracking-[0.3em] uppercase">Executive Tycoon Simulator</p>
 
             <button id="btn-google-login" class="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold py-4 px-6 rounded-xl flex items-center justify-center gap-4 transition-all duration-300 group shadow-lg">
                 <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-6 h-6 group-hover:scale-110 transition-transform">
                 <span class="tracking-wide text-sm font-cinematic font-bold">Authorize via Google</span>
             </button>
-            <div id="login-spinner" class="hidden justify-center mt-6 text-studio-gold items-center gap-3"><div class="loading-spinner"></div> <span class="tracking-widest text-xs uppercase">Authenticating</span></div>
+            <div id="login-spinner" class="hidden justify-center mt-6 text-studio-gold items-center gap-3">
+                <div class="loading-spinner"></div> 
+                <span class="tracking-widest text-xs uppercase font-bold">Authenticating...</span>
+            </div>
         </div>
     </main>
 
-    <!-- ================= VIEW 2: SETUP ================= -->
-    <main id="view-setup" class="flex-1 flex-col items-center justify-center p-6 hidden relative z-40 w-full max-w-4xl mx-auto min-h-screen">
-        <div class="glass-card rounded-3xl p-10 w-full border-t-2 border-t-studio-gold">
-            <div class="mb-10 text-center">
-                <h2 class="font-cinematic text-4xl text-white mb-2 uppercase tracking-widest text-studio-gold">Found Your Studio</h2>
-                <p class="text-xs text-gray-400 uppercase tracking-[0.2em]">Establish your brand and market difficulty.</p>
+    <!-- ================= 2. SETUP VIEW ================= -->
+    <main id="view-setup" class="flex-1 flex-col items-center justify-center p-6 hidden relative z-40 w-full max-w-5xl mx-auto min-h-screen">
+        <div class="glass-card rounded-3xl p-12 w-full border-t-4 border-t-studio-gold shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
+            <div class="mb-12 text-center">
+                <h2 class="font-cinematic text-5xl text-white mb-3 uppercase tracking-widest text-studio-gold drop-shadow-md">Found Your Studio</h2>
+                <p class="text-sm text-gray-400 uppercase tracking-[0.2em]">Establish your brand and set your market difficulty.</p>
             </div>
             
-            <div class="mb-10">
-                <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3 text-center">Studio Branding</label>
-                <input type="text" id="input-studio-name" placeholder="E.g. ASPHEXX STUDIOS" class="w-full max-w-lg mx-auto block bg-black/50 border border-white/10 rounded-xl py-4 px-4 text-white text-center font-cinematic text-2xl focus:outline-none focus:border-studio-gold transition shadow-inner">
+            <div class="mb-12">
+                <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-4 text-center">Studio Branding</label>
+                <input type="text" id="input-studio-name" placeholder="E.g. ASPHEXX STUDIOS" class="w-full max-w-xl mx-auto block bg-black/60 border border-white/10 rounded-2xl py-5 px-6 text-white text-center font-cinematic text-3xl focus:outline-none focus:border-studio-gold transition shadow-inner">
             </div>
 
-            <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4 text-center">Simulation Algorithm</label>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-                <div class="diff-card rounded-xl p-5 bg-black/40 selected" onclick="selectDifficulty('easy', this)">
-                    <h3 class="font-cinematic text-lg font-bold text-white uppercase mb-1">Easy</h3>
-                    <p class="text-[10px] text-gray-400 mb-2">Abundant funding. Weak rivals.</p>
-                    <p class="text-xs text-green-400 font-bold tracking-wide">₹100 Crores</p>
+            <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-5 text-center">Simulation Algorithm</label>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
+                <div class="diff-card rounded-2xl p-6 bg-black/50 selected" onclick="selectDifficulty('easy', this)">
+                    <h3 class="font-cinematic text-xl font-bold text-white uppercase mb-2">Easy</h3>
+                    <p class="text-xs text-gray-400 mb-4 leading-relaxed">Abundant funding. Weak rivals. Perfect for beginners.</p>
+                    <p class="text-sm text-green-400 font-bold tracking-wide">Starting: ₹100 Crores</p>
                 </div>
-                <div class="diff-card rounded-xl p-5 bg-black/40" onclick="selectDifficulty('normal', this)">
-                    <h3 class="font-cinematic text-lg font-bold text-white uppercase mb-1">Normal</h3>
-                    <p class="text-[10px] text-gray-400 mb-2">Standard industry pressure.</p>
-                    <p class="text-xs text-studio-gold font-bold tracking-wide">₹50 Crores</p>
+                <div class="diff-card rounded-2xl p-6 bg-black/50" onclick="selectDifficulty('normal', this)">
+                    <h3 class="font-cinematic text-xl font-bold text-white uppercase mb-2">Normal</h3>
+                    <p class="text-xs text-gray-400 mb-4 leading-relaxed">Standard industry pressure and balanced economics.</p>
+                    <p class="text-sm text-studio-gold font-bold tracking-wide">Starting: ₹50 Crores</p>
                 </div>
-                <div class="diff-card rounded-xl p-5 bg-black/40" onclick="selectDifficulty('hard', this)">
-                    <h3 class="font-cinematic text-lg font-bold text-studio-crimson uppercase mb-1">Hard</h3>
-                    <p class="text-[10px] text-gray-400 mb-2">Tight budgets. Aggressive dilemmas.</p>
-                    <p class="text-xs text-orange-400 font-bold tracking-wide">₹20 Crores</p>
+                <div class="diff-card rounded-2xl p-6 bg-black/50" onclick="selectDifficulty('hard', this)">
+                    <h3 class="font-cinematic text-xl font-bold text-studio-crimson uppercase mb-2">Hard</h3>
+                    <p class="text-xs text-gray-400 mb-4 leading-relaxed">Tight budgets. Aggressive dilemmas and rival clashes.</p>
+                    <p class="text-sm text-orange-400 font-bold tracking-wide">Starting: ₹20 Crores</p>
                 </div>
-                <div class="diff-card rounded-xl p-5 bg-black/40 border-red-900/30" onclick="selectDifficulty('hardcore', this)">
-                    <h3 class="font-cinematic text-lg font-bold text-red-600 uppercase mb-1">Hardcore</h3>
-                    <p class="text-[10px] text-gray-400 mb-2">Indie survival. Ruthless critics.</p>
-                    <p class="text-xs text-red-500 font-bold tracking-wide">₹5 Crores</p>
+                <div class="diff-card rounded-2xl p-6 bg-black/50 border-red-900/40 hover:border-red-600" onclick="selectDifficulty('hardcore', this)">
+                    <h3 class="font-cinematic text-xl font-bold text-red-600 uppercase mb-2">Hardcore</h3>
+                    <p class="text-xs text-gray-400 mb-4 leading-relaxed">Indie survival. Ruthless critics. Permadeath stakes.</p>
+                    <p class="text-sm text-red-500 font-bold tracking-wide">Starting: ₹5 Crores</p>
                 </div>
             </div>
 
-            <button id="btn-init-studio" class="w-full max-w-md mx-auto block bg-studio-gold hover:bg-white text-black font-cinematic font-bold tracking-[0.2em] py-4 rounded-xl uppercase transition-all shadow-[0_0_20px_rgba(212,175,55,0.2)]">
+            <button id="btn-init-studio" class="w-full max-w-md mx-auto block bg-studio-gold hover:bg-white text-black font-cinematic font-bold tracking-[0.2em] py-5 rounded-2xl uppercase transition-all shadow-[0_0_25px_rgba(212,175,55,0.4)] text-lg">
                 Launch Studio
             </button>
         </div>
     </main>
 
-    <!-- ================= VIEW 3: MAIN TYCOON DASHBOARD ================= -->
+    <!-- ================= 3. MAIN DASHBOARD VIEW ================= -->
     <div id="view-app" class="flex-1 flex w-full relative z-30 hidden h-screen overflow-hidden">
         
         <!-- SIDEBAR -->
-        <aside class="w-64 glass-panel border-r border-white/5 flex flex-col flex-shrink-0 h-full shadow-2xl z-40 relative">
-            <div class="p-6 border-b border-white/5 flex flex-col items-center justify-center text-center">
-                <img id="side-studio-logo" src="" alt="Logo" class="w-16 h-16 rounded-full border border-studio-gold/50 shadow-[0_0_15px_rgba(212,175,55,0.3)] mb-3 object-cover bg-black">
-                <h1 id="side-studio-name" class="font-cinematic font-bold tracking-[0.1em] text-lg text-white uppercase truncate w-full">STUDIO</h1>
+        <aside class="w-64 glass-panel border-r border-white/5 flex flex-col flex-shrink-0 h-full shadow-2xl z-40 relative bg-black/50">
+            <div class="p-8 border-b border-white/5 flex flex-col items-center justify-center text-center">
+                <div class="relative mb-4">
+                    <img id="side-studio-logo" src="" alt="Logo" class="w-20 h-20 rounded-full border-2 border-studio-gold/60 shadow-[0_0_20px_rgba(212,175,55,0.3)] object-cover bg-black">
+                </div>
+                <h1 id="side-studio-name" class="font-cinematic font-bold tracking-[0.1em] text-xl text-white uppercase truncate w-full">STUDIO</h1>
             </div>
             
-            <nav class="flex-1 flex flex-col py-4 overflow-y-auto custom-scrollbar space-y-1">
-                <div class="px-6 py-2 text-[9px] text-gray-500 font-bold tracking-[0.2em] uppercase mt-2">Executive</div>
-                <button onclick="switchTab('tab-dashboard')" id="nav-dashboard" class="nav-item active flex items-center gap-4 px-6 py-3 text-xs text-gray-300 w-full text-left uppercase font-bold tracking-widest"><i class="fa-solid fa-chart-pie w-4 text-center"></i> HQ</button>
-                <button onclick="switchTab('tab-inbox')" id="nav-inbox" class="nav-item flex items-center justify-between px-6 py-3 text-xs text-gray-300 w-full text-left uppercase font-bold tracking-widest">
+            <nav class="flex-1 flex flex-col py-6 overflow-y-auto custom-scrollbar space-y-2">
+                <div class="px-8 py-2 text-[10px] text-gray-500 font-bold tracking-[0.2em] uppercase">Executive</div>
+                <button onclick="switchTab('tab-dashboard')" id="nav-dashboard" class="nav-item active flex items-center gap-4 px-8 py-3.5 text-sm text-gray-300 w-full text-left uppercase font-bold tracking-widest"><i class="fa-solid fa-chart-pie w-4 text-center"></i> HQ</button>
+                <button onclick="switchTab('tab-inbox')" id="nav-inbox" class="nav-item flex items-center justify-between px-8 py-3.5 text-sm text-gray-300 w-full text-left uppercase font-bold tracking-widest">
                     <div class="flex gap-4 items-center"><i class="fa-solid fa-envelope w-4 text-center"></i> Inbox</div>
                     <span id="side-badge" class="bg-studio-crimson text-white text-[10px] px-2 py-0.5 rounded shadow-lg hidden">0</span>
                 </button>
-                <button onclick="switchTab('tab-production')" id="nav-production" class="nav-item flex items-center justify-between px-6 py-3 text-xs text-gray-300 w-full text-left uppercase font-bold tracking-widest">
+                <button onclick="switchTab('tab-production')" id="nav-production" class="nav-item flex items-center justify-between px-8 py-3.5 text-sm text-gray-300 w-full text-left uppercase font-bold tracking-widest">
                     <div class="flex gap-4 items-center"><i class="fa-solid fa-video w-4 text-center"></i> Studio Lot</div>
                     <i id="prod-active-icon" class="fa-solid fa-circle text-studio-crimson text-[8px] animate-pulse hidden shadow-[0_0_10px_rgba(158,27,50,0.8)]"></i>
                 </button>
 
-                <div class="px-6 py-2 text-[9px] text-gray-500 font-bold tracking-[0.2em] uppercase mt-6">Social Engine</div>
-                <button onclick="switchTab('tab-linta')" id="nav-linta" class="nav-item flex items-center gap-4 px-6 py-3 text-xs text-gray-300 w-full text-left uppercase font-bold tracking-widest"><i class="fa-brands fa-instagram w-4 text-center text-pink-500"></i> Lintagram</button>
-                <button onclick="switchTab('tab-youtube')" id="nav-youtube" class="nav-item flex items-center gap-4 px-6 py-3 text-xs text-gray-300 w-full text-left uppercase font-bold tracking-widest"><i class="fa-brands fa-youtube w-4 text-center text-red-500"></i> YouTube</button>
+                <div class="px-8 py-2 text-[10px] text-gray-500 font-bold tracking-[0.2em] uppercase mt-6">Social Engine</div>
+                <button onclick="switchTab('tab-linta')" id="nav-linta" class="nav-item flex items-center gap-4 px-8 py-3.5 text-sm text-gray-300 w-full text-left uppercase font-bold tracking-widest"><i class="fa-brands fa-instagram w-4 text-center text-pink-500"></i> Lintagram</button>
+                <button onclick="switchTab('tab-youtube')" id="nav-youtube" class="nav-item flex items-center gap-4 px-8 py-3.5 text-sm text-gray-300 w-full text-left uppercase font-bold tracking-widest"><i class="fa-brands fa-youtube w-4 text-center text-red-500"></i> YouTube</button>
 
-                <div class="px-6 py-2 text-[9px] text-gray-500 font-bold tracking-[0.2em] uppercase mt-6">Vault</div>
-                <button onclick="switchTab('tab-history')" id="nav-history" class="nav-item flex items-center gap-4 px-6 py-3 text-xs text-gray-300 w-full text-left uppercase font-bold tracking-widest"><i class="fa-solid fa-film w-4 text-center"></i> Archives</button>
+                <div class="px-8 py-2 text-[10px] text-gray-500 font-bold tracking-[0.2em] uppercase mt-6">Vault</div>
+                <button onclick="switchTab('tab-history')" id="nav-history" class="nav-item flex items-center gap-4 px-8 py-3.5 text-sm text-gray-300 w-full text-left uppercase font-bold tracking-widest"><i class="fa-solid fa-film w-4 text-center"></i> Archives</button>
             </nav>
 
-            <div class="p-6 border-t border-white/5 bg-black/20 flex justify-between items-center">
+            <div class="p-6 border-t border-white/5 bg-black/40 flex justify-between items-center">
                 <div>
-                    <p class="text-[9px] text-gray-500 uppercase tracking-widest mb-1 font-bold">Reputation</p>
-                    <div class="flex gap-1 text-studio-gold text-[10px]" id="side-reputation"></div>
+                    <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-1.5 font-bold">Reputation</p>
+                    <div class="flex gap-1 text-studio-gold text-xs" id="side-reputation"></div>
                 </div>
-                <button id="btn-logout" class="text-gray-500 hover:text-studio-crimson transition"><i class="fa-solid fa-power-off"></i></button>
+                <button id="btn-logout" class="text-gray-500 hover:text-studio-crimson transition bg-white/5 p-3 rounded-xl hover:bg-white/10"><i class="fa-solid fa-power-off"></i></button>
             </div>
         </aside>
 
-        <!-- MAIN CONTENT AREA -->
+        <!-- MAIN CONTENT TABS -->
         <main class="flex-1 flex flex-col h-full overflow-hidden relative">
             
             <!-- Global Top Bar -->
-            <header class="w-full px-8 py-5 glass-panel border-b border-white/5 flex justify-between items-center sticky top-0 z-30 bg-black/40">
+            <header class="w-full px-10 py-6 glass-panel border-b border-white/5 flex justify-between items-center sticky top-0 z-30 bg-black/60">
                 <div>
-                    <h2 id="header-title" class="font-cinematic text-xl text-white uppercase tracking-[0.2em]">Executive HQ</h2>
+                    <h2 id="header-title" class="font-cinematic text-2xl font-bold text-white uppercase tracking-[0.2em]">Executive HQ</h2>
                 </div>
                 <div class="text-right">
-                    <p class="text-[9px] text-gray-400 uppercase tracking-[0.2em] mb-1 font-bold">Available Capital</p>
-                    <p id="top-funds" class="font-bold text-2xl text-green-400 tracking-wide font-cinematic drop-shadow-md">₹0</p>
+                    <p class="text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-1 font-bold">Available Capital</p>
+                    <p id="top-funds" class="font-bold text-3xl text-green-400 tracking-wide font-cinematic drop-shadow-md">₹0</p>
                 </div>
             </header>
 
-            <div class="flex-1 overflow-y-auto custom-scrollbar p-6 lg:p-10 pb-24 relative z-20">
+            <div class="flex-1 overflow-y-auto custom-scrollbar p-8 lg:p-12 pb-24 relative z-20">
                 
-                <!-- TAB: DASHBOARD -->
-                <div id="tab-dashboard" class="tab-content h-full flex flex-col gap-8">
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Custom Project Card -->
-                        <div class="glass-card rounded-2xl p-8 border-l-2 border-l-studio-gold flex flex-col justify-between hover:scale-[1.01] transition-transform">
+                <!-- 3.1 TAB: DASHBOARD -->
+                <div id="tab-dashboard" class="tab-content h-full flex flex-col gap-10">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        
+                        <!-- Create Original IP -->
+                        <div class="glass-card rounded-3xl p-10 border-l-4 border-l-studio-gold flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300">
                             <div>
-                                <h3 class="font-cinematic text-xl font-bold text-white uppercase tracking-widest mb-2"><i class="fa-solid fa-pen-nib text-studio-gold mr-3"></i> Original Script</h3>
-                                <p class="text-xs text-gray-400 mb-6 leading-relaxed">Write and produce an original IP from scratch. Maintain full creative control over genre and scale.</p>
+                                <h3 class="font-cinematic text-2xl font-bold text-white uppercase tracking-widest mb-3"><i class="fa-solid fa-pen-nib text-studio-gold mr-3"></i> Original Script</h3>
+                                <p class="text-sm text-gray-400 mb-8 leading-relaxed">Write and produce an original IP from scratch. Maintain full creative control over the genre, pacing, and overall scale of the production.</p>
                             </div>
-                            <button onclick="openCreateModal()" class="w-full bg-black/50 border border-studio-gold text-studio-gold hover:bg-studio-gold hover:text-black font-cinematic font-bold py-4 rounded-xl uppercase transition tracking-widest text-sm">Initialize IP (₹1 Cr)</button>
+                            <button onclick="openCreateModal()" class="w-full bg-black/60 border-2 border-studio-gold text-studio-gold hover:bg-studio-gold hover:text-black font-cinematic font-bold py-5 rounded-2xl uppercase transition tracking-widest text-sm shadow-[0_0_20px_rgba(212,175,55,0.1)]">Initialize IP (₹1 Cr)</button>
                         </div>
 
-                        <!-- Scout Scripts Card -->
-                        <div class="glass-card rounded-2xl p-8 border-l-2 border-l-studio-crimson flex flex-col justify-between hover:scale-[1.01] transition-transform">
+                        <!-- Scout Agencies -->
+                        <div class="glass-card rounded-3xl p-10 border-l-4 border-l-studio-crimson flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300">
                             <div>
-                                <h3 class="font-cinematic text-xl font-bold text-white uppercase tracking-widest mb-2"><i class="fa-solid fa-search text-studio-crimson mr-3"></i> Scout Market</h3>
-                                <p class="text-xs text-gray-400 mb-6 leading-relaxed">Receive high-profile pitches from top agencies. Review detailed scripts in your Inbox.</p>
+                                <h3 class="font-cinematic text-2xl font-bold text-white uppercase tracking-widest mb-3"><i class="fa-solid fa-search text-studio-crimson mr-3"></i> Scout Market</h3>
+                                <p class="text-sm text-gray-400 mb-8 leading-relaxed">Send out a request to top talent agencies. Receive highly detailed script pitches directly in your Inbox and acquire the best concepts.</p>
                             </div>
-                            <button onclick="scoutScripts()" class="w-full bg-studio-crimson hover:bg-red-800 text-white font-cinematic font-bold py-4 rounded-xl uppercase transition shadow-[0_0_15px_rgba(158,27,50,0.3)] tracking-widest text-sm">Scout Agencies</button>
+                            <button onclick="scoutScripts()" class="w-full bg-studio-crimson hover:bg-red-800 text-white font-cinematic font-bold py-5 rounded-2xl uppercase transition shadow-[0_0_20px_rgba(158,27,50,0.4)] tracking-widest text-sm">Scout Agencies</button>
                         </div>
                     </div>
 
-                    <!-- Stats -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
-                        <div class="glass-panel p-6 rounded-xl flex items-center gap-5 border-t border-t-white/10 relative group">
-                            <div class="w-12 h-12 rounded-full bg-blue-500/10 text-blue-400 flex items-center justify-center text-xl border border-blue-500/20"><i class="fa-solid fa-video"></i></div>
+                    <!-- Dashboard Stats -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-4">
+                        <div class="glass-panel p-8 rounded-2xl flex items-center gap-6 border-t border-t-white/10 relative group bg-black/40">
+                            <div class="w-14 h-14 rounded-full bg-blue-500/10 text-blue-400 flex items-center justify-center text-2xl border border-blue-500/20"><i class="fa-solid fa-video"></i></div>
                             <div class="overflow-hidden flex-1">
-                                <p class="text-[9px] text-gray-500 uppercase tracking-[0.2em] font-bold mb-1">Active Production</p>
-                                <p id="dash-stat-active" class="font-cinematic text-lg text-white font-bold truncate">Idle</p>
+                                <p class="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-bold mb-1">Active Production</p>
+                                <p id="dash-stat-active" class="font-cinematic text-xl text-white font-bold truncate">Idle</p>
                             </div>
-                            <button id="btn-reset-project" onclick="forceResetProject()" class="absolute right-4 top-1/2 -translate-y-1/2 text-red-500 hover:text-red-400 hidden group-hover:block text-[10px] uppercase font-bold tracking-widest bg-red-500/10 px-3 py-1.5 rounded transition" title="Force Reset Stuck Project"><i class="fa-solid fa-trash mr-1"></i> Cancel</button>
+                            <!-- FIX: Visible Cancel Button -->
+                            <button id="btn-reset-project" onclick="forceResetProject()" class="absolute right-6 top-1/2 -translate-y-1/2 text-red-500 hover:text-white hover:bg-red-600 hidden group-hover:flex items-center gap-2 text-[10px] uppercase font-bold tracking-widest bg-red-500/10 border border-red-500/30 px-4 py-2 rounded-lg transition" title="Cancel this project"><i class="fa-solid fa-trash"></i> Cancel</button>
                         </div>
-                        <div class="glass-panel p-6 rounded-xl flex items-center gap-5 border-t border-t-white/10">
-                            <div class="w-12 h-12 rounded-full bg-studio-gold/10 text-studio-gold flex items-center justify-center text-xl border border-studio-gold/20"><i class="fa-solid fa-ticket"></i></div>
+                        <div class="glass-panel p-8 rounded-2xl flex items-center gap-6 border-t border-t-white/10 bg-black/40">
+                            <div class="w-14 h-14 rounded-full bg-studio-gold/10 text-studio-gold flex items-center justify-center text-2xl border border-studio-gold/20"><i class="fa-solid fa-ticket"></i></div>
                             <div>
-                                <p class="text-[9px] text-gray-500 uppercase tracking-[0.2em] font-bold mb-1">Films Released</p>
-                                <p id="dash-stat-count" class="font-cinematic text-2xl text-white font-bold">0</p>
+                                <p class="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-bold mb-1">Films Released</p>
+                                <p id="dash-stat-count" class="font-cinematic text-3xl text-white font-bold">0</p>
                             </div>
                         </div>
-                        <div class="glass-panel p-6 rounded-xl flex items-center gap-5 border-t border-t-white/10">
-                            <div class="w-12 h-12 rounded-full bg-pink-500/10 text-pink-400 flex items-center justify-center text-xl border border-pink-500/20"><i class="fa-solid fa-users"></i></div>
+                        <div class="glass-panel p-8 rounded-2xl flex items-center gap-6 border-t border-t-white/10 bg-black/40">
+                            <div class="w-14 h-14 rounded-full bg-pink-500/10 text-pink-400 flex items-center justify-center text-2xl border border-pink-500/20"><i class="fa-solid fa-users"></i></div>
                             <div>
-                                <p class="text-[9px] text-gray-500 uppercase tracking-[0.2em] font-bold mb-1">Total Fanbase</p>
-                                <p id="dash-stat-fans" class="font-cinematic text-2xl text-white font-bold">0</p>
+                                <p class="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-bold mb-1">Total Fanbase</p>
+                                <p id="dash-stat-fans" class="font-cinematic text-3xl text-white font-bold">0</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- TAB: INBOX -->
+                <!-- 3.2 TAB: INBOX -->
                 <div id="tab-inbox" class="tab-content hidden h-full">
-                    <div class="glass-card rounded-2xl h-[calc(100vh-200px)] flex overflow-hidden border border-white/5">
-                        <div class="w-1/3 border-r border-white/5 bg-black/40 overflow-y-auto custom-scrollbar" id="mail-list"></div>
-                        <div class="w-2/3 p-10 overflow-y-auto custom-scrollbar bg-black/20 relative" id="mail-detail">
-                            <div class="absolute inset-0 flex flex-col items-center justify-center text-gray-600 font-cinematic text-xl uppercase tracking-widest pointer-events-none opacity-50">
-                                <i class="fa-regular fa-envelope-open text-4xl mb-3"></i>
+                    <div class="glass-card rounded-3xl h-[calc(100vh-220px)] flex overflow-hidden border border-white/10">
+                        <div class="w-1/3 border-r border-white/10 bg-black/60 overflow-y-auto custom-scrollbar" id="mail-list"></div>
+                        <div class="w-2/3 p-12 overflow-y-auto custom-scrollbar bg-black/30 relative" id="mail-detail">
+                            <div class="absolute inset-0 flex flex-col items-center justify-center text-gray-600 font-cinematic text-2xl uppercase tracking-widest pointer-events-none opacity-40">
+                                <i class="fa-regular fa-envelope-open text-5xl mb-4"></i>
                                 Select a message
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- TAB: PRODUCTION (CRITICAL FIX APPLIED HERE) -->
+                <!-- 3.3 TAB: PRODUCTION (STUDIO LOT) -->
                 <div id="tab-production" class="tab-content hidden h-full">
-                    <div id="prod-container" class="glass-card rounded-3xl p-8 min-h-[calc(100vh-200px)] flex flex-col relative overflow-hidden">
-                        <!-- Content dynamically injected -->
+                    <div id="prod-container" class="glass-card rounded-3xl p-10 min-h-[calc(100vh-220px)] flex flex-col relative overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.8)]">
+                        <!-- Rendered by JS -->
                     </div>
                 </div>
 
-                <!-- TAB: LINTAGRAM -->
-                <div id="tab-linta" class="tab-content hidden h-full flex justify-center items-start pt-4">
-                    <div class="w-full max-w-[400px] h-[750px] bg-black border border-[#262626] rounded-[45px] overflow-hidden flex flex-col shadow-2xl ring-8 ring-gray-900 relative">
-                        <!-- Linta Header -->
-                        <div class="h-14 flex items-center px-5 justify-between bg-black border-b border-[#262626] z-10">
-                            <div class="flex items-center gap-1"><i class="fa-solid fa-lock text-white text-[10px]"></i><span id="linta-handle" class="font-bold text-white tracking-wide text-lg">studio</span><i class="fa-solid fa-angle-down text-white text-xs ml-1"></i></div>
-                            <div class="flex gap-4 text-white text-xl">
+                <!-- 3.4 TAB: LINTAGRAM -->
+                <div id="tab-linta" class="tab-content hidden h-full flex justify-center items-start pt-2">
+                    <div class="w-full max-w-[420px] h-[780px] bg-black border border-[#262626] rounded-[50px] overflow-hidden flex flex-col shadow-2xl ring-8 ring-gray-900 relative">
+                        <div class="h-16 flex items-center px-6 justify-between bg-black border-b border-[#262626] z-10 flex-shrink-0">
+                            <div class="flex items-center gap-1"><i class="fa-solid fa-lock text-white text-[10px]"></i><span id="linta-handle" class="font-bold text-white tracking-wide text-xl">studio</span><i class="fa-solid fa-angle-down text-white text-xs ml-1"></i></div>
+                            <div class="flex gap-5 text-white text-2xl">
                                 <i class="fa-regular fa-square-plus cursor-pointer hover:text-gray-300" onclick="postSocial('linta')"></i>
                                 <i class="fa-solid fa-bars"></i>
                             </div>
                         </div>
-                        <!-- Profile -->
-                        <div class="p-5 bg-black z-10">
-                            <div class="flex items-center gap-6 mb-4">
-                                <img id="linta-profile-pic" src="" class="w-20 h-20 rounded-full border border-gray-700 p-0.5 object-cover bg-gray-900">
+                        <div class="p-6 bg-black z-10 flex-shrink-0">
+                            <div class="flex items-center gap-6 mb-5">
+                                <img id="linta-profile-pic" src="" class="w-24 h-24 rounded-full border border-gray-700 p-0.5 object-cover bg-gray-900">
                                 <div class="flex-1 flex justify-around text-center text-white">
-                                    <div class="flex flex-col"><span id="linta-posts" class="font-bold text-lg">0</span><span class="text-[11px] text-gray-400">posts</span></div>
-                                    <div class="flex flex-col"><span id="linta-followers" class="font-bold text-lg">0</span><span class="text-[11px] text-gray-400">followers</span></div>
-                                    <div class="flex flex-col"><span class="font-bold text-lg">0</span><span class="text-[11px] text-gray-400">following</span></div>
+                                    <div class="flex flex-col"><span id="linta-posts" class="font-bold text-xl">0</span><span class="text-[12px] text-gray-400">posts</span></div>
+                                    <div class="flex flex-col"><span id="linta-followers" class="font-bold text-xl">0</span><span class="text-[12px] text-gray-400">followers</span></div>
+                                    <div class="flex flex-col"><span class="font-bold text-xl">0</span><span class="text-[12px] text-gray-400">following</span></div>
                                 </div>
                             </div>
                             <p class="font-bold text-sm text-white" id="linta-name">Studio</p>
-                            <p class="text-xs text-gray-300 whitespace-pre-wrap leading-tight mt-1">Official Studio Account 🎬
-Making cinematic history.
-Link in bio.</p>
-                            <div class="flex gap-2 mt-4">
-                                <button class="flex-1 bg-[#262626] text-white font-bold py-1.5 rounded-lg text-sm transition hover:bg-[#333]">Edit profile</button>
-                                <button class="flex-1 bg-[#262626] text-white font-bold py-1.5 rounded-lg text-sm transition hover:bg-[#333]">Share profile</button>
+                            <p class="text-sm text-gray-300 whitespace-pre-wrap leading-snug mt-1">Official Studio Account 🎬<br>Making cinematic history.<br>Link in bio.</p>
+                            <div class="flex gap-2 mt-5">
+                                <button class="flex-1 bg-[#262626] text-white font-bold py-2 rounded-xl text-sm transition hover:bg-[#333]">Edit profile</button>
+                                <button class="flex-1 bg-[#262626] text-white font-bold py-2 rounded-xl text-sm transition hover:bg-[#333]">Share profile</button>
                             </div>
                         </div>
-                        <div class="flex border-t border-b border-[#262626] bg-black z-10">
-                            <div class="flex-1 text-center py-2 text-white border-b-2 border-white"><i class="fa-solid fa-border-all"></i></div>
-                            <div class="flex-1 text-center py-2 text-gray-600"><i class="fa-solid fa-video"></i></div>
-                            <div class="flex-1 text-center py-2 text-gray-600"><i class="fa-regular fa-user"></i></div>
+                        <div class="flex border-t border-b border-[#262626] bg-black z-10 flex-shrink-0">
+                            <div class="flex-1 text-center py-3 text-white border-b-2 border-white"><i class="fa-solid fa-border-all text-lg"></i></div>
+                            <div class="flex-1 text-center py-3 text-gray-600"><i class="fa-solid fa-video text-lg"></i></div>
+                            <div class="flex-1 text-center py-3 text-gray-600"><i class="fa-regular fa-user text-lg"></i></div>
                         </div>
                         <!-- Feed -->
                         <div class="flex-1 overflow-y-auto hide-scrollbar bg-black z-10 pb-16" id="linta-feed">
-                            <div class="flex flex-col items-center justify-center h-full text-gray-600 text-sm gap-3">
-                                <i class="fa-solid fa-camera text-4xl"></i>
+                            <div class="flex flex-col items-center justify-center h-full text-gray-600 text-sm gap-4">
+                                <i class="fa-solid fa-camera text-5xl"></i>
                                 <span>No posts yet. Start production to upload.</span>
                             </div>
                         </div>
-                        <!-- Linta Bottom Nav -->
-                        <div class="absolute bottom-0 w-full h-12 bg-black border-t border-[#262626] flex justify-around items-center text-white text-2xl z-20">
+                        <div class="absolute bottom-0 w-full h-14 bg-black border-t border-[#262626] flex justify-around items-center text-white text-2xl z-20">
                             <i class="fa-solid fa-house"></i>
                             <i class="fa-solid fa-magnifying-glass text-gray-600"></i>
                             <i class="fa-regular fa-square-plus text-gray-600"></i>
                             <i class="fa-brands fa-instagram text-gray-600"></i>
-                            <img id="linta-nav-pic" src="" class="w-6 h-6 rounded-full object-cover border border-gray-700 bg-gray-900">
+                            <img id="linta-nav-pic" src="" class="w-7 h-7 rounded-full object-cover border border-gray-700 bg-gray-900">
                         </div>
                     </div>
                 </div>
 
-                <!-- TAB: YOUTUBE -->
-                <div id="tab-youtube" class="tab-content hidden h-full flex justify-center items-start pt-4">
-                    <div class="w-full max-w-[1000px] h-full max-h-[800px] bg-[#0f0f0f] border border-[#272727] rounded-3xl overflow-hidden flex flex-col shadow-2xl">
-                        <!-- YT Header -->
+                <!-- 3.5 TAB: YOUTUBE -->
+                <div id="tab-youtube" class="tab-content hidden h-full flex justify-center items-start pt-2">
+                    <div class="w-full max-w-[1100px] h-[800px] bg-[#0f0f0f] border border-[#272727] rounded-3xl overflow-hidden flex flex-col shadow-2xl">
                         <div class="h-16 border-b border-[#272727] flex items-center px-6 justify-between bg-[#0f0f0f] flex-shrink-0">
-                            <div class="flex items-center gap-1 text-xl font-bold text-white tracking-tighter"><i class="fa-brands fa-youtube text-red-600 text-3xl mr-2"></i> StudioTube</div>
-                            <div class="flex-1 max-w-xl mx-8 hidden md:flex">
-                                <div class="flex w-full border border-[#303030] rounded-full overflow-hidden bg-[#121212] h-10"><input type="text" placeholder="Search" class="bg-transparent text-white px-4 flex-1 outline-none"><button class="bg-[#222] px-5 border-l border-[#303030] text-gray-400 hover:bg-[#303030]"><i class="fa-solid fa-magnifying-glass"></i></button></div>
+                            <div class="flex items-center gap-2 text-2xl font-bold text-white tracking-tighter"><i class="fa-brands fa-youtube text-red-600 text-3xl"></i> StudioTube</div>
+                            <div class="flex-1 max-w-2xl mx-10 hidden md:flex">
+                                <div class="flex w-full border border-[#303030] rounded-full overflow-hidden bg-[#121212] h-10"><input type="text" placeholder="Search" class="bg-transparent text-white px-5 flex-1 outline-none text-sm"><button class="bg-[#222] px-6 border-l border-[#303030] text-gray-400 hover:bg-[#303030]"><i class="fa-solid fa-magnifying-glass"></i></button></div>
                             </div>
-                            <button onclick="postSocial('youtube')" class="bg-white text-black hover:bg-gray-200 px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2 transition"><i class="fa-solid fa-video"></i> Upload</button>
+                            <button onclick="postSocial('youtube')" class="bg-white text-black hover:bg-gray-200 px-5 py-2 rounded-full text-sm font-bold flex items-center gap-2 transition"><i class="fa-solid fa-video"></i> Create</button>
                         </div>
-                        <!-- Channel Header -->
-                        <div class="bg-[#181818] p-6 border-b border-[#272727] flex gap-6 items-center flex-shrink-0">
-                            <img id="yt-profile-pic" src="" class="w-24 h-24 rounded-full object-cover border border-gray-700 bg-gray-900">
+                        <div class="bg-[#181818] p-8 border-b border-[#272727] flex gap-8 items-center flex-shrink-0">
+                            <img id="yt-profile-pic" src="" class="w-32 h-32 rounded-full object-cover border border-gray-700 bg-gray-900">
                             <div>
-                                <h2 class="text-3xl font-bold text-white mb-1" id="yt-name">Studio</h2>
-                                <p class="text-gray-400 text-sm mb-2"><span id="yt-handle">@studio</span> • <span id="yt-subs">0</span> subscribers • <span id="yt-videos-count">0</span> videos</p>
-                                <p class="text-gray-400 text-xs">Official trailers and teasers. Subscribe for more.</p>
+                                <h2 class="text-4xl font-bold text-white mb-2" id="yt-name">Studio</h2>
+                                <p class="text-gray-400 text-sm mb-3"><span id="yt-handle">@studio</span> • <span id="yt-subs">0</span> subscribers • <span id="yt-videos-count">0</span> videos</p>
+                                <p class="text-gray-400 text-sm">Official trailers and teasers. Subscribe for exclusive content.</p>
                             </div>
                         </div>
-                        <div class="flex border-b border-[#272727] px-6 text-sm font-bold text-gray-400 flex-shrink-0"><div class="py-3 px-4 border-b-2 border-white text-white">HOME</div><div class="py-3 px-4">VIDEOS</div><div class="py-3 px-4">SHORTS</div></div>
-                        <!-- YT Feed -->
-                        <div class="flex-1 overflow-y-auto custom-scrollbar p-6 bg-[#0f0f0f]" id="yt-feed">
-                             <div class="flex flex-col items-center justify-center h-full text-gray-600 text-sm gap-3">
-                                 <i class="fa-solid fa-film text-4xl"></i>
+                        <div class="flex border-b border-[#272727] px-8 text-sm font-bold text-gray-400 flex-shrink-0"><div class="py-4 px-6 border-b-2 border-white text-white">HOME</div><div class="py-4 px-6">VIDEOS</div><div class="py-4 px-6">SHORTS</div><div class="py-4 px-6">COMMUNITY</div></div>
+                        <div class="flex-1 overflow-y-auto custom-scrollbar p-8 bg-[#0f0f0f]" id="yt-feed">
+                             <div class="flex flex-col items-center justify-center h-full text-gray-600 text-base gap-4">
+                                 <i class="fa-solid fa-film text-6xl"></i>
                                  <span>No videos uploaded. Start a production first.</span>
                              </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- TAB: HISTORY -->
+                <!-- 3.6 TAB: HISTORY -->
                 <div id="tab-history" class="tab-content hidden h-full">
-                    <div id="history-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+                    <div id="history-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"></div>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- CREATE PROJECT MODAL -->
-    <div id="modal-create" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-xl hidden items-center justify-center flex-col">
-        <div class="glass-card w-full max-w-lg rounded-3xl p-10 relative border-t-2 border-t-studio-gold">
-            <button onclick="closeCreateModal()" class="absolute top-6 right-6 text-gray-500 hover:text-white transition"><i class="fa-solid fa-xmark text-2xl"></i></button>
-            <h2 class="font-cinematic text-3xl text-studio-gold mb-8 uppercase tracking-widest text-center">Develop Original IP</h2>
+    <!-- MODAL: CREATE CUSTOM IP -->
+    <div id="modal-create" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-2xl hidden items-center justify-center flex-col">
+        <div class="glass-card w-full max-w-xl rounded-3xl p-12 relative border-t-4 border-t-studio-gold shadow-[0_0_50px_rgba(212,175,55,0.2)]">
+            <button onclick="closeCreateModal()" class="absolute top-6 right-6 text-gray-500 hover:text-white transition bg-black/50 w-10 h-10 rounded-full flex items-center justify-center"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <h2 class="font-cinematic text-4xl text-studio-gold mb-10 uppercase tracking-widest text-center drop-shadow-md">Develop Original IP</h2>
             
-            <div class="space-y-6">
+            <div class="space-y-8">
                 <div>
-                    <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Movie Title</label>
-                    <input type="text" id="cp-title" class="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white font-cinematic text-xl focus:border-studio-gold outline-none shadow-inner" placeholder="e.g. The Silent Echo">
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Movie Title</label>
+                    <input type="text" id="cp-title" class="w-full bg-black/70 border border-white/10 rounded-2xl p-5 text-white font-cinematic text-2xl focus:border-studio-gold outline-none shadow-inner transition" placeholder="e.g. The Silent Echo">
                 </div>
                 <div>
-                    <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2">Genre & Scale</label>
-                    <select id="cp-genre" class="w-full bg-black/50 border border-white/10 rounded-xl p-4 text-white focus:border-studio-gold outline-none appearance-none font-medium text-sm">
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Genre & Scale</label>
+                    <select id="cp-genre" class="w-full bg-black/70 border border-white/10 rounded-2xl p-5 text-white focus:border-studio-gold outline-none appearance-none font-medium text-base shadow-inner">
                         <option value="Action Epic">Action Epic (High Scale, 70 Days)</option>
                         <option value="Sci-Fi Survival">Sci-Fi Survival (Med Scale, 60 Days)</option>
                         <option value="Psychological Thriller">Psychological Thriller (Low Scale, 40 Days)</option>
@@ -412,35 +413,38 @@ Link in bio.</p>
                         <option value="Horror">Horror (Micro Scale, 25 Days)</option>
                     </select>
                 </div>
-                <div class="pt-4">
-                    <button onclick="submitCustomProject()" class="w-full bg-studio-gold hover:bg-white text-black font-cinematic font-bold py-4 rounded-xl uppercase tracking-[0.2em] transition shadow-[0_0_20px_rgba(212,175,55,0.3)]">Develop Script (₹1 Cr)</button>
+                <div class="pt-6">
+                    <button onclick="submitCustomProject()" class="w-full bg-studio-gold hover:bg-white text-black font-cinematic font-bold py-5 rounded-2xl uppercase tracking-[0.2em] transition shadow-[0_0_25px_rgba(212,175,55,0.4)] text-lg">Develop Script (₹1 Cr)</button>
                 </div>
             </div>
         </div>
     </div>
     
-    <!-- DILEMMA MODAL -->
-    <div id="modal-dilemma" class="fixed inset-0 z-[150] bg-black/95 backdrop-blur-xl hidden items-center justify-center flex-col">
-        <div class="glass-card w-full max-w-md rounded-3xl p-10 relative border-t-4 border-t-studio-crimson shadow-[0_0_40px_rgba(158,27,50,0.3)]">
-            <div class="text-center mb-6">
-                <i class="fa-solid fa-triangle-exclamation text-5xl text-studio-crimson mb-4 drop-shadow-[0_0_15px_rgba(158,27,50,0.8)] animate-pulse"></i>
-                <h2 id="dilemma-title" class="font-cinematic text-2xl font-bold text-white uppercase tracking-widest">Production Crisis</h2>
+    <!-- MODAL: PRODUCTION DILEMMA -->
+    <div id="modal-dilemma" class="fixed inset-0 z-[150] bg-black/95 backdrop-blur-2xl hidden items-center justify-center flex-col">
+        <div class="glass-card w-full max-w-lg rounded-3xl p-12 relative border-t-4 border-t-studio-crimson shadow-[0_0_60px_rgba(158,27,50,0.4)]">
+            <div class="text-center mb-8">
+                <i class="fa-solid fa-triangle-exclamation text-6xl text-studio-crimson mb-6 drop-shadow-[0_0_20px_rgba(158,27,50,0.8)] animate-pulse"></i>
+                <h2 id="dilemma-title" class="font-cinematic text-3xl font-bold text-white uppercase tracking-widest">Production Crisis</h2>
             </div>
-            <p id="dilemma-desc" class="text-sm text-gray-300 text-center mb-8 leading-relaxed"></p>
+            <p id="dilemma-desc" class="text-base text-gray-300 text-center mb-10 leading-relaxed"></p>
             <div class="space-y-4" id="dilemma-options">
-                <!-- Buttons injected here -->
+                <!-- Injected Buttons -->
             </div>
         </div>
     </div>
 
-    <!-- FIREBASE & GAME LOGIC -->
+    <!-- FIREBASE & MAIN ENGINE LOGIC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Provided Config (Placeholder logic intact)
-        const firebaseConfig = {
+        // Global Variables
+        const appIdEnv = typeof __app_id !== 'undefined' ? __app_id : 'urstudio';
+        const firebaseConfigRaw = typeof __firebase_config !== 'undefined' ? __firebase_config : null;
+        
+        let firebaseConfig = {
             apiKey: "AIzaSyClLSLmdoz5PHVVJrxkoqZ02Xmm-nwsNXQ",
             authDomain: "urstudio-f341c.firebaseapp.com",
             projectId: "urstudio-f341c",
@@ -448,6 +452,7 @@ Link in bio.</p>
             messagingSenderId: "1017863212287",
             appId: "1:1017863212287:web:2af7564d1aec2f02e310ca"
         };
+        if(firebaseConfigRaw) firebaseConfig = JSON.parse(firebaseConfigRaw);
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
@@ -455,9 +460,49 @@ Link in bio.</p>
         const provider = new GoogleAuthProvider();
 
         let uid = null;
-        let appIdEnv = typeof __app_id !== 'undefined' ? __app_id : 'urstudio';
+        
+        // Initializing Authentication strictly observing rules
+        async function checkAuthStatus() {
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                try {
+                    const res = await signInWithCustomToken(auth, __initial_auth_token);
+                    uid = res.user.uid;
+                    document.getElementById('btn-google-login').classList.add('hidden');
+                    document.getElementById('login-spinner').classList.remove('hidden');
+                    document.getElementById('login-spinner').classList.add('flex');
+                    loadUserData();
+                } catch(e) { console.error("Custom token failed:", e); }
+            } else {
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        uid = user.uid;
+                        document.getElementById('btn-google-login').classList.add('hidden');
+                        document.getElementById('login-spinner').classList.remove('hidden');
+                        document.getElementById('login-spinner').classList.add('flex');
+                        loadUserData();
+                    }
+                });
+            }
+        }
+        checkAuthStatus();
 
-        // Core State
+        document.getElementById('btn-google-login').addEventListener('click', async () => {
+            document.getElementById('btn-google-login').classList.add('hidden');
+            document.getElementById('login-spinner').classList.remove('hidden');
+            document.getElementById('login-spinner').classList.add('flex');
+            try {
+                const res = await signInWithPopup(auth, provider);
+                uid = res.user.uid;
+                loadUserData();
+            } catch (e) {
+                document.getElementById('btn-google-login').classList.remove('hidden');
+                document.getElementById('login-spinner').classList.add('hidden');
+                document.getElementById('login-spinner').classList.remove('flex');
+                showToast(e.message, "Auth Error");
+            }
+        });
+
+        // CORE STATE
         window.state = {
             name: '', diff: 'normal', funds: 500000000, rep: 1,
             followers: 0, subs: 0,
@@ -507,7 +552,7 @@ Link in bio.</p>
         let socialTimer = null;
         let chartInstance = null;
 
-        // Utils
+        // UTILS
         const formatINR = (n) => {
             if (n >= 10000000) return `₹${(n / 10000000).toFixed(2)} Cr`;
             if (n >= 100000) return `₹${(n / 100000).toFixed(2)} L`;
@@ -521,8 +566,11 @@ Link in bio.</p>
             document.getElementById('toast-title').innerText = title;
             document.getElementById('toast-msg').innerText = msg;
             t.classList.remove('-translate-y-24', 'opacity-0');
-            if(title==="Error" || title.includes("Crisis")) t.classList.add('bg-rose-900', 'border-rose-500');
-            else t.classList.add('bg-slate-900', 'border-studio-gold');
+            if(title==="Error" || title.includes("Crisis")) {
+                t.classList.add('bg-rose-900', 'border-rose-500');
+            } else {
+                t.classList.add('bg-slate-900', 'border-studio-gold');
+            }
             setTimeout(() => {
                 t.classList.add('-translate-y-24', 'opacity-0');
                 t.classList.remove('bg-rose-900', 'border-rose-500', 'bg-slate-900', 'border-studio-gold');
@@ -540,24 +588,7 @@ Link in bio.</p>
             return `https://image.pollinations.ai/prompt/YouTube%20cinematic%20trailer%20thumbnail%20for%20${encodeURIComponent(genre)}%20movie%20titled%20${encodeURIComponent(title)}?width=600&height=337&nologo=true&seed=${Math.floor(Math.random()*10000)}`;
         };
 
-        // --- AUTH & DB ---
-        document.getElementById('btn-google-login').addEventListener('click', async () => {
-            document.getElementById('btn-google-login').classList.add('hidden');
-            document.getElementById('login-spinner').classList.remove('hidden');
-            document.getElementById('login-spinner').classList.add('flex');
-            
-            try {
-                const res = await signInWithPopup(auth, provider);
-                uid = res.user.uid;
-                setTimeout(() => loadUserData(), 1000);
-            } catch (e) {
-                document.getElementById('btn-google-login').classList.remove('hidden');
-                document.getElementById('login-spinner').classList.add('hidden');
-                document.getElementById('login-spinner').classList.remove('flex');
-                showToast(e.message, "Auth Error");
-            }
-        });
-
+        // DB OPERATIONS
         async function loadUserData() {
             if(!uid) return;
             try{
@@ -584,7 +615,7 @@ Link in bio.</p>
             auth.signOut().then(() => location.reload());
         });
 
-        // --- SETUP ---
+        // SETUP STAGE
         window.selectDifficulty = (diff, el) => {
             document.querySelectorAll('.diff-card').forEach(c => c.classList.remove('selected'));
             el.classList.add('selected');
@@ -608,24 +639,49 @@ Link in bio.</p>
             saveGame().then(() => startGame());
         });
 
-        // --- START GAME ---
+        // START GAME Engine
         function startGame() {
             document.getElementById('view-login').classList.add('hidden');
             document.getElementById('view-setup').classList.add('hidden');
-            document.getElementById('view-app').classList.remove('hidden');
             
-            // Set dynamic Studio AI Logo
+            const viewApp = document.getElementById('view-app');
+            viewApp.classList.remove('hidden');
+            
             const generatedLogo = getStudioLogo(state.name);
             document.getElementById('side-studio-logo').src = generatedLogo;
             document.getElementById('linta-profile-pic').src = generatedLogo;
             document.getElementById('yt-profile-pic').src = generatedLogo;
             document.getElementById('linta-nav-pic').src = generatedLogo;
             
+            window.currentTab = 'tab-dashboard'; // Reset to default on load
             updateUI();
             startSocialSim();
             if(state.activeProject?.phase === 'filming') runProdTimer();
         }
 
+        // TAB SWITCHING LOGIC (Bulletproof)
+        window.switchTab = (tabId) => {
+            window.currentTab = tabId;
+            
+            // Hide all tabs securely
+            document.querySelectorAll('.tab-content').forEach(t => {
+                t.classList.add('hidden');
+            });
+            
+            // Show target
+            const target = document.getElementById(tabId);
+            target.classList.remove('hidden');
+
+            // Handle nav bar highlights
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            const navId = 'nav-' + tabId.replace('tab-','');
+            if(document.getElementById(navId)) document.getElementById(navId).classList.add('active');
+            
+            // Re-render critical tabs on switch
+            if(tabId === 'tab-production') renderProduction();
+        };
+
+        // MASTER UPDATE UI
         function updateUI() {
             document.getElementById('side-studio-name').innerText = state.name;
             let shortName = state.name.replace(/\s+/g,'').toLowerCase();
@@ -660,39 +716,53 @@ Link in bio.</p>
             renderYT();
         }
 
-        window.switchTab = (tab) => {
-            window.currentTab = tab;
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
-            document.getElementById(tab).classList.remove('hidden');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById('nav-'+tab.replace('tab-','')).classList.add('active');
-            if(tab === 'tab-production') renderProduction();
-        };
-
-        // --- CUSTOM PROJECT ---
+        // CREATE PROJECT MODAL
         window.openCreateModal = () => {
             if(state.activeProject) return showToast("Finish active project first!", "Warning");
-            document.getElementById('modal-create').classList.remove('hidden');
-            document.getElementById('modal-create').classList.add('flex');
+            const modal = document.getElementById('modal-create');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
         };
-        window.closeCreateModal = () => document.getElementById('modal-create').classList.add('hidden');
+        window.closeCreateModal = () => {
+            const modal = document.getElementById('modal-create');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        };
         
         window.submitCustomProject = () => {
-            const title = document.getElementById('cp-title').value || 'Untitled';
-            const genre = document.getElementById('cp-genre').value;
-            const cost = 10000000; 
-            if(state.funds < cost) return showToast("Need ₹1Cr to develop script.", "Error");
-            
-            state.funds -= cost;
-            state.activeProject = {
-                id: genId(), title, genre, scriptCost: cost, prodCost: 0, hype: 10,
-                daysTotal: GENRES[genre].days, daysElapsed: 0, phase: 'assembly',
-                poster: getAIPoster(title, genre)
-            };
-            closeCreateModal(); saveGame(); updateUI(); switchTab('tab-production');
+            try {
+                const title = document.getElementById('cp-title').value || 'Untitled IP';
+                const genre = document.getElementById('cp-genre').value;
+                const cost = 10000000; 
+                
+                if(state.funds < cost) {
+                    showToast("Need ₹1Cr to develop script.", "Error");
+                    return;
+                }
+                
+                state.funds -= cost;
+                const genreData = GENRES[genre] || { days: 40, baseCost: 20000000 };
+                
+                state.activeProject = {
+                    id: genId(), title, genre, scriptCost: cost, prodCost: 0, hype: 10,
+                    daysTotal: genreData.days, daysElapsed: 0, phase: 'assembly',
+                    poster: getAIPoster(title, genre)
+                };
+                
+                closeCreateModal(); 
+                saveGame(); 
+                updateUI();
+                
+                // Immediately transition to Studio Lot
+                switchTab('tab-production');
+                showToast("Script drafted. Casting phase started.", "Success");
+            } catch(e) {
+                showToast("Error creating project.", "Error");
+                console.error(e);
+            }
         };
 
-        // --- SCOUT SCRIPTS ---
+        // SCOUT SCRIPTS
         window.scoutScripts = () => {
             if(state.activeProject) return showToast("Finish active project first!", "Warning");
             const pitches = [
@@ -717,29 +787,39 @@ Link in bio.</p>
             saveGame(); updateUI(); switchTab('tab-inbox');
         };
 
-        // --- INBOX ---
+        // INBOX & SCRIPT ACQUISITION
         function renderInbox() {
             const list = document.getElementById('mail-list');
-            if(state.mails.length === 0) list.innerHTML = `<div class="p-4 text-center text-gray-500 font-bold uppercase tracking-widest text-xs mt-10">Inbox empty</div>`;
-            else list.innerHTML = state.mails.slice().reverse().map(m => `
-                <div class="p-5 border-b border-white/5 cursor-pointer hover:bg-white/5 transition ${!m.read ? 'border-l-4 border-l-studio-crimson bg-white/5' : ''}" onclick="openMail('${m.id}')">
-                    <p class="text-sm font-bold text-white line-clamp-1 mb-1">${m.title}</p>
-                    <p class="text-[9px] ${m.type==='script'?'text-blue-400':m.type==='ott'?'text-green-400':'text-gray-500'} font-bold uppercase tracking-widest">${m.type}</p>
+            if(state.mails.length === 0) {
+                list.innerHTML = `<div class="p-6 text-center text-gray-500 font-bold uppercase tracking-widest text-xs mt-10">Inbox empty</div>`;
+                return;
+            }
+            list.innerHTML = state.mails.slice().reverse().map(m => `
+                <div class="p-6 border-b border-white/5 cursor-pointer hover:bg-white/5 transition ${!m.read ? 'border-l-4 border-l-studio-crimson bg-white/5' : ''}" onclick="openMail('${m.id}')">
+                    <p class="text-sm font-bold text-white line-clamp-1 mb-1.5">${m.title}</p>
+                    <p class="text-[10px] ${m.type==='script'?'text-blue-400':m.type==='ott'?'text-green-400':'text-gray-500'} font-bold uppercase tracking-widest">${m.type}</p>
                 </div>
             `).join('');
         }
+        
         window.openMail = (id) => {
             const m = state.mails.find(x => x.id === id); if(!m) return;
             m.read = true; updateUI(); saveGame();
             
             let act = '';
-            if(m.type === 'script') act = `<button onclick="acquireScript('${m.id}')" class="bg-studio-gold hover:bg-white text-black px-8 py-3 rounded-xl font-bold uppercase text-xs tracking-widest transition shadow-lg mt-6">Acquire Script (${formatINR(m.data.cost)})</button>`;
-            else if(m.type === 'ott') act = `<button onclick="acceptOTT('${m.id}')" class="bg-green-600 hover:bg-green-500 text-white px-8 py-3 rounded-xl font-bold uppercase text-xs tracking-widest transition shadow-lg mt-6">Sign Deal (+${formatINR(m.data.offer)})</button>`;
-            else act = `<button onclick="delMail('${m.id}')" class="text-gray-400 hover:text-studio-crimson uppercase text-xs font-bold tracking-widest mt-6 transition">Dismiss</button>`;
+            if(m.type === 'script') act = `<button onclick="acquireScript('${m.id}')" class="bg-studio-gold hover:bg-white text-black px-10 py-4 rounded-xl font-bold uppercase text-sm tracking-widest transition shadow-[0_0_20px_rgba(212,175,55,0.2)] mt-8">Acquire Script (${formatINR(m.data.cost)})</button>`;
+            else if(m.type === 'ott') act = `<button onclick="acceptOTT('${m.id}')" class="bg-green-600 hover:bg-green-500 text-white px-10 py-4 rounded-xl font-bold uppercase text-sm tracking-widest transition shadow-[0_0_20px_rgba(74,222,128,0.2)] mt-8">Sign Deal (+${formatINR(m.data.offer)})</button>`;
+            else act = `<button onclick="delMail('${m.id}')" class="text-gray-400 hover:text-studio-crimson uppercase text-xs font-bold tracking-widest mt-8 transition px-6 py-3 border border-white/10 rounded-xl hover:border-studio-crimson">Dismiss</button>`;
 
-            document.getElementById('mail-detail').innerHTML = `<h3 class="text-2xl font-cinematic font-bold text-white mb-6 border-b border-white/10 pb-4">${m.title}</h3><p class="text-sm text-gray-300 whitespace-pre-wrap leading-relaxed">${m.body}</p>${act}`;
+            document.getElementById('mail-detail').innerHTML = `<h3 class="text-3xl font-cinematic font-bold text-white mb-6 border-b border-white/10 pb-6">${m.title}</h3><p class="text-sm text-gray-300 whitespace-pre-wrap leading-loose">${m.body}</p>${act}`;
         };
-        window.delMail = (id) => { state.mails = state.mails.filter(m=>m.id!==id); document.getElementById('mail-detail').innerHTML='<div class="absolute inset-0 flex flex-col items-center justify-center text-gray-600 font-cinematic text-xl uppercase tracking-widest pointer-events-none opacity-50"><i class="fa-regular fa-envelope-open text-4xl mb-3"></i>Select a message</div>'; updateUI(); saveGame(); };
+        
+        window.delMail = (id) => { 
+            state.mails = state.mails.filter(m=>m.id!==id); 
+            document.getElementById('mail-detail').innerHTML='<div class="absolute inset-0 flex flex-col items-center justify-center text-gray-600 font-cinematic text-2xl uppercase tracking-widest pointer-events-none opacity-40"><i class="fa-regular fa-envelope-open text-5xl mb-4"></i>Select a message</div>'; 
+            updateUI(); saveGame(); 
+        };
+        
         window.acquireScript = (id) => {
             const m = state.mails.find(x=>x.id===id);
             if(state.funds < m.data.cost) return showToast("Insufficient Funds", "Error");
@@ -752,9 +832,15 @@ Link in bio.</p>
                 hype: 15, daysTotal: genreData.days, daysElapsed: 0, phase: 'assembly',
                 poster: getAIPoster(m.data.title, m.data.genre)
             };
+            
+            // Clean up scripts
             state.mails = state.mails.filter(x=>x.type!=='script');
-            document.getElementById('mail-detail').innerHTML='<div class="absolute inset-0 flex flex-col items-center justify-center text-gray-600 font-cinematic text-xl uppercase tracking-widest pointer-events-none opacity-50"><i class="fa-regular fa-envelope-open text-4xl mb-3"></i>Select a message</div>';
-            saveGame(); updateUI(); switchTab('tab-production');
+            document.getElementById('mail-detail').innerHTML='<div class="absolute inset-0 flex flex-col items-center justify-center text-gray-600 font-cinematic text-2xl uppercase tracking-widest pointer-events-none opacity-40"><i class="fa-regular fa-envelope-open text-5xl mb-4"></i>Select a message</div>';
+            
+            saveGame(); updateUI(); 
+            // Crucial transition
+            switchTab('tab-production');
+            showToast("Script Acquired. Commencing casting phase.", "Success");
         };
 
         window.forceResetProject = () => {
@@ -767,20 +853,22 @@ Link in bio.</p>
             showToast("Project forcefully terminated.", "Warning");
         };
 
-        // --- PRODUCTION CORE (CRITICAL FIX) ---
+        // PRODUCTION ENGINE
         function renderProduction() {
             const c = document.getElementById('prod-container');
             const p = state.activeProject;
-            document.getElementById('prod-active-icon').className = p && p.phase === 'filming' ? "fa-solid fa-circle text-studio-crimson text-[8px] animate-pulse shadow-[0_0_10px_rgba(158,27,50,0.8)]" : "hidden";
+            
+            // Toggle sidebar red dot
+            if(p && p.phase === 'filming') document.getElementById('prod-active-icon').classList.remove('hidden');
+            else document.getElementById('prod-active-icon').classList.add('hidden');
 
-            // FIXED BLANK SCREEN: Explicit beautifully styled empty state
             if(!p) {
                 c.innerHTML = `
                 <div class="flex-1 flex flex-col items-center justify-center text-center h-full m-auto w-full">
-                    <i class="fa-solid fa-clapperboard text-7xl text-gray-800 mb-6 drop-shadow-md"></i>
-                    <h2 class="text-3xl font-cinematic text-gray-300 mb-3 tracking-widest uppercase font-bold">Studio Lot is Empty</h2>
-                    <p class="text-gray-500 text-sm mb-8 max-w-md">There is no active production on the lot. Head back to the Executive HQ to scout a script or develop an original IP.</p>
-                    <button onclick="switchTab('tab-dashboard')" class="bg-studio-gold text-black font-cinematic font-bold px-8 py-3 rounded-full uppercase tracking-widest hover:bg-white transition shadow-[0_0_15px_rgba(212,175,55,0.3)]">Return to HQ</button>
+                    <i class="fa-solid fa-clapperboard text-8xl text-gray-800 mb-8 drop-shadow-md"></i>
+                    <h2 class="text-4xl font-cinematic text-gray-300 mb-4 tracking-widest uppercase font-bold">Studio Lot is Empty</h2>
+                    <p class="text-gray-500 text-sm mb-10 max-w-lg leading-relaxed">There is no active production on the lot. Head back to the Executive HQ to scout a script or develop an original IP.</p>
+                    <button onclick="switchTab('tab-dashboard')" class="bg-studio-gold text-black font-cinematic font-bold px-10 py-4 rounded-2xl uppercase tracking-widest hover:bg-white transition shadow-[0_0_20px_rgba(212,175,55,0.3)]">Return to HQ</button>
                 </div>`;
                 return;
             }
@@ -790,71 +878,85 @@ Link in bio.</p>
                 let est = genreData.baseCost + (assemblyDraft.dir?.fee||0) + (assemblyDraft.actor?.fee||0);
                 
                 c.innerHTML = `
-                    <div class="text-center mb-8 border-b border-white/10 pb-6"><h2 class="font-cinematic text-3xl font-bold text-white uppercase tracking-widest">${p.title}</h2><p class="text-studio-gold text-xs uppercase tracking-[0.2em] mt-2">${p.genre} • Pre-Production (Casting)</p></div>
-                    <div class="flex-1 overflow-y-auto space-y-8 custom-scrollbar pr-2 relative z-10">
+                    <div class="text-center mb-10 border-b border-white/10 pb-8">
+                        <h2 class="font-cinematic text-4xl font-bold text-white uppercase tracking-widest">${p.title}</h2>
+                        <p class="text-studio-gold text-xs uppercase tracking-[0.3em] font-bold mt-3">${p.genre} • Pre-Production (Casting)</p>
+                    </div>
+                    <div class="flex-1 overflow-y-auto space-y-10 custom-scrollbar pr-4 relative z-10">
                         <div>
-                            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] mb-4 text-center border-b border-white/5 pb-2 inline-block">Select Director</p>
-                            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">${DIRECTORS.map(d=>`<div class="talent-card rounded-xl p-4 flex gap-4 items-center ${assemblyDraft.dir?.id===d.id?'selected':''}" onclick="selTalent('dir','${d.id}')"><img src="${d.pic}" class="w-12 h-12 rounded-full object-cover border border-white/10"><div class="flex-1"><p class="text-sm font-bold text-white truncate">${d.name}</p><p class="text-[10px] text-green-400 font-bold mb-1">${formatINR(d.fee)}</p><div class="w-full bg-black h-1 rounded"><div class="bg-studio-gold h-1 rounded" style="width:${getRel(d.id)}%"></div></div><p class="text-[8px] text-gray-500 mt-0.5">Rel: ${getRel(d.id)}</p></div></div>`).join('')}</div>
+                            <p class="text-xs font-bold text-gray-500 uppercase tracking-[0.2em] mb-5 text-center border-b border-white/5 pb-2 inline-block">Select Director</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                                ${DIRECTORS.map(d=>`<div class="talent-card rounded-2xl p-5 flex gap-5 items-center ${assemblyDraft.dir?.id===d.id?'selected':''}" onclick="selTalent('dir','${d.id}')"><img src="${d.pic}" class="w-14 h-14 rounded-full object-cover border border-white/10"><div class="flex-1"><p class="text-sm font-bold text-white truncate">${d.name}</p><p class="text-xs text-green-400 font-bold mb-2 tracking-wide">${formatINR(d.fee)}</p><div class="w-full bg-black/50 h-1.5 rounded-full overflow-hidden"><div class="bg-studio-gold h-full" style="width:${getRel(d.id)}%"></div></div><p class="text-[9px] text-gray-500 mt-1 uppercase font-bold tracking-widest">Rel: ${getRel(d.id)}</p></div></div>`).join('')}
+                            </div>
                         </div>
                         <div>
-                            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] mb-4 text-center border-b border-white/5 pb-2 inline-block">Select Lead Actor</p>
-                            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">${ACTORS.map(a=>`<div class="talent-card rounded-xl p-4 flex gap-4 items-center ${assemblyDraft.actor?.id===a.id?'selected':''}" onclick="selTalent('actor','${a.id}')"><img src="${a.pic}" class="w-12 h-12 rounded-full object-cover border border-white/10"><div class="flex-1"><p class="text-sm font-bold text-white truncate">${a.name}</p><p class="text-[10px] text-green-400 font-bold mb-1">${formatINR(a.fee)}</p><div class="w-full bg-black h-1 rounded"><div class="bg-studio-gold h-1 rounded" style="width:${getRel(a.id)}%"></div></div><p class="text-[8px] text-gray-500 mt-0.5">Rel: ${getRel(a.id)}</p></div></div>`).join('')}</div>
+                            <p class="text-xs font-bold text-gray-500 uppercase tracking-[0.2em] mb-5 text-center border-b border-white/5 pb-2 inline-block">Select Lead Actor</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                                ${ACTORS.map(a=>`<div class="talent-card rounded-2xl p-5 flex gap-5 items-center ${assemblyDraft.actor?.id===a.id?'selected':''}" onclick="selTalent('actor','${a.id}')"><img src="${a.pic}" class="w-14 h-14 rounded-full object-cover border border-white/10"><div class="flex-1"><p class="text-sm font-bold text-white truncate">${a.name}</p><p class="text-xs text-green-400 font-bold mb-2 tracking-wide">${formatINR(a.fee)}</p><div class="w-full bg-black/50 h-1.5 rounded-full overflow-hidden"><div class="bg-studio-gold h-full" style="width:${getRel(a.id)}%"></div></div><p class="text-[9px] text-gray-500 mt-1 uppercase font-bold tracking-widest">Rel: ${getRel(a.id)}</p></div></div>`).join('')}
+                            </div>
                         </div>
                     </div>
-                    <div class="mt-6 p-6 bg-black/60 border border-studio-gold/20 rounded-2xl flex justify-between items-center shadow-lg relative z-10 backdrop-blur-md">
-                        <div><p class="text-[9px] text-gray-400 uppercase tracking-[0.2em] mb-1 font-bold">Production Budget</p><p class="text-2xl font-bold text-white font-cinematic">${formatINR(est)}</p></div>
-                        <button onclick="lockBudget(${est})" class="bg-studio-gold hover:bg-white text-black px-8 py-4 rounded-xl uppercase font-bold text-sm tracking-widest transition disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_20px_rgba(212,175,55,0.2)]" ${(!assemblyDraft.dir || !assemblyDraft.actor)?'disabled':''}>Commence Filming</button>
+                    <div class="mt-8 p-8 bg-black/60 border border-studio-gold/20 rounded-3xl flex justify-between items-center shadow-2xl relative z-10 backdrop-blur-xl">
+                        <div>
+                            <p class="text-xs text-gray-400 uppercase tracking-[0.2em] mb-2 font-bold">Estimated Production Budget</p>
+                            <p class="text-3xl font-bold text-white font-cinematic">${formatINR(est)}</p>
+                        </div>
+                        <button onclick="lockBudget(${est})" class="bg-studio-gold hover:bg-white text-black px-10 py-5 rounded-2xl uppercase font-bold text-sm tracking-[0.2em] transition disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_25px_rgba(212,175,55,0.3)]" ${(!assemblyDraft.dir || !assemblyDraft.actor)?'disabled':''}>Commence Filming</button>
                     </div>`;
             } else if(p.phase === 'filming') {
                 c.innerHTML = `
                     <video autoplay loop muted playsinline class="prod-video-bg"><source src="https://assets.mixkit.co/videos/preview/mixkit-film-crew-working-on-a-movie-set-42841-large.mp4" type="video/mp4"></video>
                     <div class="prod-overlay"></div>
-                    <div class="m-auto text-center w-full max-w-2xl relative z-10">
-                        <i class="fa-solid fa-video text-5xl text-studio-crimson mb-6 animate-pulse drop-shadow-[0_0_20px_rgba(158,27,50,0.8)]"></i>
-                        <h2 class="font-cinematic text-4xl font-bold text-white uppercase mb-2 tracking-widest drop-shadow-lg">${p.title}</h2>
-                        <p class="text-xs text-studio-gold uppercase tracking-[0.3em] mb-10">Now Filming</p>
+                    <div class="m-auto text-center w-full max-w-3xl relative z-10">
+                        <i class="fa-solid fa-video text-6xl text-studio-crimson mb-8 animate-pulse drop-shadow-[0_0_30px_rgba(158,27,50,0.8)]"></i>
+                        <h2 class="font-cinematic text-5xl font-bold text-white uppercase mb-3 tracking-widest drop-shadow-xl">${p.title}</h2>
+                        <p class="text-sm text-studio-gold uppercase tracking-[0.3em] font-bold mb-12">Now Filming</p>
                         
-                        <div class="w-full bg-black/80 rounded-full h-6 mb-3 overflow-hidden border border-white/10 shadow-inner backdrop-blur-md">
+                        <div class="w-full bg-black/80 rounded-full h-8 mb-4 overflow-hidden border border-white/20 shadow-inner backdrop-blur-xl">
                             <div class="bg-studio-crimson h-full transition-all duration-300 relative overflow-hidden" style="width: ${(p.daysElapsed/p.daysTotal)*100}%">
                                 <div class="absolute inset-0 bg-white/20 w-full animate-[shimmer_2s_infinite]"></div>
                             </div>
                         </div>
-                        <div class="flex justify-between text-[10px] text-gray-300 font-bold uppercase mb-10 tracking-[0.2em]"><span>Day ${p.daysElapsed}</span><span>${p.daysTotal} Total</span></div>
+                        <div class="flex justify-between text-xs text-gray-300 font-bold uppercase mb-12 tracking-[0.2em]"><span>Day ${p.daysElapsed}</span><span>${p.daysTotal} Total</span></div>
                         
-                        <div class="flex justify-center gap-8">
-                            <div class="bg-black/60 backdrop-blur-md p-5 rounded-2xl border border-white/5 min-w-[120px]"><p class="text-[9px] text-gray-400 uppercase tracking-[0.2em] font-bold mb-1">Hype</p><p class="text-3xl font-bold text-studio-gold font-cinematic">${Math.floor(p.hype)}</p></div>
-                            <div class="bg-black/60 backdrop-blur-md p-5 rounded-2xl border border-white/5 min-w-[120px]"><p class="text-[9px] text-gray-400 uppercase tracking-[0.2em] font-bold mb-1">Spent</p><p class="text-xl font-bold text-red-400 mt-2">${formatINR(p.prodCost)}</p></div>
+                        <div class="flex justify-center gap-10">
+                            <div class="bg-black/70 backdrop-blur-xl p-6 rounded-3xl border border-white/10 min-w-[150px] shadow-2xl">
+                                <p class="text-[10px] text-gray-400 uppercase tracking-[0.2em] font-bold mb-2">Social Hype</p>
+                                <p class="text-4xl font-bold text-studio-gold font-cinematic">${Math.floor(p.hype)}</p>
+                            </div>
+                            <div class="bg-black/70 backdrop-blur-xl p-6 rounded-3xl border border-white/10 min-w-[150px] shadow-2xl">
+                                <p class="text-[10px] text-gray-400 uppercase tracking-[0.2em] font-bold mb-2">Budget Spent</p>
+                                <p class="text-2xl font-bold text-red-400 mt-2">${formatINR(p.prodCost)}</p>
+                            </div>
                         </div>
-                        <div class="mt-8 flex justify-center">
-                            <button onclick="speedUp()" class="bg-black/50 hover:bg-black/80 backdrop-blur-md border border-white/10 text-white px-8 py-3 rounded-xl text-[10px] uppercase font-bold flex items-center gap-3 transition tracking-widest"><i class="fa-solid fa-forward-fast"></i> Expedite (₹20L)</button>
+                        <div class="mt-12 flex justify-center">
+                            <button onclick="speedUp()" class="bg-black/60 hover:bg-black/90 backdrop-blur-xl border border-white/20 hover:border-white/40 text-white px-10 py-4 rounded-2xl text-xs uppercase font-bold flex items-center gap-3 transition tracking-widest shadow-xl"><i class="fa-solid fa-forward-fast"></i> Expedite (₹20L)</button>
                         </div>
-                        <p class="text-[9px] text-gray-400 mt-8 uppercase tracking-[0.2em] bg-black/50 py-2 px-4 rounded-full inline-block backdrop-blur-md border border-white/5 font-bold">Manage Social Media to build Hype before release.</p>
+                        <p class="text-xs text-gray-400 mt-10 uppercase tracking-[0.2em] bg-black/60 py-3 px-6 rounded-full inline-block backdrop-blur-xl border border-white/10 font-bold shadow-xl">Manage Social Media to build Hype before release.</p>
                     </div>`;
             } else if(p.phase === 'theaters') {
-                c.innerHTML = `<div class="flex-1 flex flex-col relative z-10"><div class="text-center mb-6"><h2 class="font-cinematic text-3xl font-bold text-white uppercase tracking-widest">${p.title}</h2><p class="text-[10px] text-studio-gold uppercase tracking-[0.2em] font-bold mt-2">Theatrical Run</p></div><div class="chart-container flex-1 bg-black/40 rounded-2xl p-4 border border-white/5 backdrop-blur-md"><canvas id="boChart"></canvas></div><div class="mt-8 flex flex-col items-center"><p class="text-[10px] text-gray-500 font-bold uppercase tracking-[0.2em] mb-2">Total Gross Box Office</p><p id="bo-gross" class="text-5xl text-green-400 font-bold font-cinematic mb-6 drop-shadow-[0_0_20px_rgba(74,222,128,0.2)]">₹0</p><button id="btn-conclude" class="hidden bg-studio-gold hover:bg-white text-black px-10 py-4 rounded-xl font-bold uppercase tracking-[0.2em] transition shadow-[0_0_20px_rgba(212,175,55,0.3)] text-sm" onclick="finishTheaters()">Conclude Theatrical Run</button></div></div>`;
-                if(!chartInstance) setTimeout(runBO, 100);
-            } else {
-                // FALLBACK FOR CORRUPTED STATE
-                c.innerHTML = `
-                <div class="flex-1 flex flex-col items-center justify-center text-center h-full m-auto w-full">
-                    <i class="fa-solid fa-triangle-exclamation text-7xl text-studio-crimson mb-6 drop-shadow-md"></i>
-                    <h2 class="text-3xl font-cinematic text-gray-300 mb-3 tracking-widest uppercase font-bold">Corrupted Production Data</h2>
-                    <p class="text-gray-500 text-sm mb-8 max-w-md">An error occurred in the production phase. The active project data cannot be read correctly.</p>
-                    <button onclick="forceResetProject()" class="bg-studio-crimson text-white font-cinematic font-bold px-8 py-3 rounded-full uppercase tracking-widest hover:bg-red-700 transition shadow-[0_0_15px_rgba(158,27,50,0.3)]">Force Reset Project</button>
-                </div>`;
+                c.innerHTML = `<div class="flex-1 flex flex-col relative z-10 h-full"><div class="text-center mb-8"><h2 class="font-cinematic text-4xl font-bold text-white uppercase tracking-widest">${p.title}</h2><p class="text-xs text-studio-gold uppercase tracking-[0.3em] font-bold mt-3">Theatrical Run Active</p></div><div class="chart-container flex-1 bg-black/60 rounded-3xl p-6 border border-white/10 backdrop-blur-xl shadow-2xl"><canvas id="boChart"></canvas></div><div class="mt-10 flex flex-col items-center"><p class="text-xs text-gray-500 font-bold uppercase tracking-[0.2em] mb-2">Total Gross Box Office</p><p id="bo-gross" class="text-6xl text-green-400 font-bold font-cinematic mb-8 drop-shadow-[0_0_30px_rgba(74,222,128,0.3)]">₹0</p><button id="btn-conclude" class="hidden bg-studio-gold hover:bg-white text-black px-12 py-5 rounded-2xl font-bold uppercase tracking-[0.2em] transition shadow-[0_0_25px_rgba(212,175,55,0.3)] text-sm" onclick="finishTheaters()">Conclude Theatrical Run</button></div></div>`;
+                if(!chartInstance) setTimeout(runBO, 150);
             }
         }
 
-        window.selTalent = (t, id) => { assemblyDraft[t] = (t==='dir'?DIRECTORS:ACTORS).find(x=>x.id===id); renderProduction(); };
+        window.selTalent = (t, id) => { 
+            assemblyDraft[t] = (t==='dir'?DIRECTORS:ACTORS).find(x=>x.id===id); 
+            renderProduction(); 
+        };
+        
         window.lockBudget = (cost) => {
-            if(state.funds < cost) return showToast("Need more funds!", "Error");
+            if(state.funds < cost) return showToast("Need more funds to shoot!", "Error");
             state.funds -= cost; 
             state.activeProject.dir = assemblyDraft.dir; 
             state.activeProject.actor = assemblyDraft.actor;
             state.activeProject.prodCost = cost; 
             state.activeProject.phase = 'filming'; 
             assemblyDraft={dir:null,actor:null};
-            saveGame(); updateUI(); runProdTimer();
+            saveGame(); 
+            updateUI(); 
+            runProdTimer();
+            showToast("Production started! Check timer.", "Success");
         };
 
         function runProdTimer() {
@@ -863,10 +965,10 @@ Link in bio.</p>
                 let p = state.activeProject;
                 if(!p || p.phase !== 'filming') return clearInterval(prodTimer);
                 
-                // Dilemma System
+                // Event Dilemma Trigger
                 let dC = state.diff==='hardcore'?0.15 : (state.diff==='hard'?0.08 : 0.03);
                 if(Math.random() < dC && !document.getElementById('modal-dilemma').classList.contains('flex')) {
-                    clearInterval(prodTimer); // Pause game
+                    clearInterval(prodTimer); 
                     triggerDilemma();
                     return;
                 }
@@ -874,11 +976,13 @@ Link in bio.</p>
                 p.daysElapsed++;
 
                 if(p.daysElapsed >= p.daysTotal) {
-                    clearInterval(prodTimer); p.phase = 'theaters'; showToast("Filming Wrapped! Ready for Theaters.", "Production Complete");
+                    clearInterval(prodTimer); 
+                    p.phase = 'theaters'; 
+                    showToast("Filming Wrapped! Ready for Theaters.", "Production Complete");
                 }
                 saveGame();
                 if(window.currentTab === 'tab-production') renderProduction();
-            }, 1500); // 1.5s per day
+            }, 1500); 
         }
 
         function triggerDilemma() {
@@ -916,20 +1020,21 @@ Link in bio.</p>
             
             let html = '';
             ev.options.forEach((opt, idx) => {
-                html += `<button id="dilemma-btn-${idx}" class="w-full bg-black/50 border border-white/10 hover:border-studio-gold text-white px-6 py-4 rounded-xl uppercase font-bold text-[10px] tracking-widest transition">${opt.text}</button>`;
+                html += `<button id="dilemma-btn-${idx}" class="w-full bg-black/60 border border-white/10 hover:border-studio-gold hover:bg-studio-gold/10 text-white px-8 py-5 rounded-2xl uppercase font-bold text-xs tracking-widest transition shadow-lg">${opt.text}</button>`;
             });
             document.getElementById('dilemma-options').innerHTML = html;
             
-            document.getElementById('modal-dilemma').classList.remove('hidden');
-            document.getElementById('modal-dilemma').classList.add('flex');
+            const modal = document.getElementById('modal-dilemma');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
 
             ev.options.forEach((opt, idx) => {
                 document.getElementById(`dilemma-btn-${idx}`).onclick = () => {
                     opt.action();
-                    document.getElementById('modal-dilemma').classList.add('hidden');
-                    document.getElementById('modal-dilemma').classList.remove('flex');
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
                     updateUI();
-                    runProdTimer(); // Resume
+                    runProdTimer(); 
                 };
             });
         }
@@ -941,27 +1046,29 @@ Link in bio.</p>
             saveGame(); if(window.currentTab==='tab-production') renderProduction();
         };
 
-        // --- THEATERS & OTT ---
+        // BOX OFFICE
         function runBO() {
             const p = state.activeProject;
+            if(!p) return;
             if(chartInstance) chartInstance.destroy();
             const ctx = document.getElementById('boChart').getContext('2d');
             Chart.defaults.color = '#71717a';
+            Chart.defaults.font.family = 'Inter';
+            
             chartInstance = new Chart(ctx, { 
                 type: 'line', 
-                data: { labels: [], datasets: [{ label: 'Daily Gross (Cr)', data: [], borderColor: '#d4af37', backgroundColor: 'rgba(212, 175, 55, 0.1)', fill: true, tension: 0.4 }] }, 
+                data: { labels: [], datasets: [{ label: 'Daily Gross (Cr)', data: [], borderColor: '#d4af37', backgroundColor: 'rgba(212, 175, 55, 0.1)', fill: true, tension: 0.4, borderWidth: 3, pointBackgroundColor: '#d4af37', pointRadius: 4 }] }, 
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { color: 'rgba(255,255,255,0.05)' } } } } 
             });
 
             let day = 1; let gross = p.gross || 0;
-            // Algorithm
-            let talentFactor = ((p.dir?.skill||50) + (p.actor?.skill||50)) / 200; // 0.5 to 1.0
+            let talentFactor = ((p.dir?.skill||50) + (p.actor?.skill||50)) / 200; 
             let daily = Math.max(1000000, (p.hype / 100) * (p.prodCost * 0.5) * talentFactor);
 
             let iv = setInterval(() => {
                 if(day > 14) { clearInterval(iv); document.getElementById('btn-conclude').classList.remove('hidden'); return; }
                 
-                if(day===1) daily = daily; // Opening
+                if(day===1) daily = daily; 
                 else if(day===2 || day===3 || day===9 || day===10) daily *= (1.05 + Math.random()*0.1); 
                 else daily *= (0.75 + Math.random()*0.15); 
                 
@@ -1010,28 +1117,28 @@ Link in bio.</p>
             state.funds += m.data.offer;
             if(state.pastProjects.length > 0) state.pastProjects[0].gross += m.data.offer;
             state.mails = state.mails.filter(x=>x.type!=='ott'); 
-            document.getElementById('mail-detail').innerHTML='<div class="absolute inset-0 flex flex-col items-center justify-center text-gray-600 font-cinematic text-xl uppercase tracking-widest pointer-events-none opacity-50"><i class="fa-regular fa-envelope-open text-4xl mb-3"></i>Select a message</div>';
+            document.getElementById('mail-detail').innerHTML='<div class="absolute inset-0 flex flex-col items-center justify-center text-gray-600 font-cinematic text-2xl uppercase tracking-widest pointer-events-none opacity-40"><i class="fa-regular fa-envelope-open text-5xl mb-4"></i>Select a message</div>';
             saveGame(); updateUI(); switchTab('tab-history');
         };
 
-        // --- HISTORY ---
+        // HISTORY
         function renderHistory() {
             const grid = document.getElementById('history-grid');
             if(state.pastProjects.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-center text-gray-600 font-cinematic text-xl uppercase tracking-widest mt-20">No archived projects in vault.</div>`;
+                grid.innerHTML = `<div class="col-span-full text-center text-gray-600 font-cinematic text-2xl uppercase tracking-widest mt-20 opacity-50">No archived projects in vault.</div>`;
                 return;
             }
             grid.innerHTML = state.pastProjects.map(x => {
                 let vColor = x.verdict==='BLOCKBUSTER'?'text-studio-gold':x.verdict==='HIT'?'text-green-400':x.verdict==='AVERAGE'?'text-blue-400':'text-red-500';
                 return `
-                <div class="glass-card rounded-2xl overflow-hidden group hover:scale-[1.02] transition duration-300">
-                    <div class="h-80 bg-black relative"><img src="${x.img}" class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition duration-500"><div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div><div class="absolute bottom-4 left-4 right-4"><h4 class="font-cinematic text-xl font-bold text-white uppercase drop-shadow-md leading-tight">${x.title}</h4><p class="text-[9px] font-bold text-gray-400 uppercase tracking-[0.2em] mt-1">${x.genre}</p></div><span class="absolute top-4 right-4 text-[9px] font-bold px-3 py-1.5 rounded bg-black/80 border border-white/10 uppercase tracking-[0.2em] shadow-lg ${vColor}">${x.verdict}</span></div>
-                    <div class="p-5 bg-black/50 border-t border-white/5"><div class="flex justify-between text-[10px] text-gray-500 mb-2 font-bold uppercase tracking-widest"><span>Total Budget</span><span class="text-gray-300">${formatINR(x.cost)}</span></div><div class="flex justify-between text-[10px] font-bold uppercase tracking-widest text-gray-500"><span>Studio Revenue</span><span class="text-green-400">${formatINR(x.gross)}</span></div></div>
+                <div class="glass-card rounded-3xl overflow-hidden group hover:-translate-y-2 transition duration-500 shadow-2xl">
+                    <div class="h-96 bg-black relative"><img src="${x.img}" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition duration-500"><div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90"></div><div class="absolute bottom-6 left-6 right-6"><h4 class="font-cinematic text-2xl font-bold text-white uppercase drop-shadow-xl leading-tight">${x.title}</h4><p class="text-xs font-bold text-gray-400 uppercase tracking-[0.2em] mt-2">${x.genre}</p></div><span class="absolute top-5 right-5 text-[10px] font-bold px-4 py-2 rounded-xl bg-black/80 border border-white/10 uppercase tracking-[0.2em] shadow-2xl backdrop-blur-md ${vColor}">${x.verdict}</span></div>
+                    <div class="p-6 bg-black/60 border-t border-white/10"><div class="flex justify-between text-xs text-gray-500 mb-3 font-bold uppercase tracking-widest"><span>Total Budget</span><span class="text-gray-300">${formatINR(x.cost)}</span></div><div class="flex justify-between text-xs font-bold uppercase tracking-widest text-gray-500"><span>Studio Revenue</span><span class="text-green-400">${formatINR(x.gross)}</span></div></div>
                 </div>`
             }).join('');
         }
 
-        // --- SOCIAL MEDIA ---
+        // SOCIAL MEDIA ENGINE
         function startSocialSim() {
             if(socialTimer) clearInterval(socialTimer);
             socialTimer = setInterval(() => {
@@ -1086,13 +1193,13 @@ Link in bio.</p>
             let shortName = state.name.replace(/\s+/g,'').toLowerCase();
             const logo = getStudioLogo(state.name);
             feed.innerHTML = state.social.linta.posts.map(p => `
-                <div class="mb-2 bg-black border-b border-[#262626]">
-                    <div class="flex items-center gap-3 p-3"><img src="${logo}" class="w-8 h-8 rounded-full object-cover border border-gray-800"><span class="font-bold text-sm text-white">${shortName}</span><i class="fa-solid fa-circle-check text-blue-500 text-xs"></i></div>
-                    <img src="${p.img}" class="w-full object-cover">
-                    <div class="p-4">
-                        <div class="flex gap-4 text-2xl text-white mb-3"><i class="fa-solid fa-heart text-red-500"></i><i class="fa-regular fa-comment"></i><i class="fa-regular fa-paper-plane"></i></div>
-                        <p class="font-bold text-sm text-white mb-2">${p.likes.toLocaleString()} likes</p>
-                        <div class="space-y-1">${p.comments.map(c=>`<p class="text-[13px] text-gray-300 leading-tight"><span class="font-bold text-white mr-1">user_${Math.floor(Math.random()*999)}</span>${c}</p>`).join('')}</div>
+                <div class="mb-3 bg-black border-b border-[#262626]">
+                    <div class="flex items-center gap-3 p-4"><img src="${logo}" class="w-10 h-10 rounded-full object-cover border border-gray-800"><span class="font-bold text-base text-white">${shortName}</span><i class="fa-solid fa-circle-check text-blue-500 text-sm"></i></div>
+                    <img src="${p.img}" class="w-full object-cover aspect-[4/5]">
+                    <div class="p-5">
+                        <div class="flex gap-5 text-3xl text-white mb-4"><i class="fa-solid fa-heart text-red-500"></i><i class="fa-regular fa-comment"></i><i class="fa-regular fa-paper-plane"></i></div>
+                        <p class="font-bold text-base text-white mb-3">${p.likes.toLocaleString()} likes</p>
+                        <div class="space-y-1.5">${p.comments.map(c=>`<p class="text-sm text-gray-300 leading-tight"><span class="font-bold text-white mr-2">user_${Math.floor(Math.random()*999)}</span>${c}</p>`).join('')}</div>
                     </div>
                 </div>`).join('');
         }
@@ -1105,18 +1212,18 @@ Link in bio.</p>
             if(state.social.yt.videos.length === 0) return;
 
             feed.innerHTML = state.social.yt.videos.map(v => `
-                <div class="mb-6 bg-[#0f0f0f] flex flex-col lg:flex-row gap-4">
-                    <div class="w-full lg:w-[360px] aspect-video bg-[#181818] relative rounded-xl overflow-hidden group cursor-pointer border border-[#272727]">
-                        <img src="${v.img}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                <div class="mb-8 bg-[#0f0f0f] flex flex-col lg:flex-row gap-6">
+                    <div class="w-full lg:w-[420px] aspect-video bg-[#181818] relative rounded-2xl overflow-hidden group cursor-pointer border border-[#272727] shadow-xl">
+                        <img src="${v.img}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                         <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition"></div>
-                        <span class="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-1.5 py-0.5 rounded font-medium">1:45</span>
+                        <span class="absolute bottom-3 right-3 bg-black/80 text-white text-xs px-2 py-1 rounded font-medium tracking-wide">1:45</span>
                     </div>
                     <div class="flex-1">
-                        <h3 class="text-lg font-bold text-white mb-1 leading-tight line-clamp-2">${v.title}</h3>
-                        <p class="text-xs text-gray-400 mb-4">${v.views.toLocaleString()} views • 2 hours ago</p>
-                        <div class="bg-[#181818] rounded-xl p-4 text-xs h-32 overflow-y-auto custom-scrollbar border border-[#272727]">
-                            <p class="font-bold text-white mb-2 border-b border-[#272727] pb-2">Comments</p>
-                            ${v.comments.map(c=>`<div class="flex gap-3 mb-3 items-start"><img src="https://ui-avatars.com/api/?name=U&background=random" class="w-6 h-6 rounded-full"><div class="flex-1"><p class="text-[10px] text-gray-500 mb-0.5">@user_${Math.floor(Math.random()*9999)}</p><p class="text-gray-300 text-[13px] leading-snug">${c}</p></div></div>`).join('')}
+                        <h3 class="text-xl font-bold text-white mb-2 leading-tight line-clamp-2">${v.title}</h3>
+                        <p class="text-sm text-gray-400 mb-5">${v.views.toLocaleString()} views • 2 hours ago</p>
+                        <div class="bg-[#181818] rounded-2xl p-5 text-sm h-40 overflow-y-auto custom-scrollbar border border-[#272727] shadow-inner">
+                            <p class="font-bold text-white mb-3 border-b border-[#272727] pb-2">Comments</p>
+                            ${v.comments.map(c=>`<div class="flex gap-3 mb-4 items-start"><img src="https://ui-avatars.com/api/?name=U&background=random" class="w-8 h-8 rounded-full"><div class="flex-1"><p class="text-xs text-gray-500 mb-1 font-bold">@user_${Math.floor(Math.random()*9999)}</p><p class="text-gray-300 text-sm leading-snug">${c}</p></div></div>`).join('')}
                         </div>
                     </div>
                 </div>`).join('');
