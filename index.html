@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UR STUDIO | Sign In</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Plus Jakarta Sans for Apple SF Pro feel -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['-apple-system', 'BlinkMacSystemFont', 'Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        iosBg: '#050508',
+                        iosCard: 'rgba(28, 28, 32, 0.65)',
+                        iosBorder: 'rgba(255, 255, 255, 0.12)',
+                        studioGold: '#f59e0b',
+                        studioCrimson: '#e11d48',
+                        studioIndigo: '#4f46e5',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom iOS 18 Glassmorphism & Spring Physics */
+        body {
+            background-color: #050508;
+            color: #ffffff;
+            overflow-x: hidden;
+            user-select: none;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Animated Aurora Mesh Background */
+        @keyframes floatSlow {
+            0%, 100% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -40px) scale(1.08); }
+            66% { transform: translate(-25px, 25px) scale(0.95); }
+        }
+        @keyframes floatReverse {
+            0%, 100% { transform: translate(0px, 0px) scale(1); }
+            50% { transform: translate(-40px, -30px) scale(1.12); }
+        }
+
+        .aurora-1 { animation: floatSlow 14s ease-in-out infinite; }
+        .aurora-2 { animation: floatReverse 18s ease-in-out infinite; }
+        .aurora-3 { animation: floatSlow 22s ease-in-out infinite reverse; }
+
+        /* iOS Frosted Glass Surface */
+        .ios-glass {
+            background: rgba(24, 24, 29, 0.58);
+            backdrop-filter: blur(32px) saturate(190%);
+            -webkit-backdrop-filter: blur(32px) saturate(190%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 
+                0 30px 60px -12px rgba(0, 0, 0, 0.75),
+                inset 0 1px 0 0 rgba(255, 255, 255, 0.18);
+        }
+
+        .ios-sheet-glass {
+            background: rgba(30, 30, 36, 0.85);
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            border-top: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.8);
+        }
+
+        .ios-input {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .ios-input:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(245, 158, 11, 0.6);
+            box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.15);
+        }
+
+        /* Tactile iOS Button Spring */
+        .ios-btn {
+            transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .ios-btn:active {
+            transform: scale(0.96);
+        }
+
+        /* Dynamic Island Expansion */
+        .dynamic-island {
+            transition: all 0.45s cubic-bezier(0.32, 0.72, 0, 1);
+        }
+        .dynamic-island.expanded {
+            width: 280px !important;
+            height: 44px !important;
+            border-radius: 24px !important;
+            background: rgba(15, 15, 18, 0.95);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.12);
+        }
+
+        /* Subtle Film Grain Overlay */
+        .film-grain {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between items-center relative p-4 sm:p-6 selection:bg-amber-500 selection:text-black">
+
+    <!-- Ambient Cinematic Mesh Background -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <!-- Deep Crimson Studio Orb -->
+        <div class="aurora-1 absolute -top-24 -left-24 w-96 h-96 sm:w-[32rem] sm:h-[32rem] rounded-full bg-rose-600/25 blur-[110px]"></div>
+        <!-- Warm Gold / Amber Keylight Orb -->
+        <div class="aurora-2 absolute top-1/3 -right-20 w-80 h-80 sm:w-[28rem] sm:h-[28rem] rounded-full bg-amber-500/20 blur-[120px]"></div>
+        <!-- Midnight Indigo Shadow Orb -->
+        <div class="aurora-3 absolute -bottom-28 left-1/4 w-96 h-96 sm:w-[34rem] sm:h-[34rem] rounded-full bg-indigo-600/25 blur-[130px]"></div>
+        <!-- Subtle Dot Matrix / Film Texture -->
+        <div class="absolute inset-0 film-grain"></div>
+    </div>
+
+    <!-- Top iPhone Dynamic Island & Status Bar -->
+    <header class="w-full max-w-md mx-auto pt-1 z-30 flex items-center justify-between px-2">
+        <!-- Time -->
+        <div id="ios-clock" class="text-xs font-semibold tracking-tight text-white/90 w-16">9:41</div>
+
+        <!-- Dynamic Island Pill -->
+        <div id="dynamic-island" onclick="pulseDynamicIsland()" class="dynamic-island w-32 h-8 bg-black rounded-full border border-white/10 flex items-center justify-between px-3 cursor-pointer shadow-lg overflow-hidden">
+            <div class="flex items-center space-x-2">
+                <span id="island-dot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                <span id="island-text" class="text-[11px] font-medium text-white/80 tracking-tight truncate">UR Studio</span>
+            </div>
+            <i id="island-icon" class="fa-solid fa-video text-[10px] text-amber-400/90"></i>
+        </div>
+
+        <!-- iOS Status Icons -->
+        <div class="flex items-center justify-end space-x-1.5 text-white/90 text-[11px] w-16">
+            <i class="fa-solid fa-signal text-[10px]"></i>
+            <i class="fa-solid fa-wifi text-[10px]"></i>
+            <i class="fa-solid fa-battery-full text-xs text-emerald-400"></i>
+        </div>
+    </header>
+
+    <!-- Main iOS 18 Glass Login Card (Step 1) -->
+    <main class="w-full max-w-[410px] my-auto z-20 py-6">
+        <div id="login-card" class="ios-glass rounded-[40px] p-7 sm:p-8 relative overflow-hidden transition-all duration-500">
+            
+            <!-- Subtle Top Specular Highlight -->
+            <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-56 h-24 bg-white/15 blur-2xl rounded-full pointer-events-none"></div>
+
+            <!-- Studio App Icon & Header -->
+            <div class="flex flex-col items-center text-center">
+                <div class="relative group cursor-pointer" onclick="pulseDynamicIsland('Studio Camera Ready')">
+                    <!-- Outer Glow -->
+                    <div class="absolute -inset-1 bg-gradient-to-tr from-amber-500 via-rose-500 to-indigo-500 rounded-[24px] blur opacity-50 group-hover:opacity-80 transition duration-500"></div>
+                    <!-- iOS Squircle App Icon -->
+                    <div class="relative w-20 h-20 rounded-[22px] bg-gradient-to-b from-zinc-800 to-black p-[1px] shadow-2xl">
+                        <div class="w-full h-full bg-gradient-to-br from-zinc-900 via-black to-zinc-950 rounded-[21px] flex flex-col items-center justify-center relative overflow-hidden">
+                            <div class="absolute inset-0 bg-gradient-to-tr from-amber-500/15 via-transparent to-rose-500/20"></div>
+                            <i class="fa-solid fa-clapperboard text-2xl bg-gradient-to-r from-amber-300 via-amber-400 to-rose-400 bg-clip-text text-transparent drop-shadow"></i>
+                            <span class="text-[8px] font-bold tracking-[0.25em] text-white/60 mt-1">4K RAW</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-5">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10px] font-semibold tracking-widest uppercase bg-white/5 border border-white/10 text-amber-300/90 mb-2">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> Step 01 • Access Portal
+                    </span>
+                    <h1 class="font-display text-3xl font-extrabold tracking-tight text-white">
+                        UR STUDIO
+                    </h1>
+                    <p class="text-xs text-zinc-400 mt-1 font-normal">
+                        Cinematic Production & Director's Suite
+                    </p>
+                </div>
+            </div>
+
+            <!-- iOS Segmented Pill Switcher -->
+            <div class="mt-6 bg-black/40 p-1 rounded-2xl border border-white/5 flex items-center relative">
+                <button id="tab-quick" onclick="switchAuthTab('quick')" class="flex-1 py-2 text-xs font-semibold rounded-xl bg-white/15 text-white shadow-sm transition-all duration-300">
+                    One-Tap Sign In
+                </button>
+                <button id="tab-pass" onclick="switchAuthTab('pass')" class="flex-1 py-2 text-xs font-semibold rounded-xl text-zinc-400 hover:text-white transition-all duration-300">
+                    Studio ID
+                </button>
+            </div>
+
+            <!-- TAB 1: Primary Google Login & Apple Style View -->
+            <div id="view-quick" class="mt-6 space-y-3.5 transition-all duration-300">
+                
+                <!-- Prominent Continue with Google Button -->
+                <button id="google-login-btn" onclick="openGoogleSheet()" class="ios-btn w-full py-3.5 px-5 rounded-2xl bg-white text-zinc-950 font-semibold text-sm flex items-center justify-center gap-3 shadow-[0_10px_25px_-5px_rgba(255,255,255,0.25)] hover:bg-zinc-100 relative overflow-hidden group">
+                    <!-- Official Multi-Color Google 'G' SVG -->
+                    <svg class="w-5 h-5 shrink-0 transition-transform duration-300 group-hover:scale-110" viewBox="0 0 24 24">
+                        <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.4 1 3.5 3.6 1.6 7.4l3.7 2.8C6.2 7.2 8.9 5 12 5z"/>
+                        <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.6l3.7 2.9c2.2-2 3.7-5 3.7-8.7z"/>
+                        <path fill="#FBBC05" d="M5.3 14.8c-.2-.8-.4-1.6-.4-2.5s.2-1.7.4-2.5L1.6 7C.6 9 0 11.2 0 13.5s.6 4.5 1.6 6.5l3.7-2.9z" transform="translate(0 -1.2)"/>
+                        <path fill="#34A853" d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3.1 0-5.8-2.1-6.7-5l-3.7 2.8C3.5 19.9 7.4 23 12 23z"/>
+                    </svg>
+                    <span id="google-btn-text" class="tracking-tight">Continue with Google</span>
+                </button>
+
+                <!-- Secondary Guest / Producer Pass Button -->
+                <button onclick="triggerGuestLogin()" class="ios-btn w-full py-3.5 px-5 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/10 text-white font-medium text-sm flex items-center justify-center gap-2.5">
+                    <i class="fa-solid fa-film text-amber-400 text-xs"></i>
+                    <span>Continue as Guest Director</span>
+                </button>
+
+                <!-- Feature Pills -->
+                <div class="pt-3 grid grid-cols-3 gap-2 text-center">
+                    <div class="p-2.5 rounded-2xl bg-white/[0.03] border border-white/[0.06]">
+                        <i class="fa-solid fa-shield-halved text-amber-400 text-xs mb-1"></i>
+                        <p class="text-[10px] text-zinc-400 font-medium">Google OAuth</p>
+                    </div>
+                    <div class="p-2.5 rounded-2xl bg-white/[0.03] border border-white/[0.06]">
+                        <i class="fa-solid fa-cloud-arrow-up text-rose-400 text-xs mb-1"></i>
+                        <p class="text-[10px] text-zinc-400 font-medium">Cloud Dailies</p>
+                    </div>
+                    <div class="p-2.5 rounded-2xl bg-white/[0.03] border border-white/[0.06]">
+                        <i class="fa-solid fa-wand-magic-sparkles text-indigo-400 text-xs mb-1"></i>
+                        <p class="text-[10px] text-zinc-400 font-medium">iOS Sync</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: Studio ID Email / Passcode Input -->
+            <form id="view-pass" onsubmit="handleStudioIdLogin(event)" class="mt-6 space-y-3.5 hidden">
+                <div>
+                    <label class="block text-[11px] font-medium text-zinc-400 mb-1.5 ml-1">STUDIO EMAIL OR HANDLE</label>
+                    <div class="relative">
+                        <i class="fa-regular fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 text-xs"></i>
+                        <input id="studio-email" type="email" required placeholder="director@urstudio.film" class="ios-input w-full pl-10 pr-4 py-3 rounded-2xl text-sm text-white placeholder-zinc-500 focus:outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-medium text-zinc-400 mb-1.5 ml-1">SECURITY PASSKEY</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500 text-xs"></i>
+                        <input id="studio-pass" type="password" required placeholder="••••••••" class="ios-input w-full pl-10 pr-4 py-3 rounded-2xl text-sm text-white placeholder-zinc-500 focus:outline-none">
+                    </div>
+                </div>
+                <button type="submit" class="ios-btn w-full py-3.5 px-5 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-rose-500 text-black font-bold text-sm shadow-lg shadow-amber-500/20">
+                    Unlock Studio Workspace
+                </button>
+            </form>
+
+            <!-- Divider -->
+            <div class="mt-6 pt-5 border-t border-white/10 flex items-center justify-between text-[11px] text-zinc-400">
+                <span class="flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    Servers Online • Mumbai / LA
+                </span>
+                <button onclick="pulseDynamicIsland('Face ID Ready')" class="text-amber-400 hover:underline font-medium flex items-center gap-1">
+                    <i class="fa-solid fa-expand text-[10px]"></i> Face ID
+                </button>
+            </div>
+        </div>
+
+        <!-- Authenticated Welcome Preview State (Hidden Initially) -->
+        <div id="authenticated-card" class="ios-glass rounded-[40px] p-8 text-center hidden transition-all duration-500">
+            <div class="w-20 h-20 rounded-full mx-auto p-1 bg-gradient-to-tr from-amber-400 via-rose-500 to-indigo-500 shadow-xl">
+                <img id="auth-avatar" src="https://placehold.co/120x120/18181b/f59e0b?text=UR" alt="User Avatar" class="w-full h-full rounded-full object-cover border-2 border-black">
+            </div>
+            <div class="mt-4">
+                <span class="px-3 py-0.5 rounded-full text-[10px] font-semibold tracking-widest uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                    <i class="fa-solid fa-check mr-1"></i> Google Verified
+                </span>
+                <h2 id="auth-name" class="font-display text-2xl font-bold text-white mt-2">Welcome, Director</h2>
+                <p id="auth-email" class="text-xs text-zinc-400">director@gmail.com</p>
+            </div>
+
+            <div class="mt-6 p-4 rounded-2xl bg-white/5 border border-white/10 text-left space-y-2">
+                <div class="flex items-center justify-between text-xs">
+                    <span class="text-zinc-400">Workspace</span>
+                    <span class="text-white font-semibold">UR STUDIO — Main Lot</span>
+                </div>
+                <div class="flex items-center justify-between text-xs">
+                    <span class="text-zinc-400">Access Level</span>
+                    <span class="text-amber-400 font-semibold">Executive Producer</span>
+                </div>
+            </div>
+
+            <div class="mt-6 space-y-2.5">
+                <button onclick="pulseDynamicIsland('Ready for Step 2!')" class="ios-btn w-full py-3.5 px-5 rounded-2xl bg-white text-black font-semibold text-sm shadow-lg">
+                    Enter UR STUDIO Dashboard <i class="fa-solid fa-arrow-right ml-1.5 text-xs"></i>
+                </button>
+                <button onclick="signOutStudio()" class="ios-btn w-full py-2.5 text-xs text-zinc-400 hover:text-white">
+                    Switch Account
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- iPhone Home Bar Indicator -->
+    <footer class="w-full flex flex-col items-center pb-1 z-20">
+        <p class="text-[11px] text-zinc-500 mb-3">Protected by UR Studio Production Security</p>
+        <div class="w-36 h-1.5 bg-white/30 rounded-full"></div>
+    </footer>
+
+    <!-- iOS Bottom Sheet: Google Account Chooser -->
+    <div id="google-sheet-backdrop" onclick="closeGoogleSheet(event)" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden opacity-0 transition-opacity duration-300 flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div id="google-sheet" onclick="event.stopPropagation()" class="ios-sheet-glass w-full max-w-md rounded-t-[36px] sm:rounded-[36px] p-6 sm:p-7 transform translate-y-full sm:translate-y-10 transition-transform duration-300 border border-white/15">
+            
+            <!-- Sheet Grabber Handle -->
+            <div class="w-10 h-1.5 bg-white/25 rounded-full mx-auto mb-5"></div>
+
+            <!-- Google Header -->
+            <div class="flex items-center justify-between pb-4 border-b border-white/10">
+                <div class="flex items-center space-x-2.5">
+                    <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24">
+                            <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.7l3.1-3.1C17.3 1.8 14.8 1 12 1 7.4 1 3.5 3.6 1.6 7.4l3.7 2.8C6.2 7.2 8.9 5 12 5z"/>
+                            <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.6l3.7 2.9c2.2-2 3.7-5 3.7-8.7z"/>
+                            <path fill="#FBBC05" d="M5.3 14.8c-.2-.8-.4-1.6-.4-2.5s.2-1.7.4-2.5L1.6 7C.6 9 0 11.2 0 13.5s.6 4.5 1.6 6.5l3.7-2.9z" transform="translate(0 -1.2)"/>
+                            <path fill="#34A853" d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3.1 0-5.8-2.1-6.7-5l-3.7 2.8C3.5 19.9 7.4 23 12 23z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-semibold text-white">Sign in with Google</h3>
+                        <p class="text-[11px] text-zinc-400">Choose an account to continue to <span class="text-amber-400 font-medium">UR STUDIO</span></p>
+                    </div>
+                </div>
+                <button onclick="closeGoogleSheet()" class="w-7 h-7 rounded-full bg-white/10 text-zinc-400 hover:text-white flex items-center justify-center text-xs">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Account List -->
+            <div class="my-4 space-y-2.5">
+                <!-- Account 1 -->
+                <button onclick="selectGoogleAccount('Aarav Mehta', 'aarav.director@gmail.com', 'AM')" class="ios-btn w-full p-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-between text-left group">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-amber-500 to-rose-500 flex items-center justify-center text-black font-bold text-xs shadow">
+                            AM
+                        </div>
+                        <div>
+                            <div class="text-sm font-semibold text-white group-hover:text-amber-300 transition-colors">Aarav Mehta</div>
+                            <div class="text-xs text-zinc-400">aarav.director@gmail.com</div>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-xs text-zinc-500 group-hover:text-white transition-colors"></i>
+                </button>
+
+                <!-- Account 2 -->
+                <button onclick="selectGoogleAccount('UR Studio Production', 'studio.desk@urstudio.film', 'UR')" class="ios-btn w-full p-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-between text-left group">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-500 to-cyan-400 flex items-center justify-center text-black font-bold text-xs shadow">
+                            UR
+                        </div>
+                        <div>
+                            <div class="text-sm font-semibold text-white group-hover:text-amber-300 transition-colors">UR Studio Official</div>
+                            <div class="text-xs text-zinc-400">studio.desk@urstudio.film</div>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-xs text-zinc-500 group-hover:text-white transition-colors"></i>
+                </button>
+
+                <!-- Custom Google Account Input Toggle -->
+                <div id="custom-google-box" class="hidden pt-2">
+                    <div class="flex gap-2">
+                        <input id="custom-google-email" type="email" placeholder="Enter your Gmail address..." class="ios-input flex-1 px-3.5 py-2.5 rounded-xl text-xs text-white placeholder-zinc-500 focus:outline-none">
+                        <button onclick="submitCustomGoogle()" class="ios-btn px-4 py-2.5 rounded-xl bg-white text-black font-semibold text-xs">
+                            Next
+                        </button>
+                    </div>
+                </div>
+
+                <button id="add-account-btn" onclick="toggleCustomGoogleInput()" class="w-full p-3 rounded-2xl hover:bg-white/5 flex items-center space-x-3 text-left text-xs text-zinc-300 transition-colors">
+                    <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-white">
+                        <i class="fa-solid fa-user-plus text-[11px]"></i>
+                    </div>
+                    <span class="font-medium">Use another Google account</span>
+                </button>
+            </div>
+
+            <p class="text-[11px] text-zinc-500 leading-relaxed text-center pt-2 border-t border-white/10">
+                Google will share your name, email address, and profile picture with UR STUDIO.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Live iPhone Status Clock
+        function updateClock() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            hours = hours % 12 || 12;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            document.getElementById('ios-clock').textContent = `${hours}:${minutes}`;
+        }
+        updateClock();
+        setInterval(updateClock, 30000);
+
+        // Dynamic Island Interactive Notification
+        let islandTimeout;
+        function pulseDynamicIsland(customMessage) {
+            const island = document.getElementById('dynamic-island');
+            const text = document.getElementById('island-text');
+            const icon = document.getElementById('island-icon');
+
+            clearTimeout(islandTimeout);
+            island.classList.add('expanded');
+            text.textContent = customMessage || 'UR Studio • Google Auth Ready';
+            icon.className = 'fa-solid fa-sparkles text-xs text-amber-400 animate-spin';
+
+            islandTimeout = setTimeout(() => {
+                island.classList.remove('expanded');
+                text.textContent = 'UR Studio';
+                icon.className = 'fa-solid fa-video text-[10px] text-amber-400/90';
+            }, 2600);
+        }
+
+        // Switch between One-Tap Google and Studio ID Email Tabs
+        function switchAuthTab(tab) {
+            const quickTab = document.getElementById('tab-quick');
+            const passTab = document.getElementById('tab-pass');
+            const viewQuick = document.getElementById('view-quick');
+            const viewPass = document.getElementById('view-pass');
+
+            if (tab === 'quick') {
+                quickTab.className = 'flex-1 py-2 text-xs font-semibold rounded-xl bg-white/15 text-white shadow-sm transition-all duration-300';
+                passTab.className = 'flex-1 py-2 text-xs font-semibold rounded-xl text-zinc-400 hover:text-white transition-all duration-300';
+                viewQuick.classList.remove('hidden');
+                viewPass.classList.add('hidden');
+            } else {
+                passTab.className = 'flex-1 py-2 text-xs font-semibold rounded-xl bg-white/15 text-white shadow-sm transition-all duration-300';
+                quickTab.className = 'flex-1 py-2 text-xs font-semibold rounded-xl text-zinc-400 hover:text-white transition-all duration-300';
+                viewPass.classList.remove('hidden');
+                viewQuick.classList.add('hidden');
+            }
+        }
+
+        // Open iOS Google Account Chooser Sheet
+        function openGoogleSheet() {
+            pulseDynamicIsland('Connecting to Google...');
+            const backdrop = document.getElementById('google-sheet-backdrop');
+            const sheet = document.getElementById('google-sheet');
+
+            backdrop.classList.remove('hidden');
+            setTimeout(() => {
+                backdrop.classList.remove('opacity-0');
+                sheet.classList.remove('translate-y-full', 'sm:translate-y-10');
+            }, 10);
+        }
+
+        function closeGoogleSheet() {
+            const backdrop = document.getElementById('google-sheet-backdrop');
+            const sheet = document.getElementById('google-sheet');
+
+            backdrop.classList.add('opacity-0');
+            sheet.classList.add('translate-y-full', 'sm:translate-y-10');
+            setTimeout(() => {
+                backdrop.classList.add('hidden');
+            }, 300);
+        }
+
+        function toggleCustomGoogleInput() {
+            const box = document.getElementById('custom-google-box');
+            box.classList.toggle('hidden');
+            if (!box.classList.contains('hidden')) {
+                document.getElementById('custom-google-email').focus();
+            }
+        }
+
+        function submitCustomGoogle() {
+            const emailInput = document.getElementById('custom-google-email').value.trim();
+            if (!emailInput) return;
+            const namePart = emailInput.split('@')[0];
+            const formattedName = namePart.charAt(0).toUpperCase() + namePart.slice(1);
+            const initials = formattedName.substring(0, 2).toUpperCase();
+            selectGoogleAccount(formattedName, emailInput, initials);
+        }
+
+        // Authenticate Selected Google Account
+        function selectGoogleAccount(name, email, initials) {
+            closeGoogleSheet();
+            const btnText = document.getElementById('google-btn-text');
+            btnText.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Verifying with Google...';
+            pulseDynamicIsland(`Signing in as ${name}...`);
+
+            setTimeout(() => {
+                document.getElementById('login-card').classList.add('hidden');
+                const authCard = document.getElementById('authenticated-card');
+                authCard.classList.remove('hidden');
+
+                document.getElementById('auth-name').textContent = name;
+                document.getElementById('auth-email').textContent = email;
+                document.getElementById('auth-avatar').src = `https://placehold.co/120x120/18181b/f59e0b?text=${encodeURIComponent(initials)}`;
+
+                btnText.textContent = 'Continue with Google';
+                pulseDynamicIsland('Authenticated • Welcome');
+            }, 900);
+        }
+
+        // Guest & Studio ID Handlers
+        function triggerGuestLogin() {
+            selectGoogleAccount('Guest Director', 'guest.director@urstudio.film', 'GD');
+        }
+
+        function handleStudioIdLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('studio-email').value.trim();
+            const name = email.split('@')[0] || 'Studio Director';
+            selectGoogleAccount(name.toUpperCase(), email, 'UR');
+        }
+
+        function signOutStudio() {
+            document.getElementById('authenticated-card').classList.add('hidden');
+            document.getElementById('login-card').classList.remove('hidden');
+            pulseDynamicIsland('Signed Out');
+        }
+    </script>
+</body>
+</html>
