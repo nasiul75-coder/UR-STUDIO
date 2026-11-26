@@ -10,11 +10,11 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="DriveFlix" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#0b0b0d" />
+  <meta name="theme-color" content="#141414" />
 
-  <!-- Embedded Custom SVG Favicon & Apple Touch Icon (Folded Netflix-Red "D" Play Ribbon) -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g1' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23FF1E27'/%3E%3Cstop offset='55%25' stop-color='%23E50914'/%3E%3Cstop offset='100%25' stop-color='%2399040C'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%230b0b0d'/%3E%3Cpath d='M16 12h15c12.5 0 21 8 21 20s-8.5 20-21 20H16V12zm11 9.5v21h4.2c6.8 0 11.3-4.2 11.3-10.5S38 21.5 31.2 21.5H27z' fill='url(%23g1)'/%3E%3Cpath d='M28 24.5l12 7.5-12 7.5V24.5z' fill='%23ffffff'/%3E%3C/svg%3E" />
-  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Cdefs%3E%3ClinearGradient id='g1' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23FF1E27'/%3E%3Cstop offset='55%25' stop-color='%23E50914'/%3E%3Cstop offset='100%25' stop-color='%2399040C'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='180' height='180' rx='40' fill='%230b0b0d'/%3E%3Cpath d='M44 34h42c35 0 58 22 58 56s-23 56-58 56H44V34zm30 26v60h12c19 0 32-12 32-30s-13-30-32-30H74z' fill='url(%23g1)'/%3E%3Cpath d='M78 68l34 22-34 22V68z' fill='%23ffffff'/%3E%3C/svg%3E" />
+  <!-- Custom Folded Netflix-Red "D" Play-Ribbon SVG Favicon & Apple Touch Icon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g1' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23FF2430'/%3E%3Cstop offset='55%25' stop-color='%23E50914'/%3E%3Cstop offset='100%25' stop-color='%2399040C'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%23141414'/%3E%3Cpath d='M16 12h15c12.5 0 21 8 21 20s-8.5 20-21 20H16V12zm11 9.5v21h4.2c6.8 0 11.3-4.2 11.3-10.5S38 21.5 31.2 21.5H27z' fill='url(%23g1)'/%3E%3Cpath d='M28 24.5l12 7.5-12 7.5V24.5z' fill='%23ffffff'/%3E%3C/svg%3E" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Cdefs%3E%3ClinearGradient id='g1' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23FF2430'/%3E%3Cstop offset='55%25' stop-color='%23E50914'/%3E%3Cstop offset='100%25' stop-color='%2399040C'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='180' height='180' rx='40' fill='%23141414'/%3E%3Cpath d='M44 34h42c35 0 58 22 58 56s-23 56-58 56H44V34zm30 26v60h12c19 0 32-12 32-30s-13-30-32-30H74z' fill='url(%23g1)'/%3E%3Cpath d='M78 68l34 22-34 22V68z' fill='%23ffffff'/%3E%3C/svg%3E" />
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -24,14 +24,13 @@
       theme: {
         extend: {
           colors: {
-            cinema: {
-              bg: '#0b0b0d',
-              surface: '#141418',
-              elevated: '#1c1c22',
-              border: 'rgba(255,255,255,0.09)',
+            nf: {
+              bg: '#141414',
+              surface: '#1b1b1f',
+              elevated: '#24242a',
               red: '#E50914',
-              redDark: '#B20710',
-              redGlow: '#FF1F2A'
+              redHover: '#FF1F2A',
+              redDark: '#B20710'
             }
           },
           fontFamily: {
@@ -47,8 +46,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
-  <!-- Google Identity Services (Loaded asynchronously with readiness queue) -->
-  <script src="https://accounts.google.com/gsi/client" async defer onload="window.__onGISScriptLoaded && window.__onGISScriptLoaded()"></script>
+  <!-- Google Identity Services -->
+  <script src="https://accounts.google.com/gsi/client" async defer onload="window.__onGISReady && window.__onGISReady()"></script>
 
   <style>
     :root {
@@ -58,7 +57,7 @@
     }
 
     html, body {
-      background-color: #0b0b0d;
+      background-color: #141414;
       color: #ffffff;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
       overflow-x: hidden;
@@ -67,7 +66,6 @@
       overscroll-behavior-y: none;
     }
 
-    /* Hide scrollbars cleanly for carousels */
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar {
       -ms-overflow-style: none;
@@ -75,53 +73,53 @@
       -webkit-overflow-scrolling: touch;
     }
 
-    /* Smooth horizontal scroll-snap */
-    .snap-row {
-      scroll-snap-type: x proximity;
+    .snap-row { scroll-snap-type: x proximity; }
+    .snap-card { scroll-snap-align: start; }
+
+    /* Strict 2:3 vertical poster card ratio — NEVER stretches horizontally */
+    .poster-aspect {
+      aspect-ratio: 2 / 3;
     }
-    .snap-card {
-      scroll-snap-align: start;
+    .poster-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
     }
 
-    /* GPU-accelerated card hover ONLY on devices with true hover (never sticky on iPad/mobile) */
+    /* GPU hover ONLY on pointer devices with true hover (prevents sticky iPad/mobile glitches) */
     .media-card {
-      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s ease, border-color 0.25s ease;
+      transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.26s ease, border-color 0.24s ease;
       will-change: transform;
       transform: translateZ(0);
     }
-    .media-card:active {
-      transform: scale(0.97);
-    }
+    .media-card:active { transform: scale(0.97); }
     @media (hover: hover) and (pointer: fine) {
       .media-card:hover {
         transform: scale(1.06) translateY(-5px);
         z-index: 20;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.85);
-        border-color: rgba(255, 255, 255, 0.24);
+        box-shadow: 0 22px 44px rgba(0, 0, 0, 0.85);
+        border-color: rgba(255, 255, 255, 0.25);
       }
-      .media-card:hover .card-hover-overlay {
-        opacity: 1;
-      }
+      .media-card:hover .card-hover-overlay { opacity: 1; }
+      .media-card:hover .card-edit-btn { opacity: 1; }
     }
 
-    /* Billboard Ken Burns slow zoom & crossfade */
+    /* Billboard Ken Burns */
     @keyframes kenBurns {
       0% { transform: scale(1.0); }
-      100% { transform: scale(1.08); }
+      100% { transform: scale(1.07); }
     }
-    .ken-burns {
-      animation: kenBurns 16s ease-out forwards;
-    }
+    .ken-burns { animation: kenBurns 16s ease-out forwards; }
 
-    /* Fast silky 0.8s Intro Splash */
-    @keyframes splashLogoIn {
-      0% { opacity: 0; transform: scale(0.84); }
-      45% { opacity: 1; transform: scale(1.03); }
+    /* Splash animation */
+    @keyframes splashIn {
+      0% { opacity: 0; transform: scale(0.86); }
+      50% { opacity: 1; transform: scale(1.03); }
       100% { opacity: 1; transform: scale(1); }
     }
-    .splash-logo-anim {
-      animation: splashLogoIn 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
+    .splash-anim { animation: splashIn 0.52s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
     /* Skeleton shimmer */
     @keyframes shimmer {
@@ -129,125 +127,127 @@
       100% { background-position: 200% 0; }
     }
     .skeleton {
-      background: linear-gradient(90deg, #141418 25%, #22222a 50%, #141418 75%);
+      background: linear-gradient(90deg, #1b1b1f 25%, #2a2a32 50%, #1b1b1f 75%);
       background-size: 200% 100%;
-      animation: shimmer 1.35s infinite linear;
+      animation: shimmer 1.3s infinite linear;
     }
 
-    /* Modal & Drawer transitions */
+    /* Modal / Drawer / Toast animations */
     @keyframes modalIn {
       from { opacity: 0; transform: translateY(14px) scale(0.97); }
       to { opacity: 1; transform: translateY(0) scale(1); }
     }
-    .modal-anim {
-      animation: modalIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
+    .modal-anim { animation: modalIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
     @keyframes drawerIn {
-      from { opacity: 0; transform: translateX(32px); }
+      from { opacity: 0; transform: translateX(30px); }
       to { opacity: 1; transform: translateX(0); }
     }
-    .drawer-anim {
-      animation: drawerIn 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
+    .drawer-anim { animation: drawerIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
     @keyframes toastIn {
-      from { opacity: 0; transform: translateY(12px) scale(0.96); }
+      from { opacity: 0; transform: translateY(10px) scale(0.96); }
       to { opacity: 1; transform: translateY(0) scale(1); }
     }
-    .toast-anim {
-      animation: toastIn 0.22s ease-out forwards;
-    }
+    .toast-anim { animation: toastIn 0.2s ease-out forwards; }
 
-    /* Netflix Cinema Range Slider */
-    input[type="range"].nf-slider {
-      -webkit-appearance: none;
-      appearance: none;
-      background: transparent;
-      cursor: pointer;
-    }
-    input[type="range"].nf-slider::-webkit-slider-runnable-track {
-      height: 5px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.25);
-    }
-    input[type="range"].nf-slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      height: 15px;
-      width: 15px;
-      border-radius: 50%;
-      background: #E50914;
-      margin-top: -5px;
-      box-shadow: 0 0 12px rgba(229, 9, 20, 0.9);
-      transition: transform 0.15s ease;
-    }
-    input[type="range"].nf-slider:hover::-webkit-slider-thumb {
-      transform: scale(1.25);
-    }
-
-    /* Safe-area padding helpers */
     .safe-top { padding-top: var(--sat); }
-    .safe-bottom { padding-bottom: max(0.5rem, var(--sab)); }
+    .safe-bottom { padding-bottom: max(0.45rem, var(--sab)); }
 
-    /* Subtitle cue styling */
+    /* CRITICAL FIX 1: Bulletproof non-collapsing Player Layout */
+    #playerOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #000000;
+      flex-direction: column;
+    }
+    #playerTopBar {
+      min-height: 64px;
+      flex-shrink: 0;
+      z-index: 20;
+    }
+    #playerStage {
+      position: relative;
+      flex: 1;
+      width: 100%;
+      min-height: 0;
+      overflow: hidden;
+      background: #000000;
+    }
+    #videoEl {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #000000;
+    }
+    #driveEmbedIframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #000000;
+    }
+
     ::cue {
       background-color: rgba(0, 0, 0, 0.8);
       color: #ffffff;
       font-family: 'Inter', sans-serif;
-      font-size: 1.1rem;
-      line-height: 1.4;
-      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.95);
+      font-size: 1.05rem;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.95);
     }
   </style>
 </head>
-<body class="bg-cinema-bg text-white min-h-screen selection:bg-cinema-red selection:text-white">
+<body class="bg-nf-bg text-white min-h-screen selection:bg-nf-red selection:text-white">
 
   <!-- =========================================================
-       SILKY 0.8s NETFLIX-STYLE LAUNCH SPLASH (NON-BLOCKING)
+       LAUNCH SPLASH (0.7s NON-BLOCKING)
   ========================================================== -->
-  <div id="introSplash" class="fixed inset-0 z-[90] bg-[#0b0b0d] flex flex-col items-center justify-center transition-opacity duration-500 pointer-events-none">
-    <div class="splash-logo-anim flex items-center gap-3.5">
+  <div id="introSplash" class="fixed inset-0 z-[95] bg-[#141414] flex flex-col items-center justify-center transition-opacity duration-500 pointer-events-none">
+    <div class="splash-anim flex items-center gap-3.5">
       <svg class="w-12 h-12 sm:w-14 sm:h-14 drop-shadow-[0_0_24px_rgba(229,9,20,0.65)]" viewBox="0 0 64 64" fill="none">
         <defs>
-          <linearGradient id="splashGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+          <linearGradient id="spGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
             <stop offset="0%" stop-color="#FF2430"/>
             <stop offset="55%" stop-color="#E50914"/>
             <stop offset="100%" stop-color="#9B050D"/>
           </linearGradient>
         </defs>
-        <rect width="64" height="64" rx="16" fill="#141418" stroke="rgba(255,255,255,0.1)"/>
-        <path d="M16 12h15c12.5 0 21 8 21 20s-8.5 20-21 20H16V12zm11 9.5v21h4.2c6.8 0 11.3-4.2 11.3-10.5S38 21.5 31.2 21.5H27z" fill="url(#splashGrad)"/>
+        <rect width="64" height="64" rx="16" fill="#1b1b1f" stroke="rgba(255,255,255,0.12)"/>
+        <path d="M16 12h15c12.5 0 21 8 21 20s-8.5 20-21 20H16V12zm11 9.5v21h4.2c6.8 0 11.3-4.2 11.3-10.5S38 21.5 31.2 21.5H27z" fill="url(#spGrad)"/>
         <path d="M28 24.5l12 7.5-12 7.5V24.5z" fill="#ffffff"/>
       </svg>
       <div class="flex flex-col">
-        <span class="text-3xl sm:text-4xl font-black tracking-tight text-white">DRIVE<span class="text-cinema-red">FLIX</span></span>
+        <span class="text-3xl sm:text-4xl font-black tracking-tight text-white">DRIVE<span class="text-nf-red">FLIX</span></span>
         <span class="text-[10px] uppercase tracking-[0.28em] text-gray-400 font-semibold -mt-0.5">4K Personal Cinema</span>
       </div>
     </div>
   </div>
 
   <!-- =========================================================
-       FROSTED-GLASS STICKY TOP HEADER (DESKTOP & TABLET/MOBILE)
+       STICKY FROSTED-GLASS HEADER
   ========================================================== -->
-  <header id="topHeader" class="fixed top-0 left-0 right-0 z-40 safe-top transition-all duration-300 bg-gradient-to-b from-[#0b0b0d]/95 via-[#0b0b0d]/55 to-transparent">
-    <div class="max-w-[1800px] mx-auto px-4 sm:px-8 h-16 sm:h-[72px] flex items-center justify-between gap-3">
-      <!-- Custom SVG Brand Logo + Desktop Nav -->
+  <header id="topHeader" class="fixed top-0 left-0 right-0 z-40 safe-top transition-all duration-300 bg-gradient-to-b from-[#141414]/95 via-[#141414]/55 to-transparent">
+    <div class="max-w-[1800px] mx-auto px-4 sm:px-8 h-16 sm:h-[72px] flex items-center justify-between gap-2.5">
+      <!-- Left: Brand Logo + Desktop Nav -->
       <div class="flex items-center gap-6 lg:gap-10 min-w-0">
-        <button onclick="navigateTab('home')" class="flex items-center gap-2.5 group shrink-0 active:scale-95 transition">
+        <button onclick="navigateTab('home')" class="flex items-center gap-2.5 shrink-0 active:scale-95 transition">
           <svg class="w-8 h-8 sm:w-9 sm:h-9 drop-shadow-[0_0_12px_rgba(229,9,20,0.5)]" viewBox="0 0 64 64" fill="none">
             <defs>
-              <linearGradient id="navLogoGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+              <linearGradient id="navGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
                 <stop offset="0%" stop-color="#FF2430"/>
                 <stop offset="55%" stop-color="#E50914"/>
                 <stop offset="100%" stop-color="#B20710"/>
               </linearGradient>
             </defs>
-            <rect width="64" height="64" rx="15" fill="#16161c" stroke="rgba(255,255,255,0.12)"/>
-            <path d="M16 12h15c12.5 0 21 8 21 20s-8.5 20-21 20H16V12zm11 9.5v21h4.2c6.8 0 11.3-4.2 11.3-10.5S38 21.5 31.2 21.5H27z" fill="url(#navLogoGrad)"/>
+            <rect width="64" height="64" rx="15" fill="#1d1d22" stroke="rgba(255,255,255,0.12)"/>
+            <path d="M16 12h15c12.5 0 21 8 21 20s-8.5 20-21 20H16V12zm11 9.5v21h4.2c6.8 0 11.3-4.2 11.3-10.5S38 21.5 31.2 21.5H27z" fill="url(#navGrad)"/>
             <path d="M28 24.5l12 7.5-12 7.5V24.5z" fill="#ffffff"/>
           </svg>
-          <span class="text-xl sm:text-2xl font-black tracking-tight text-white">DRIVE<span class="text-cinema-red">FLIX</span></span>
+          <span class="text-xl sm:text-2xl font-black tracking-tight text-white">DRIVE<span class="text-nf-red">FLIX</span></span>
         </button>
 
         <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
@@ -258,88 +258,91 @@
         </nav>
       </div>
 
-      <!-- Right Controls: Live Search, Reconnect Pill, Sync Drive, Profile/Drive Pill -->
-      <div class="flex items-center gap-2 sm:gap-2.5 shrink-0">
-        <!-- Desktop Expandable Live Search -->
-        <div class="hidden sm:flex relative items-center bg-white/[0.08] hover:bg-white/[0.12] border border-white/10 rounded-full transition-all duration-300 w-10 focus-within:w-64 focus-within:bg-[#141418]/95 focus-within:border-white/35 overflow-hidden">
+      <!-- Right: Search, Reconnect Pill, Re-Match Posters, Sync, Profile/Connect -->
+      <div class="flex items-center gap-2 shrink-0">
+        <!-- Desktop Expandable Search -->
+        <div class="hidden sm:flex relative items-center bg-white/[0.08] hover:bg-white/[0.13] border border-white/10 rounded-full transition-all duration-300 w-10 focus-within:w-60 focus-within:bg-[#1b1b1f]/95 focus-within:border-white/35 overflow-hidden">
           <button onclick="document.getElementById('desktopSearchInput').focus()" aria-label="Search" class="p-2.5 text-gray-200 hover:text-white shrink-0">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
           </button>
-          <input id="desktopSearchInput" type="text" placeholder="Titles, genres, years..." oninput="handleSearchInput(this.value)"
+          <input id="desktopSearchInput" type="text" placeholder="Search titles, genres..." oninput="handleSearchInput(this.value)"
             class="bg-transparent text-sm text-white placeholder-gray-400 outline-none w-full pr-8 py-1.5" />
           <button id="desktopClearSearch" onclick="clearSearch()" class="hidden absolute right-2 text-gray-400 hover:text-white p-1">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
           </button>
         </div>
 
-        <!-- Subtle 1-Tap Reconnect Pill (Shown ONLY when cached library exists & 60m token expired) -->
+        <!-- 1-Tap Reconnect Drive Pill (Shown when library is cached & 60m token expired) -->
         <button id="reconnectPill" onclick="reconnectDriveOneTap()"
-          class="hidden items-center gap-1.5 bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/45 text-amber-200 hover:text-white text-xs font-semibold px-3 py-2 rounded-full transition active:scale-95 backdrop-blur-md">
+          class="hidden items-center gap-1.5 bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/50 text-amber-200 hover:text-white text-xs font-semibold px-3 py-2 rounded-full transition active:scale-95 backdrop-blur-md">
           <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-          <span class="hidden sm:inline">Reconnect Drive (1-Tap)</span>
-          <span class="sm:hidden">Reconnect</span>
+          <span>Reconnect Drive</span>
         </button>
 
-        <!-- Sync Drive Button (When Drive Connected) -->
+        <!-- Re-Match Posters Button -->
+        <button id="rematchHeaderBtn" onclick="rematchAllPosters()" title="Re-Match Posters with Improved Cleaner"
+          class="hidden lg:inline-flex items-center gap-1.5 bg-white/[0.08] hover:bg-white/[0.16] border border-white/10 text-xs font-medium px-3 py-2 rounded-full transition active:scale-95 backdrop-blur-md">
+          <svg class="w-3.5 h-3.5 text-nf-red" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+          <span>Re-Match Posters</span>
+        </button>
+
+        <!-- Sync Drive -->
         <button id="syncDriveBtn" onclick="syncDriveLibrary()" title="Sync Google Drive"
           class="hidden items-center gap-1.5 bg-white/[0.08] hover:bg-white/[0.16] border border-white/10 text-xs sm:text-sm font-medium px-3 py-2 rounded-full transition active:scale-95 backdrop-blur-md">
           <svg id="syncIcon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>
             <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/>
           </svg>
-          <span class="hidden lg:inline">Sync</span>
+          <span class="hidden xl:inline">Sync</span>
         </button>
 
-        <!-- Profile / Drive Status Pill -->
+        <!-- Profile / Connect Pill -->
         <button onclick="openDriveDrawer()"
-          class="flex items-center gap-2 bg-white/[0.09] hover:bg-white/[0.17] border border-white/15 text-xs sm:text-sm font-medium pl-2.5 pr-3 py-1.5 rounded-full transition active:scale-95 backdrop-blur-md">
+          class="flex items-center gap-2 bg-white/[0.1] hover:bg-white/[0.18] border border-white/15 text-xs sm:text-sm font-medium pl-2.5 pr-3 py-1.5 rounded-full transition active:scale-95 backdrop-blur-md">
           <img id="headerAvatar" src="" alt="" class="hidden w-6 h-6 rounded-full object-cover border border-white/30" />
           <span id="headerStatusDot" class="w-2 h-2 rounded-full bg-amber-400 shrink-0"></span>
-          <span id="headerStatusLabel" class="max-w-[125px] truncate">Connect Drive</span>
+          <span id="headerStatusLabel" class="max-w-[115px] truncate">Connect Drive</span>
         </button>
       </div>
     </div>
   </header>
 
   <!-- LIVE SCANNING PROGRESS BAR -->
-  <div id="scanBar" class="fixed top-16 sm:top-[72px] left-0 right-0 z-30 hidden bg-[#111116]/95 backdrop-blur-md border-b border-white/10 px-4 sm:px-8 py-2.5">
+  <div id="scanBar" class="fixed top-16 sm:top-[72px] left-0 right-0 z-30 hidden bg-[#16161a]/95 backdrop-blur-md border-b border-white/10 px-4 sm:px-8 py-2.5">
     <div class="max-w-[1800px] mx-auto flex items-center justify-between gap-4">
       <div class="flex items-center gap-2.5 min-w-0">
-        <div class="w-4 h-4 border-2 border-white/20 border-t-cinema-red rounded-full animate-spin shrink-0"></div>
+        <div class="w-4 h-4 border-2 border-white/20 border-t-nf-red rounded-full animate-spin shrink-0"></div>
         <span id="scanBarText" class="text-xs sm:text-sm text-gray-200 truncate">Scanning Google Drive...</span>
       </div>
-      <span id="scanBarPct" class="text-xs font-mono font-bold text-cinema-red shrink-0">0%</span>
+      <span id="scanBarPct" class="text-xs font-mono font-bold text-nf-red shrink-0">0%</span>
     </div>
     <div class="max-w-[1800px] mx-auto mt-1.5 h-1 bg-white/10 rounded-full overflow-hidden">
-      <div id="scanBarFill" class="h-full bg-cinema-red transition-all duration-300" style="width: 4%"></div>
+      <div id="scanBarFill" class="h-full bg-nf-red transition-all duration-300" style="width: 4%"></div>
     </div>
   </div>
 
   <!-- =========================================================
-       MAIN CONTENT AREA
+       MAIN CONTENT
   ========================================================== -->
   <main class="pb-28 md:pb-20">
 
-    <!-- DEMO PREVIEW BANNER (ONLY shown when no Drive or Local library is connected yet) -->
-    <div id="demoModeBanner" class="hidden fixed bottom-[76px] md:bottom-5 left-3 right-3 sm:left-5 sm:right-auto z-30 bg-[#141418]/95 backdrop-blur-xl border border-white/15 rounded-2xl px-4 py-3 shadow-2xl flex items-center justify-between sm:justify-start gap-3">
+    <!-- DEMO PREVIEW BANNER -->
+    <div id="demoModeBanner" class="hidden fixed bottom-[76px] md:bottom-5 left-3 right-3 sm:left-5 sm:right-auto z-30 bg-[#1b1b1f]/95 backdrop-blur-xl border border-white/15 rounded-2xl px-4 py-3 shadow-2xl flex items-center justify-between sm:justify-start gap-3">
       <div class="flex items-center gap-2.5 min-w-0">
         <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse shrink-0"></span>
-        <span class="text-xs sm:text-sm text-gray-200 truncate">Demo Preview • Connect your Google Drive for 4K streaming</span>
+        <span class="text-xs sm:text-sm text-gray-200 truncate">Demo Preview • Connect Google Drive for your 4K library</span>
       </div>
-      <button onclick="openDriveDrawer()" class="bg-cinema-red hover:bg-cinema-redGlow text-white text-xs font-bold px-3.5 py-2 rounded-lg transition active:scale-95 shrink-0">
-        Connect Google Drive
+      <button onclick="openDriveDrawer()" class="bg-nf-red hover:bg-nf-redHover text-white text-xs font-bold px-3.5 py-2 rounded-lg transition active:scale-95 shrink-0">
+        Connect Drive
       </button>
     </div>
 
-    <!-- HERO BILLBOARD -->
-    <section id="heroSection" class="relative w-full h-[68vh] sm:h-[76vh] lg:h-[82vh] min-h-[500px] max-h-[860px] overflow-hidden bg-[#0b0b0d]">
-      <!-- High-Res TMDB Backdrop -->
+    <!-- HERO BILLBOARD (STRICT 16:9 TMDB BACKDROP RULE) -->
+    <section id="heroSection" class="relative w-full h-[68vh] sm:h-[76vh] lg:h-[82vh] min-h-[500px] max-h-[860px] overflow-hidden bg-nf-bg">
       <img id="heroBackdrop" src="" alt="Featured" class="absolute inset-0 w-full h-full object-cover object-top opacity-0 transition-opacity duration-700" />
+      <div id="heroFallbackBg" class="hidden absolute inset-0 bg-gradient-to-br from-[#35090e] via-[#18181d] to-[#141414]"></div>
 
-      <!-- Graceful Typographic Fallback Gradient -->
-      <div id="heroFallbackBg" class="hidden absolute inset-0 bg-gradient-to-br from-[#35090e] via-[#121218] to-[#0b0b0d]"></div>
-
-      <!-- YouTube Trailer Background Layer (iPad/Safari compatible) -->
+      <!-- YouTube Trailer Background Layer (iPad Safari safe) -->
       <div id="heroTrailerLayer" class="absolute inset-0 pointer-events-none overflow-hidden opacity-0 transition-opacity duration-1000 z-[2]">
         <iframe id="heroTrailerIframe"
           class="w-[150%] h-[150%] -ml-[25%] -mt-[12%] sm:w-[130%] sm:h-[130%] sm:-ml-[15%] sm:-mt-[8%] border-0"
@@ -347,21 +350,25 @@
           allowfullscreen></iframe>
       </div>
 
-      <!-- Cinema Vignette Gradients -->
-      <div class="absolute inset-0 bg-gradient-to-r from-[#0b0b0d] via-[#0b0b0d]/60 to-transparent z-[3]"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-[#0b0b0d] via-[#0b0b0d]/25 to-[#0b0b0d]/55 z-[3]"></div>
+      <!-- Cinema Vignette -->
+      <div class="absolute inset-0 bg-gradient-to-r from-[#141414] via-[#141414]/60 to-transparent z-[3]"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-[#141414] via-[#141414]/25 to-[#141414]/55 z-[3]"></div>
 
       <!-- Hero Content -->
       <div class="relative z-10 max-w-[1800px] mx-auto h-full px-5 sm:px-10 md:px-14 flex flex-col justify-end pb-14 sm:pb-20">
         <div class="max-w-2xl space-y-3 sm:space-y-4">
           <div class="flex flex-wrap items-center gap-2 text-xs font-semibold">
-            <span id="heroTypeBadge" class="px-2.5 py-0.5 rounded bg-cinema-red text-white uppercase tracking-wider text-[11px] font-bold">FEATURED</span>
+            <span id="heroTypeBadge" class="px-2.5 py-0.5 rounded bg-nf-red text-white uppercase tracking-wider text-[11px] font-bold">FEATURED</span>
             <span id="heroStarBadge" class="px-2.5 py-0.5 rounded bg-black/65 border border-white/15 text-amber-400">★ --</span>
             <span id="heroYearBadge" class="text-gray-300">----</span>
             <span id="heroQualBadge" class="px-2 py-0.5 rounded border border-white/25 bg-black/45 text-white font-mono text-[11px]">4K UHD</span>
             <span id="heroExtraBadge" class="hidden text-gray-300 border border-white/20 px-2 py-0.5 rounded text-[11px]"></span>
           </div>
 
+          <!-- Official TMDB Transparent Title Logo OR Crisp Fallback Typography -->
+          <div id="heroLogoWrap" class="hidden max-w-[300px] sm:max-w-[440px]">
+            <img id="heroLogoImg" src="" alt="" class="max-h-24 sm:max-h-32 w-auto object-contain drop-shadow-[0_6px_24px_rgba(0,0,0,0.95)]" />
+          </div>
           <h1 id="heroTitle" class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.08] drop-shadow-2xl">
             DriveFlix
           </h1>
@@ -388,7 +395,7 @@
         </div>
       </div>
 
-      <!-- Bottom-Right: Trailer Mute/Unmute + Maturity Badge + Slide Arrows/Dots -->
+      <!-- Bottom-Right: Mute/Unmute Trailer + Maturity Badge -->
       <div class="absolute bottom-14 sm:bottom-20 right-4 sm:right-12 z-20 flex items-center gap-2.5">
         <button id="trailerMuteBtn" onclick="toggleBillboardMute()" title="Mute / Unmute Trailer"
           class="hidden w-10 h-10 rounded-full border border-white/35 bg-black/60 hover:bg-black/90 backdrop-blur-md items-center justify-center text-white transition active:scale-95">
@@ -401,7 +408,7 @@
         </div>
       </div>
 
-      <!-- Slide Controls & Dots -->
+      <!-- Slide Arrows & Dots -->
       <div class="absolute bottom-4 sm:bottom-6 right-4 sm:right-12 z-20 flex items-center gap-2.5">
         <button onclick="shiftHero(-1)" aria-label="Previous slide" class="w-8 h-8 rounded-full bg-black/55 hover:bg-black/85 border border-white/20 flex items-center justify-center text-white transition active:scale-90">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
@@ -413,17 +420,17 @@
       </div>
     </section>
 
-    <!-- SKELETON LOADER (Shown while scanning initial library) -->
+    <!-- SKELETON LOADER -->
     <section id="skeletonSection" class="max-w-[1800px] mx-auto px-4 sm:px-10 md:px-14 -mt-6 relative z-20 space-y-8 hidden">
       <div>
         <div class="h-5 w-48 skeleton rounded mb-4"></div>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-3.5">
-          <div class="aspect-[2/3] skeleton rounded-xl"></div>
-          <div class="aspect-[2/3] skeleton rounded-xl"></div>
-          <div class="aspect-[2/3] skeleton rounded-xl hidden sm:block"></div>
-          <div class="aspect-[2/3] skeleton rounded-xl hidden md:block"></div>
-          <div class="aspect-[2/3] skeleton rounded-xl hidden md:block"></div>
-          <div class="aspect-[2/3] skeleton rounded-xl hidden lg:block"></div>
+          <div class="poster-aspect skeleton rounded-xl"></div>
+          <div class="poster-aspect skeleton rounded-xl"></div>
+          <div class="poster-aspect skeleton rounded-xl hidden sm:block"></div>
+          <div class="poster-aspect skeleton rounded-xl hidden md:block"></div>
+          <div class="poster-aspect skeleton rounded-xl hidden md:block"></div>
+          <div class="poster-aspect skeleton rounded-xl hidden lg:block"></div>
         </div>
       </div>
     </section>
@@ -431,11 +438,10 @@
     <!-- HOME CAROUSEL ROWS -->
     <section id="homeRowsSection" class="max-w-[1800px] mx-auto px-4 sm:px-10 md:px-14 -mt-6 sm:-mt-10 relative z-20 space-y-8 sm:space-y-10"></section>
 
-    <!-- DEDICATED MOBILE SEARCH & FILTERED GRID VIEW -->
+    <!-- GRID / SEARCH VIEW -->
     <section id="gridViewSection" class="max-w-[1800px] mx-auto px-4 sm:px-10 md:px-14 pt-24 sm:pt-28 hidden">
-      <!-- Dedicated Search Input Bar for Mobile Search Tab -->
       <div id="mobileSearchBox" class="hidden mb-6">
-        <div class="relative flex items-center bg-cinema-surface border border-white/15 rounded-xl px-3.5 py-2.5 focus-within:border-cinema-red transition">
+        <div class="relative flex items-center bg-nf-surface border border-white/15 rounded-xl px-3.5 py-2.5 focus-within:border-nf-red transition">
           <svg class="w-5 h-5 text-gray-400 shrink-0 mr-2.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
           <input id="mobileSearchInput" type="text" placeholder="Search movies, series, genres, year..." oninput="handleSearchInput(this.value)"
             class="bg-transparent text-sm text-white placeholder-gray-400 outline-none w-full" />
@@ -467,55 +473,61 @@
   </main>
 
   <!-- =========================================================
-       MOBILE / TABLET PORTRAIT FROSTED-GLASS BOTTOM NAV BAR
+       MOBILE / IPAD FROSTED-GLASS BOTTOM NAVIGATION BAR
+       (Home, Series, Movies, My List, Search)
   ========================================================== -->
-  <nav id="bottomNav" class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0b0b0d]/88 backdrop-blur-xl border-t border-white/10 safe-bottom">
-    <div class="grid grid-cols-4 h-14 max-w-lg mx-auto">
-      <button data-btab="home" onclick="navigateTab('home')" class="bottom-nav-btn relative flex flex-col items-center justify-center gap-1 text-white transition active:scale-95">
-        <span class="active-bar absolute top-0 w-8 h-0.5 rounded-full bg-cinema-red"></span>
+  <nav id="bottomNav" class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#141414]/90 backdrop-blur-xl border-t border-white/10 safe-bottom">
+    <div class="grid grid-cols-5 h-14 max-w-xl mx-auto">
+      <button data-btab="home" onclick="navigateTab('home')" class="bottom-nav-btn relative flex flex-col items-center justify-center gap-0.5 text-white transition active:scale-95">
+        <span class="active-bar absolute top-0 w-7 h-0.5 rounded-full bg-nf-red"></span>
         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         <span class="text-[10px] font-semibold">Home</span>
       </button>
 
-      <button data-btab="search" onclick="navigateTab('search')" class="bottom-nav-btn relative flex flex-col items-center justify-center gap-1 text-gray-400 transition active:scale-95">
-        <span class="active-bar hidden absolute top-0 w-8 h-0.5 rounded-full bg-cinema-red"></span>
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-        <span class="text-[10px] font-semibold">Search</span>
+      <button data-btab="tv" onclick="navigateTab('tv')" class="bottom-nav-btn relative flex flex-col items-center justify-center gap-0.5 text-gray-400 transition active:scale-95">
+        <span class="active-bar hidden absolute top-0 w-7 h-0.5 rounded-full bg-nf-red"></span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></svg>
+        <span class="text-[10px] font-semibold">Series</span>
       </button>
 
-      <button data-btab="mylist" onclick="navigateTab('mylist')" class="bottom-nav-btn relative flex flex-col items-center justify-center gap-1 text-gray-400 transition active:scale-95">
-        <span class="active-bar hidden absolute top-0 w-8 h-0.5 rounded-full bg-cinema-red"></span>
+      <button data-btab="movie" onclick="navigateTab('movie')" class="bottom-nav-btn relative flex flex-col items-center justify-center gap-0.5 text-gray-400 transition active:scale-95">
+        <span class="active-bar hidden absolute top-0 w-7 h-0.5 rounded-full bg-nf-red"></span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+        <span class="text-[10px] font-semibold">Movies</span>
+      </button>
+
+      <button data-btab="mylist" onclick="navigateTab('mylist')" class="bottom-nav-btn relative flex flex-col items-center justify-center gap-0.5 text-gray-400 transition active:scale-95">
+        <span class="active-bar hidden absolute top-0 w-7 h-0.5 rounded-full bg-nf-red"></span>
         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
         <span class="text-[10px] font-semibold">My List</span>
       </button>
 
-      <button data-btab="drive" onclick="openDriveDrawer()" class="bottom-nav-btn relative flex flex-col items-center justify-center gap-1 text-gray-400 transition active:scale-95">
-        <span class="active-bar hidden absolute top-0 w-8 h-0.5 rounded-full bg-cinema-red"></span>
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 19h20L12 2zm0 4.5L18.5 17h-13L12 6.5z"/></svg>
-        <span class="text-[10px] font-semibold">Drive</span>
+      <button data-btab="search" onclick="navigateTab('search')" class="bottom-nav-btn relative flex flex-col items-center justify-center gap-0.5 text-gray-400 transition active:scale-95">
+        <span class="active-bar hidden absolute top-0 w-7 h-0.5 rounded-full bg-nf-red"></span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <span class="text-[10px] font-semibold">Search</span>
       </button>
     </div>
   </nav>
 
   <!-- =========================================================
-       MOVIE / SERIES DETAIL MODAL (SEASONS + EPISODES + FIX MATCH)
+       DETAIL MODAL (SEASONS + EPISODES + FIX MATCH & POSTER PICKER)
   ========================================================== -->
   <div id="detailModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-sm p-2 sm:p-5 overflow-y-auto">
-    <div class="modal-anim relative w-full max-w-4xl bg-cinema-surface rounded-2xl overflow-hidden shadow-2xl border border-white/10 my-auto max-h-[92vh] flex flex-col">
-      <!-- Close Button -->
+    <div class="modal-anim relative w-full max-w-4xl bg-nf-surface rounded-2xl overflow-hidden shadow-2xl border border-white/10 my-auto max-h-[92vh] flex flex-col">
       <button onclick="closeDetailModal()" aria-label="Close"
-        class="absolute top-3.5 right-3.5 z-30 w-10 h-10 rounded-full bg-[#0b0b0d]/85 hover:bg-white/20 text-white flex items-center justify-center border border-white/20 transition active:scale-90">
+        class="absolute top-3.5 right-3.5 z-30 w-10 h-10 rounded-full bg-[#141414]/85 hover:bg-white/20 text-white flex items-center justify-center border border-white/20 transition active:scale-90">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>
 
       <div id="detailModalScroll" class="overflow-y-auto flex-1 no-scrollbar">
-        <!-- Backdrop / Optional Trailer Preview Header -->
-        <div class="relative w-full aspect-[16/9] sm:aspect-[21/10] bg-[#0e0e12] overflow-hidden">
+        <!-- Backdrop Header -->
+        <div class="relative w-full aspect-[16/9] sm:aspect-[21/10] bg-[#101014] overflow-hidden">
           <img id="detailBackdrop" src="" alt="" class="w-full h-full object-cover object-top" />
-          <div id="detailBackdropFallback" class="hidden absolute inset-0 bg-gradient-to-br from-[#3a0a10] via-[#141418] to-[#0b0b0d]"></div>
+          <div id="detailBackdropFallback" class="hidden absolute inset-0 bg-gradient-to-br from-[#3a0a10] via-[#1b1b1f] to-[#141414]"></div>
           <iframe id="detailTrailerIframe" class="hidden absolute inset-0 w-full h-full border-0 z-10" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
 
-          <div class="absolute inset-0 bg-gradient-to-t from-cinema-surface via-cinema-surface/35 to-black/25 z-10 pointer-events-none"></div>
+          <div class="absolute inset-0 bg-gradient-to-t from-nf-surface via-nf-surface/35 to-black/25 z-10 pointer-events-none"></div>
 
           <div class="absolute bottom-4 sm:bottom-6 left-4 sm:left-8 right-12 z-20">
             <h2 id="detailTitle" class="text-2xl sm:text-4xl font-black text-white drop-shadow-xl leading-tight"></h2>
@@ -531,45 +543,62 @@
               </button>
 
               <button id="detailTrailerBtn" onclick="toggleDetailTrailer()" class="hidden items-center gap-1.5 bg-black/60 hover:bg-white/20 border border-white/20 text-white font-semibold px-3.5 py-2.5 rounded-lg transition active:scale-95 text-xs sm:text-sm">
-                <svg class="w-4 h-4 text-cinema-red" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                <svg class="w-4 h-4 text-nf-red" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                 <span id="detailTrailerBtnText">Trailer</span>
               </button>
 
               <button onclick="toggleFixMatch()" class="flex items-center gap-1.5 bg-black/60 hover:bg-white/20 border border-white/20 text-gray-100 font-medium px-3.5 py-2.5 rounded-lg transition active:scale-95 text-xs sm:text-sm">
-                <svg class="w-4 h-4 text-cinema-red" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-                <span>Fix Match</span>
+                <svg class="w-4 h-4 text-nf-red" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                <span>Fix Match / Change Poster</span>
               </button>
             </div>
           </div>
         </div>
 
-        <!-- 1-CLICK FIX MATCH / CHANGE POSTER PANEL -->
-        <div id="fixMatchBox" class="hidden mx-4 sm:mx-8 mt-5 p-4 rounded-xl bg-cinema-elevated border border-white/15 space-y-3">
-          <div class="flex items-center justify-between">
+        <!-- 1-CLICK FIX MATCH & POSTER/BACKDROP PICKER -->
+        <div id="fixMatchBox" class="hidden mx-4 sm:mx-8 mt-5 p-4 rounded-xl bg-nf-elevated border border-white/15 space-y-4">
+          <div class="flex items-center justify-between gap-2">
             <div>
-              <h3 class="text-sm font-bold text-white">Fix TMDB Match / Change Poster</h3>
-              <p class="text-xs text-gray-400">Pick the exact movie or TV series — saved permanently for this item.</p>
+              <h3 class="text-sm font-bold text-white">Fix Match / Change Poster & Backdrop</h3>
+              <p class="text-xs text-gray-400">Saved permanently in this browser for this title.</p>
             </div>
             <button onclick="toggleFixMatch(false)" class="p-1.5 rounded-full hover:bg-white/10 text-gray-400 hover:text-white">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
             </button>
           </div>
+
+          <!-- Step 1: Search TMDB -->
           <div class="flex flex-col sm:flex-row gap-2">
-            <select id="fixMatchType" class="bg-black/50 border border-white/15 rounded-lg px-3 py-2 text-xs sm:text-sm text-white outline-none focus:border-cinema-red">
-              <option value="multi">Movies & TV</option>
+            <select id="fixMatchType" class="bg-black/50 border border-white/15 rounded-lg px-3 py-2 text-xs sm:text-sm text-white outline-none focus:border-nf-red">
+              <option value="tv">TV Series</option>
               <option value="movie">Movies</option>
-              <option value="tv">TV Shows</option>
+              <option value="multi">Movies & TV</option>
             </select>
             <input id="fixMatchInput" type="text" placeholder="Type exact title..." onkeydown="if(event.key==='Enter') searchFixMatch()"
-              class="flex-1 bg-black/50 border border-white/15 rounded-lg px-3.5 py-2 text-xs sm:text-sm text-white placeholder-gray-500 outline-none focus:border-cinema-red" />
-            <button onclick="searchFixMatch()" class="bg-cinema-red hover:bg-cinema-redGlow text-white font-bold px-5 py-2 rounded-lg text-xs sm:text-sm transition active:scale-95 shrink-0">
-              Search
+              class="flex-1 bg-black/50 border border-white/15 rounded-lg px-3.5 py-2 text-xs sm:text-sm text-white placeholder-gray-500 outline-none focus:border-nf-red" />
+            <button onclick="searchFixMatch()" class="bg-nf-red hover:bg-nf-redHover text-white font-bold px-5 py-2 rounded-lg text-xs sm:text-sm transition active:scale-95 shrink-0">
+              Search TMDB
             </button>
           </div>
-          <div id="fixMatchResults" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-60 overflow-y-auto no-scrollbar"></div>
+
+          <div id="fixMatchResults" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-56 overflow-y-auto no-scrollbar"></div>
+
+          <!-- Step 2: Artwork Picker (All TMDB Posters & Backdrops for current match) -->
+          <div id="artworkPickerSection" class="hidden pt-3 border-t border-white/10 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-gray-300">Pick Custom Poster (2:3)</span>
+              <span id="artworkCountLabel" class="text-[11px] text-gray-400"></span>
+            </div>
+            <div id="artworkPostersGrid" class="flex gap-2.5 overflow-x-auto no-scrollbar pb-1"></div>
+
+            <div class="pt-1">
+              <span class="text-xs font-bold uppercase tracking-wider text-gray-300 block mb-2">Pick Custom Billboard Backdrop (16:9)</span>
+              <div id="artworkBackdropsGrid" class="flex gap-2.5 overflow-x-auto no-scrollbar pb-1"></div>
+            </div>
+          </div>
         </div>
 
-        <!-- Metadata & Description -->
+        <!-- Metadata & Overview -->
         <div class="p-4 sm:p-8 space-y-6">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
             <div class="md:col-span-2 space-y-3">
@@ -589,23 +618,19 @@
             </div>
           </div>
 
-          <!-- TV SERIES SEASONS & EPISODES SECTION -->
+          <!-- TV SERIES SEASONS & EPISODES -->
           <div id="detailEpisodesSection" class="hidden pt-5 border-t border-white/10 space-y-4">
             <div class="flex flex-wrap items-center justify-between gap-3">
               <div class="flex items-center gap-2.5">
                 <h3 class="text-xl font-bold text-white">Episodes</h3>
                 <span id="detailSeasonCount" class="text-xs text-gray-400 font-medium"></span>
               </div>
-              <!-- Styled Season Dropdown (Synced with Pills) -->
               <select id="detailSeasonSelect" onchange="selectSeason(Number(this.value))"
-                class="bg-cinema-elevated text-white text-xs sm:text-sm font-semibold px-3.5 py-2 rounded-lg border border-white/20 outline-none focus:border-cinema-red cursor-pointer">
+                class="bg-nf-elevated text-white text-xs sm:text-sm font-semibold px-3.5 py-2 rounded-lg border border-white/20 outline-none focus:border-nf-red cursor-pointer">
               </select>
             </div>
 
-            <!-- Touch-Friendly Season Pills -->
             <div id="detailSeasonPills" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1"></div>
-
-            <!-- Episode List -->
             <div id="detailEpisodesList" class="space-y-3"></div>
           </div>
         </div>
@@ -614,20 +639,19 @@
   </div>
 
   <!-- =========================================================
-       PROFILE / DRIVE CONNECTION & SETTINGS DRAWER
+       DRIVE CONNECTION & PROFILE DRAWER
   ========================================================== -->
   <div id="driveDrawerOverlay" class="fixed inset-0 z-50 hidden justify-end bg-black/75 backdrop-blur-sm">
-    <div class="drawer-anim relative w-full max-w-md bg-cinema-surface h-full border-l border-white/10 shadow-2xl flex flex-col">
-      <!-- Drawer Header -->
+    <div class="drawer-anim relative w-full max-w-md bg-nf-surface h-full border-l border-white/10 shadow-2xl flex flex-col">
       <div class="flex items-center justify-between px-5 py-4 border-b border-white/10 safe-top">
         <div class="flex items-center gap-2.5">
           <svg class="w-7 h-7" viewBox="0 0 64 64" fill="none">
-            <rect width="64" height="64" rx="14" fill="#1c1c22"/>
+            <rect width="64" height="64" rx="14" fill="#24242a"/>
             <path d="M16 12h15c12.5 0 21 8 21 20s-8.5 20-21 20H16V12zm11 9.5v21h4.2c6.8 0 11.3-4.2 11.3-10.5S38 21.5 31.2 21.5H27z" fill="#E50914"/>
             <path d="M28 24.5l12 7.5-12 7.5V24.5z" fill="#fff"/>
           </svg>
           <div>
-            <h2 class="text-base font-bold text-white">Drive & Settings</h2>
+            <h2 class="text-base font-bold text-white">Drive & Profile</h2>
             <p class="text-[11px] text-gray-400">Persistent session & media sources</p>
           </div>
         </div>
@@ -636,20 +660,16 @@
         </button>
       </div>
 
-      <!-- Drawer Tabs -->
       <div class="grid grid-cols-4 border-b border-white/10 bg-black/25 text-xs font-semibold">
-        <button id="dtab-oauth" onclick="switchDrawerTab('oauth')" class="py-3 text-center border-b-2 border-cinema-red text-white transition">Google Drive</button>
+        <button id="dtab-oauth" onclick="switchDrawerTab('oauth')" class="py-3 text-center border-b-2 border-nf-red text-white transition">Google Drive</button>
         <button id="dtab-links" onclick="switchDrawerTab('links')" class="py-3 text-center border-b-2 border-transparent text-gray-400 hover:text-white transition">Links / Token</button>
-        <button id="dtab-local" onclick="switchDrawerTab('local')" class="py-3 text-center border-b-2 border-transparent text-gray-400 hover:text-white transition">Local Files</button>
+        <button id="dtab-local" onclick="switchDrawerTab('local')" class="py-3 text-center border-b-2 border-transparent text-gray-400 hover:text-white transition">Local Folder</button>
         <button id="dtab-settings" onclick="switchDrawerTab('settings')" class="py-3 text-center border-b-2 border-transparent text-gray-400 hover:text-white transition">Settings</button>
       </div>
 
-      <!-- Drawer Scrollable Body -->
       <div class="flex-1 overflow-y-auto p-5 space-y-5 no-scrollbar">
-
-        <!-- TAB 1: GOOGLE DRIVE OAUTH -->
+        <!-- TAB 1: GOOGLE DRIVE -->
         <div id="dpanel-oauth" class="space-y-4">
-          <!-- Active / Saved Profile Card -->
           <div id="drawerProfileCard" class="hidden p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 space-y-3">
             <div class="flex items-center gap-3">
               <img id="drawerAvatar" src="" alt="" class="hidden w-11 h-11 rounded-full object-cover border border-white/25 shrink-0" />
@@ -661,40 +681,43 @@
             </div>
             <div class="grid grid-cols-2 gap-2">
               <button onclick="closeDriveDrawer(); syncDriveLibrary();" class="py-2 px-3 rounded-lg bg-white/15 hover:bg-white/25 text-xs font-semibold text-white transition active:scale-95">
-                Sync Drive Now
+                Sync Drive
               </button>
-              <button onclick="openSignOutConfirm()" class="py-2 px-3 rounded-lg bg-cinema-red/25 hover:bg-cinema-red/45 border border-cinema-red/40 text-xs font-semibold text-red-100 transition active:scale-95">
-                Sign Out
+              <button onclick="closeDriveDrawer(); rematchAllPosters();" class="py-2 px-3 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-semibold text-gray-100 transition active:scale-95">
+                Re-Match Posters
               </button>
             </div>
+            <button onclick="openSignOutConfirm()" class="w-full py-2 px-3 rounded-lg bg-nf-red/25 hover:bg-nf-red/40 border border-nf-red/40 text-xs font-semibold text-red-100 transition active:scale-95">
+              Sign Out
+            </button>
           </div>
 
           <div class="space-y-3">
             <div>
               <label class="block text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1.5">Optional Root Folder ID</label>
-              <input id="drawerFolderId" type="text" placeholder="Blank scans entire Google Drive"
-                class="w-full bg-black/45 border border-white/15 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-gray-500 focus:border-cinema-red outline-none" />
+              <input id="drawerFolderId" type="text" placeholder="Leave blank to scan entire Google Drive"
+                class="w-full bg-black/45 border border-white/15 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-gray-500 focus:border-nf-red outline-none" />
             </div>
 
-            <button onclick="connectGoogleDriveOneTap()" class="w-full flex items-center justify-center gap-2.5 bg-cinema-red hover:bg-cinema-redGlow text-white font-bold py-3.5 rounded-xl transition active:scale-[0.98] shadow-lg text-sm">
+            <button onclick="connectGoogleDriveOneTap()" class="w-full flex items-center justify-center gap-2.5 bg-nf-red hover:bg-nf-redHover text-white font-bold py-3.5 rounded-xl transition active:scale-[0.98] shadow-lg text-sm">
               <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.545 10.239v3.821h5.445c-.712 2.315-2.647 3.972-5.445 3.972a6.033 6.033 0 110-12.064c1.498 0 2.866.549 3.921 1.453l2.814-2.814A9.969 9.969 0 0012.545 2C7.021 2 2.543 6.477 2.543 12s4.478 10 10.002 10c8.396 0 10.249-7.85 9.426-11.748l-9.426-.013z"/></svg>
-              <span>Connect Google Drive (1-Tap)</span>
+              <span>Connect Google Drive</span>
             </button>
           </div>
 
           <div class="p-3.5 rounded-xl bg-white/[0.04] border border-white/10 text-xs text-gray-300 space-y-1.5 leading-relaxed">
-            <p class="font-semibold text-white">Persistent Login Protection:</p>
-            <p>Your profile, scanned movies, seasons, TMDB posters, and Continue Watching timestamps are saved permanently in this browser. Even after Google's 60-minute token expires, your library stays intact with 1-tap silent reconnect.</p>
+            <p class="font-semibold text-white">iPadOS Safari 4K Tip:</p>
+            <p>For full-bitrate 4K HDR / MKV playback on iPad, tap <strong class="text-white">VLC / Infuse 4K</strong> inside the player bar for 1-tap native hardware decoding.</p>
           </div>
         </div>
 
-        <!-- TAB 2: PASTE DRIVE SHARE LINKS / DIRECT TOKEN -->
+        <!-- TAB 2: SHARE LINKS / DIRECT TOKEN -->
         <div id="dpanel-links" class="hidden space-y-4">
           <div class="space-y-2">
             <label class="block text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Paste Google Drive Share Links</label>
-            <p class="text-xs text-gray-400">One link per line (optional title after <code class="text-gray-200">|</code>, e.g. <code class="text-gray-200">https://drive.google.com/file/d/ID/view | Inception 2010</code>)</p>
-            <textarea id="shareLinksTextarea" rows="5" placeholder="https://drive.google.com/file/d/xxxx/view | Interstellar 2014&#10;https://drive.google.com/file/d/yyyy/view | Breaking Bad S01E01"
-              class="w-full bg-black/45 border border-white/15 rounded-xl p-3 text-xs text-white placeholder-gray-500 focus:border-cinema-red outline-none font-mono"></textarea>
+            <p class="text-xs text-gray-400">One link per line (optional title after <code class="text-gray-200">|</code>)</p>
+            <textarea id="shareLinksTextarea" rows="5" placeholder="https://drive.google.com/file/d/xxxx/view | Inception 2010&#10;https://drive.google.com/file/d/yyyy/view | Dhindora S01E01"
+              class="w-full bg-black/45 border border-white/15 rounded-xl p-3 text-xs text-white placeholder-gray-500 focus:border-nf-red outline-none font-mono"></textarea>
             <button onclick="importDriveShareLinks()" class="w-full bg-white text-black hover:bg-gray-200 font-bold py-2.5 rounded-xl text-xs sm:text-sm transition active:scale-[0.98]">
               Import Share Links
             </button>
@@ -703,32 +726,32 @@
           <div class="pt-4 border-t border-white/10 space-y-2">
             <label class="block text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Or Direct OAuth Access Token</label>
             <input id="directTokenInput" type="password" placeholder="ya29.a0..."
-              class="w-full bg-black/45 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-gray-500 focus:border-cinema-red outline-none font-mono" />
+              class="w-full bg-black/45 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-gray-500 focus:border-nf-red outline-none font-mono" />
             <button onclick="connectWithDirectToken()" class="w-full bg-white/15 hover:bg-white/25 text-white font-semibold py-2.5 rounded-xl text-xs sm:text-sm transition active:scale-[0.98]">
               Scan Drive Using Token
             </button>
           </div>
         </div>
 
-        <!-- TAB 3: LOCAL DEVICE FOLDER / FILES -->
+        <!-- TAB 3: LOCAL FOLDER / FILES -->
         <div id="dpanel-local" class="hidden space-y-4">
           <p class="text-xs sm:text-sm text-gray-300 leading-relaxed">
-            Test DriveFlix instantly offline with local movies or TV series folders from your iPad, phone, or computer.
+            Test DriveFlix instantly with local movies or TV series folders from your device.
           </p>
           <div class="grid grid-cols-1 gap-3">
-            <label class="flex items-center gap-4 p-4 rounded-xl border-2 border-dashed border-white/20 hover:border-cinema-red bg-black/35 cursor-pointer transition active:scale-[0.98]">
-              <div class="w-11 h-11 rounded-xl bg-cinema-red/20 text-cinema-red flex items-center justify-center shrink-0">
+            <label class="flex items-center gap-4 p-4 rounded-xl border-2 border-dashed border-white/20 hover:border-nf-red bg-black/35 cursor-pointer transition active:scale-[0.98]">
+              <div class="w-11 h-11 rounded-xl bg-nf-red/20 text-nf-red flex items-center justify-center shrink-0">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
               </div>
               <div>
-                <p class="text-sm font-bold text-white">Select Folder</p>
-                <p class="text-xs text-gray-400">Auto-reads Show / Season subfolders</p>
+                <p class="text-sm font-bold text-white">Select Local Folder</p>
+                <p class="text-xs text-gray-400">Reads Show / Season subfolders automatically</p>
               </div>
               <input type="file" webkitdirectory multiple accept="video/*,.mkv,.mp4,.webm,.mov,.avi,.m4v" class="hidden" onchange="handleLocalFiles(this.files)" />
             </label>
 
-            <label class="flex items-center gap-4 p-4 rounded-xl border-2 border-dashed border-white/20 hover:border-cinema-red bg-black/35 cursor-pointer transition active:scale-[0.98]">
-              <div class="w-11 h-11 rounded-xl bg-cinema-red/20 text-cinema-red flex items-center justify-center shrink-0">
+            <label class="flex items-center gap-4 p-4 rounded-xl border-2 border-dashed border-white/20 hover:border-nf-red bg-black/35 cursor-pointer transition active:scale-[0.98]">
+              <div class="w-11 h-11 rounded-xl bg-nf-red/20 text-nf-red flex items-center justify-center shrink-0">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="m10 11 5 3-5 3v-6Z"/></svg>
               </div>
               <div>
@@ -744,18 +767,18 @@
         <div id="dpanel-settings" class="hidden space-y-4">
           <div>
             <label class="block text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1.5">TMDB API Key</label>
-            <input id="settingTmdbKey" type="text" class="w-full bg-black/45 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white font-mono focus:border-cinema-red outline-none" />
+            <input id="settingTmdbKey" type="text" class="w-full bg-black/45 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white font-mono focus:border-nf-red outline-none" />
           </div>
 
           <div>
             <label class="block text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1.5">Google OAuth Web Client ID</label>
-            <input id="settingClientId" type="text" class="w-full bg-black/45 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white font-mono focus:border-cinema-red outline-none" />
+            <input id="settingClientId" type="text" class="w-full bg-black/45 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white font-mono focus:border-nf-red outline-none" />
           </div>
 
           <div>
             <label class="block text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-1.5">Preferred Player Engine</label>
-            <select id="settingPreferredPlayer" class="w-full bg-black/45 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-white focus:border-cinema-red outline-none">
-              <option value="auto">Smart Auto (4K Direct for MP4/MOV, Embed for MKV)</option>
+            <select id="settingPreferredPlayer" class="w-full bg-black/45 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-white focus:border-nf-red outline-none">
+              <option value="auto">Smart Auto (4K Direct for MP4/MOV, Drive Stream for MKV)</option>
               <option value="direct">Always Try 4K Direct First</option>
               <option value="embed">Always Drive Stream Embed</option>
             </select>
@@ -769,13 +792,13 @@
             <input id="settingAutoplayTrailers" type="checkbox" class="w-5 h-5 accent-[#E50914] rounded cursor-pointer" />
           </label>
 
-          <button onclick="saveSettings()" class="w-full bg-cinema-red hover:bg-cinema-redGlow text-white font-bold py-3 rounded-xl text-sm transition active:scale-[0.98]">
+          <button onclick="saveSettings()" class="w-full bg-nf-red hover:bg-nf-redHover text-white font-bold py-3 rounded-xl text-sm transition active:scale-[0.98]">
             Save Settings
           </button>
 
           <div class="pt-3 border-t border-white/10 space-y-2">
-            <button onclick="clearTmdbCacheOnly()" class="w-full bg-white/10 hover:bg-white/15 text-gray-200 font-medium py-2.5 rounded-xl text-xs transition">
-              Refresh TMDB Poster Cache
+            <button onclick="closeDriveDrawer(); rematchAllPosters();" class="w-full bg-white/10 hover:bg-white/15 text-gray-100 font-semibold py-2.5 rounded-xl text-xs transition">
+              Re-Match All Posters (Keep Login)
             </button>
             <button onclick="loadDemoLibrary(true)" class="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 font-medium py-2.5 rounded-xl text-xs transition">
               Load Demo Preview Library
@@ -786,197 +809,222 @@
     </div>
   </div>
 
-  <!-- =========================================================
-       CUSTOM SIGN-OUT CONFIRMATION MODAL (NEVER window.confirm)
-  ========================================================== -->
+  <!-- CUSTOM SIGN-OUT CONFIRMATION MODAL -->
   <div id="signOutModal" class="fixed inset-0 z-[60] hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-    <div class="modal-anim w-full max-w-sm bg-cinema-surface rounded-2xl border border-white/15 p-6 space-y-4 shadow-2xl">
+    <div class="modal-anim w-full max-w-sm bg-nf-surface rounded-2xl border border-white/15 p-6 space-y-4 shadow-2xl">
       <h3 class="text-lg font-bold text-white">Sign Out of Google Drive?</h3>
       <p class="text-sm text-gray-300 leading-relaxed">
-        This will clear your saved Google account, OAuth token, and cached Drive library from this browser.
+        This clears your saved Google account, OAuth token, and cached Drive library from this browser.
       </p>
       <div class="flex items-center justify-end gap-2.5 pt-2">
         <button onclick="closeSignOutConfirm()" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-sm font-semibold text-white transition">Cancel</button>
-        <button onclick="confirmSignOut()" class="px-4 py-2 rounded-xl bg-cinema-red hover:bg-cinema-redGlow text-sm font-bold text-white transition">Sign Out</button>
+        <button onclick="confirmSignOut()" class="px-4 py-2 rounded-xl bg-nf-red hover:bg-nf-redHover text-sm font-bold text-white transition">Sign Out</button>
       </div>
     </div>
   </div>
 
   <!-- =========================================================
-       DUAL-ENGINE 4K CINEMA FULLSCREEN VIDEO PLAYER
+       CRITICAL FIX 1: NON-COLLAPSING 4K VIDEO PLAYER OVERLAY
   ========================================================== -->
-  <div id="playerOverlay" class="fixed inset-0 z-[70] hidden bg-black flex-col justify-between select-none">
-    <div id="playerStage" class="relative w-full h-full flex items-center justify-center bg-black overflow-hidden">
+  <div id="playerOverlay" class="hidden select-none">
+    <!-- Top Bar (height >= 64px, flex-shrink: 0, z-index: 20) -->
+    <div id="playerTopBar" class="safe-top bg-[#0c0c0f]/95 border-b border-white/10 px-3 sm:px-5 py-2.5 flex flex-wrap items-center justify-between gap-2">
+      <!-- Left: Back + Title + Season/Ep + Quality -->
+      <div class="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
+        <button onclick="closePlayer()" aria-label="Back" class="p-2 rounded-full bg-white/10 hover:bg-white/25 text-white transition active:scale-90 shrink-0">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <div class="min-w-0">
+          <div class="flex items-center gap-2">
+            <h3 id="playerTitle" class="text-sm sm:text-base font-bold text-white truncate">Title</h3>
+            <span id="playerQualityBadge" class="px-2 py-0.5 rounded bg-nf-red text-white font-mono text-[10px] font-extrabold tracking-wider shrink-0">4K UHD</span>
+          </div>
+          <p id="playerSub" class="text-[11px] sm:text-xs text-gray-300 truncate"></p>
+        </div>
+      </div>
 
-      <!-- Engine 1: Native 4K Progressive HTML5 Video (No crossOrigin so Range requests stream directly) -->
-      <video id="videoEl" class="w-full h-full object-contain" playsinline webkit-playsinline preload="metadata"></video>
+      <!-- Right: Engine Switcher | VLC/Infuse 4K | Open in Drive | Subs/Speed/PiP | Next Ep -->
+      <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 shrink-0">
+        <!-- Engine Switcher Pills -->
+        <div id="engineSwitcher" class="hidden items-center bg-black/70 border border-white/20 rounded-full p-0.5">
+          <button id="btnEngineDirect" onclick="switchPlayerEngine('direct')" class="px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold transition">4K Direct</button>
+          <button id="btnEngineEmbed" onclick="switchPlayerEngine('embed')" class="px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold transition">Drive Stream</button>
+        </div>
+
+        <!-- External 4K Player Menu (VLC / Infuse 4K) -->
+        <button id="externalPlayerBtn" onclick="openExternalPlayerSheet()"
+          class="hidden items-center gap-1.5 bg-white/15 hover:bg-white/25 border border-white/20 text-white text-[11px] sm:text-xs font-semibold px-3 py-1.5 rounded-full transition active:scale-95">
+          <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          <span>VLC / Infuse 4K</span>
+        </button>
+
+        <!-- Open in Google Drive -->
+        <button id="openInDriveBtn" onclick="openCurrentInDrive()"
+          class="hidden items-center gap-1 bg-white/10 hover:bg-white/20 border border-white/15 text-gray-100 text-[11px] sm:text-xs font-semibold px-3 py-1.5 rounded-full transition active:scale-95">
+          <span>Open in Drive</span>
+        </button>
+
+        <!-- Direct-Mode Extras: Subtitles, Speed, PiP -->
+        <div id="directExtrasBar" class="hidden items-center gap-1.5">
+          <label class="p-1.5 rounded-full bg-white/10 hover:bg-white/20 text-gray-200 hover:text-white cursor-pointer transition" title="Load .srt / .vtt Subtitles">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M7 15h3M14 15h3M7 11h10"/></svg>
+            <input type="file" accept=".srt,.vtt" class="hidden" onchange="loadSubtitleFile(this.files[0])" />
+          </label>
+
+          <select id="speedSelect" onchange="setVideoSpeed(this.value)" title="Playback Speed"
+            class="bg-white/10 hover:bg-white/20 text-white text-[11px] font-semibold px-2 py-1 rounded-full border border-white/20 outline-none cursor-pointer">
+            <option value="0.75" class="bg-[#1b1b1f]">0.75x</option>
+            <option value="1" selected class="bg-[#1b1b1f]">1x</option>
+            <option value="1.25" class="bg-[#1b1b1f]">1.25x</option>
+            <option value="1.5" class="bg-[#1b1b1f]">1.5x</option>
+            <option value="2" class="bg-[#1b1b1f]">2x</option>
+          </select>
+
+          <button onclick="togglePiP()" title="Picture-in-Picture" class="hidden sm:flex p-1.5 rounded-full bg-white/10 hover:bg-white/20 text-gray-200 hover:text-white transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><rect x="12" y="10" width="8" height="6" rx="1"/></svg>
+          </button>
+        </div>
+
+        <!-- Next Episode -->
+        <button id="topNextEpBtn" onclick="playNextEpisode()"
+          class="hidden items-center gap-1 bg-nf-red hover:bg-nf-redHover text-white text-[11px] sm:text-xs font-bold px-3 py-1.5 rounded-full transition active:scale-95">
+          <span>Next Ep</span>
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Player Stage (flex: 1; min-height: 0; position: relative) -->
+    <div id="playerStage">
+      <!-- Engine 1: Native 4K Direct HTML5 Video -->
+      <video id="videoEl" playsinline webkit-playsinline controls preload="metadata" crossorigin="anonymous"></video>
 
       <!-- Engine 2: Instant Google Drive Embed Stream -->
-      <iframe id="driveEmbedIframe" class="hidden w-full h-full border-0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <iframe id="driveEmbedIframe" class="hidden" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen></iframe>
 
-      <!-- Buffering Spinner (Auto-switches to Drive Stream after 5s stall — NEVER infinite!) -->
-      <div id="playerSpinner" class="hidden absolute inset-0 flex flex-col items-center justify-center bg-black/65 pointer-events-none z-20">
-        <div class="w-12 h-12 border-4 border-white/20 border-t-cinema-red rounded-full animate-spin"></div>
-        <p id="playerSpinnerText" class="text-sm text-gray-200 mt-3 font-medium">Starting 4K Direct Stream...</p>
+      <!-- Clean Loading Spinner Overlay (Auto-dismisses on load or 2.5s max in Drive Stream) -->
+      <div id="playerSpinner" class="hidden absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/70 pointer-events-none">
+        <div class="w-11 h-11 border-4 border-white/20 border-t-nf-red rounded-full animate-spin"></div>
+        <p id="playerSpinnerText" class="text-xs sm:text-sm text-gray-200 mt-3 font-medium">Loading stream...</p>
       </div>
 
-      <!-- Click-to-Play/Pause Stage Area (Direct Mode) -->
-      <div id="playerClickLayer" onclick="togglePlayPause()" ondblclick="toggleFullscreen()" class="absolute inset-0 z-10 cursor-pointer"></div>
-
-      <!-- TOP PLAYER HUD BAR -->
-      <div id="playerTopBar" class="absolute top-0 left-0 right-0 z-30 p-3 sm:p-5 safe-top bg-gradient-to-b from-black/95 via-black/60 to-transparent flex flex-wrap items-center justify-between gap-2 transition-opacity duration-300">
-        <div class="flex items-center gap-3 min-w-0 flex-1">
-          <button onclick="closePlayer()" aria-label="Back" class="p-2 rounded-full bg-white/10 hover:bg-white/25 text-white transition active:scale-90 shrink-0">
-            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
-          </button>
-          <div class="min-w-0">
-            <div class="flex items-center gap-2">
-              <h3 id="playerTitle" class="text-sm sm:text-lg font-bold text-white truncate">Title</h3>
-              <span id="playerQualityBadge" class="hidden sm:inline-flex px-2 py-0.5 rounded bg-cinema-red text-white font-mono text-[10px] font-extrabold tracking-wider shrink-0">4K UHD</span>
-            </div>
-            <p id="playerSub" class="text-[11px] sm:text-xs text-gray-300 truncate"></p>
-          </div>
-        </div>
-
-        <!-- Right HUD Controls: Engine Switcher | Copy 4K Link | Next Episode -->
-        <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 shrink-0">
-          <div id="engineSwitcher" class="hidden items-center bg-black/75 border border-white/20 rounded-full p-1 backdrop-blur-md">
-            <button id="btnEngineDirect" onclick="switchPlayerEngine('direct')" class="px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold transition">4K Direct</button>
-            <button id="btnEngineEmbed" onclick="switchPlayerEngine('embed')" class="px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold transition">Drive Stream</button>
-          </div>
-
-          <button id="copy4KLinkBtn" onclick="copy4KLink()" title="Copy 4K Direct URL for VLC / Infuse"
-            class="hidden items-center gap-1 bg-white/15 hover:bg-white/25 border border-white/20 text-white text-[11px] sm:text-xs font-semibold px-3 py-1.5 rounded-full transition active:scale-95">
-            <span>Copy 4K Link (VLC/Infuse)</span>
-          </button>
-
-          <button id="topNextEpBtn" onclick="playNextEpisode()"
-            class="hidden items-center gap-1 bg-cinema-red hover:bg-cinema-redGlow text-white text-[11px] sm:text-xs font-bold px-3 py-1.5 rounded-full transition active:scale-95">
-            <span>Next Ep</span>
-            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
-          </button>
-        </div>
-      </div>
-
-      <!-- BOTTOM CINEMA CONTROLS (4K Direct Mode) -->
-      <div id="playerBottomBar" class="absolute bottom-0 left-0 right-0 z-30 px-4 sm:px-8 pb-5 safe-bottom pt-14 bg-gradient-to-t from-black/95 via-black/65 to-transparent transition-opacity duration-300 space-y-3">
-        <!-- Timeline Scrubber -->
-        <div class="flex items-center gap-3">
-          <span id="timeCurrent" class="text-xs font-mono text-gray-200 w-12 text-right">0:00</span>
-          <input id="seekSlider" type="range" min="0" max="100" value="0" step="0.05" oninput="seekToPercent(this.value)" class="nf-slider flex-1" />
-          <span id="timeDuration" class="text-xs font-mono text-gray-300 w-12">0:00</span>
-        </div>
-
-        <!-- Playback Buttons -->
-        <div class="flex items-center justify-between gap-2">
-          <div class="flex items-center gap-2 sm:gap-3.5">
-            <button onclick="togglePlayPause()" class="p-2 text-white hover:text-cinema-red transition" title="Play / Pause (Space)">
-              <svg id="playPauseSvg" class="w-7 h-7 fill-current" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-            </button>
-
-            <button onclick="seekBy(-10)" class="p-1.5 text-gray-200 hover:text-white transition text-xs font-bold flex items-center gap-0.5" title="Rewind 10s">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-              <span class="hidden sm:inline">10</span>
-            </button>
-
-            <button onclick="seekBy(10)" class="p-1.5 text-gray-200 hover:text-white transition text-xs font-bold flex items-center gap-0.5" title="Forward 10s">
-              <span class="hidden sm:inline">10</span>
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
-            </button>
-
-            <!-- Volume -->
-            <div class="flex items-center gap-2">
-              <button onclick="toggleMuteVideo()" class="p-1.5 text-gray-200 hover:text-white transition" title="Mute (M)">
-                <svg id="volSvg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4V5Z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-              </button>
-              <input id="volSlider" type="range" min="0" max="1" step="0.05" value="1" oninput="setVideoVolume(this.value)" class="nf-slider hidden sm:block w-20" />
-            </div>
-
-            <span id="bottomQualityPill" class="hidden md:inline-flex px-2.5 py-0.5 rounded bg-white/10 border border-white/20 text-[11px] font-mono font-bold text-white">ORIGINAL</span>
-          </div>
-
-          <div class="flex items-center gap-1.5 sm:gap-2.5">
-            <button id="bottomNextEpBtn" onclick="playNextEpisode()" class="hidden items-center gap-1.5 bg-white/15 hover:bg-white/25 text-white text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-lg transition">
-              <span>Next Ep</span>
-              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
-            </button>
-
-            <!-- Local Subtitle Loader (.srt / .vtt) -->
-            <label class="p-2 text-gray-200 hover:text-white transition cursor-pointer" title="Load .srt / .vtt Subtitles">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M7 15h3M14 15h3M7 11h10"/></svg>
-              <input type="file" accept=".srt,.vtt" class="hidden" onchange="loadSubtitleFile(this.files[0])" />
-            </label>
-
-            <!-- Speed -->
-            <select id="speedSelect" onchange="setVideoSpeed(this.value)" class="bg-white/10 hover:bg-white/20 text-white text-xs font-semibold px-2 py-1.5 rounded-lg border border-white/20 outline-none cursor-pointer">
-              <option value="0.75" class="bg-[#141418]">0.75x</option>
-              <option value="1" selected class="bg-[#141418]">1x</option>
-              <option value="1.25" class="bg-[#141418]">1.25x</option>
-              <option value="1.5" class="bg-[#141418]">1.5x</option>
-              <option value="2" class="bg-[#141418]">2x</option>
-            </select>
-
-            <!-- Picture-in-Picture -->
-            <button onclick="togglePiP()" class="hidden sm:block p-2 text-gray-200 hover:text-white transition" title="Picture-in-Picture">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><rect x="12" y="10" width="8" height="6" rx="1"/></svg>
-            </button>
-
-            <!-- Fullscreen -->
-            <button onclick="toggleFullscreen()" class="p-2 text-gray-200 hover:text-white transition" title="Fullscreen (F)">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
-            </button>
-          </div>
-        </div>
+      <!-- Dismissible iPad Safari Helper Pill (Shown in Drive Stream mode) -->
+      <div id="safariHelperPill" class="hidden absolute bottom-4 left-4 right-4 sm:right-auto z-20 items-center gap-2.5 bg-[#1b1b1f]/95 backdrop-blur-xl border border-white/20 text-gray-200 text-xs px-3.5 py-2.5 rounded-xl shadow-2xl max-w-md">
+        <svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        <span class="leading-snug flex-1">Black screen on Safari? Tap <button onclick="openCurrentInDrive()" class="underline font-bold text-white">Open in Drive</button> or <button onclick="openExternalPlayerSheet()" class="underline font-bold text-amber-300">Infuse/VLC 4K</button></span>
+        <button onclick="dismissSafariHelper()" aria-label="Dismiss" class="p-1 rounded-full hover:bg-white/15 text-gray-400 hover:text-white shrink-0">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
       </div>
     </div>
   </div>
 
-  <!-- TOAST NOTIFICATION STACK -->
-  <div id="toastStack" class="fixed bottom-20 md:bottom-6 right-4 z-[85] flex flex-col gap-2 max-w-xs sm:max-w-sm pointer-events-none"></div>
+  <!-- =========================================================
+       EXTERNAL 4K PLAYER SHEET (INFUSE / VLC / DRIVE / COPY URL)
+  ========================================================== -->
+  <div id="externalPlayerModal" class="fixed inset-0 z-[10000] hidden items-end sm:items-center justify-center bg-black/80 backdrop-blur-sm p-3 sm:p-4">
+    <div class="modal-anim w-full max-w-md bg-nf-surface rounded-2xl border border-white/15 p-5 space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="text-base font-bold text-white">Play in External 4K Player</h3>
+          <p class="text-xs text-gray-400">True 4K HDR, Dolby Vision & MKV hardware decoding</p>
+        </div>
+        <button onclick="closeExternalPlayerSheet()" class="p-1.5 rounded-full hover:bg-white/10 text-gray-400 hover:text-white">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="space-y-2.5">
+        <a id="deepLinkInfuse" href="#" class="flex items-center justify-between p-3.5 rounded-xl bg-gradient-to-r from-orange-500/20 to-amber-500/10 hover:from-orange-500/30 hover:to-amber-500/20 border border-orange-400/30 transition active:scale-[0.98]">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-lg bg-orange-500/25 text-orange-300 flex items-center justify-center font-black text-sm">IN</span>
+            <div>
+              <p class="text-sm font-bold text-white">Open in Infuse (iPad / iOS)</p>
+              <p class="text-[11px] text-gray-300">Best for 4K HDR, MKV & spatial audio</p>
+            </div>
+          </div>
+          <svg class="w-4 h-4 text-orange-300" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+        </a>
+
+        <a id="deepLinkVLC" href="#" class="flex items-center justify-between p-3.5 rounded-xl bg-gradient-to-r from-amber-500/15 to-yellow-500/10 hover:from-amber-500/25 hover:to-yellow-500/20 border border-amber-400/30 transition active:scale-[0.98]">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-lg bg-amber-500/25 text-amber-300 flex items-center justify-center font-black text-sm">VLC</span>
+            <div>
+              <p class="text-sm font-bold text-white">Open in VLC</p>
+              <p class="text-[11px] text-gray-300">Instant network stream on iOS & desktop</p>
+            </div>
+          </div>
+          <svg class="w-4 h-4 text-amber-300" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+        </a>
+
+        <a id="deepLinkDrive" href="#" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-3.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] border border-white/15 transition active:scale-[0.98]">
+          <div class="flex items-center gap-3">
+            <span class="w-9 h-9 rounded-lg bg-emerald-500/20 text-emerald-300 flex items-center justify-center font-black text-sm">GD</span>
+            <div>
+              <p class="text-sm font-bold text-white">Open in Google Drive</p>
+              <p class="text-[11px] text-gray-300">Bypasses Safari iframe cookie blocking</p>
+            </div>
+          </div>
+          <svg class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+
+        <button id="copyDirectUrlBtn" onclick="copyDirect4KUrlFromSheet()" class="w-full flex items-center justify-center gap-2 p-3 rounded-xl bg-nf-red hover:bg-nf-redHover text-white font-bold text-sm transition active:scale-[0.98]">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span id="copyDirectUrlText">Copy Direct 4K Stream URL</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST STACK -->
+  <div id="toastStack" class="fixed bottom-20 md:bottom-6 right-4 z-[10005] flex flex-col gap-2 max-w-xs sm:max-w-sm pointer-events-none"></div>
 
   <!-- =========================================================
-       DRIVEFLIX CORE ENGINE
+       DRIVEFLIX v4 CORE JAVASCRIPT ENGINE
   ========================================================== -->
   <script>
     'use strict';
 
     /* ==========================================================
-       1. CONSTANTS, STORAGE KEYS & SAFE LOCALSTORAGE HELPERS
+       1. CREDENTIALS & STORAGE KEYS (df_v4_*)
     ========================================================== */
     const DEFAULTS = {
       TMDB_KEY: '7b9a12af809f78ea58b825ed3090934a',
-      CLIENT_ID: '115642414117-qklulnc15ofhohiulun7fb26sha51lbp.apps.googleusercontent.com'
+      CLIENT_ID: '115642414117-qklulnc15ofhohiulun7fb26sha51lbp.apps.googleusercontent.com',
+      SCOPES: 'https://www.googleapis.com/auth/drive.readonly https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email'
     };
 
     const KEYS = {
-      TOKEN: 'df_v3_token',
-      TOKEN_EXP: 'df_v3_token_exp',
-      USER: 'df_v3_user',
-      LIBRARY: 'df_v3_library',
-      TMDB_CACHE: 'df_v3_tmdb_cache',
-      MANUAL_MATCHES: 'df_v3_manual_matches',
-      PROGRESS: 'df_v3_progress',
-      WATCHLIST: 'df_v3_watchlist',
-      SETTINGS: 'df_v3_settings'
+      USER: 'df_v4_user',
+      TOKEN: 'df_v4_token',
+      TOKEN_EXP: 'df_v4_token_exp',
+      LIBRARY: 'df_v4_library',
+      TMDB_CACHE: 'df_v4_tmdb_cache',
+      OVERRIDES: 'df_v4_overrides',
+      PROGRESS: 'df_v4_progress',
+      MYLIST: 'df_v4_mylist',
+      SETTINGS: 'df_v4_settings'
     };
 
     const TMDB_API = 'https://api.themoviedb.org/3';
     const IMG_POSTER = 'https://image.tmdb.org/t/p/w500';
-    const IMG_BACKDROP = 'https://image.tmdb.org/t/p/original';
+    const IMG_BACKDROP = 'https://image.tmdb.org/t/p/w1280';
+    const IMG_BACKDROP_ORIG = 'https://image.tmdb.org/t/p/original';
+    const IMG_LOGO = 'https://image.tmdb.org/t/p/w500';
     const IMG_STILL = 'https://image.tmdb.org/t/p/w500';
 
     const GENERIC_FOLDERS = new Set([
       'my drive', 'drive', 'movies', 'movie', 'tv', 'tv shows', 'tv series', 'series',
       'web series', 'webseries', 'shows', 'videos', 'video', 'downloads', 'download',
       'anime', 'hollywood', 'bollywood', 'south', 'hindi', 'english', '4k', '1080p',
-      '720p', 'hd', 'media', 'films', 'netflix', 'prime', 'shared', 'root', 'new folder'
+      '720p', 'hd', 'media', 'films', 'netflix', 'prime', 'shared', 'root', 'new folder',
+      'indian', 'web', 'collection', 'cinema'
     ]);
 
     function lsGetJSON(key, fallback) {
       try {
         const raw = localStorage.getItem(key);
-        if (raw === null || raw === undefined) return fallback;
-        return JSON.parse(raw);
+        return raw ? JSON.parse(raw) : fallback;
       } catch {
         return fallback;
       }
@@ -987,7 +1035,6 @@
         localStorage.setItem(key, JSON.stringify(val));
         return true;
       } catch (err) {
-        // If quota exceeded on TMDB cache, prune oldest half and retry once
         if (key === KEYS.TMDB_CACHE && val && typeof val === 'object') {
           try {
             const entries = Object.entries(val);
@@ -997,7 +1044,6 @@
             return true;
           } catch {}
         }
-        console.warn('localStorage write failed for', key, err);
         return false;
       }
     }
@@ -1006,9 +1052,7 @@
       try {
         const v = localStorage.getItem(key);
         return v !== null ? v : fallback;
-      } catch {
-        return fallback;
-      }
+      } catch { return fallback; }
     }
 
     function lsSetStr(key, val) {
@@ -1019,27 +1063,27 @@
     }
 
     /* ==========================================================
-       2. GLOBAL APPLICATION STATE
+       2. GLOBAL STATE
     ========================================================== */
     const state = {
       settings: {
-        clientId: DEFAULTS.CLIENT_ID,
         tmdbKey: DEFAULTS.TMDB_KEY,
+        clientId: DEFAULTS.CLIENT_ID,
         autoplayTrailers: true,
         preferredPlayer: 'auto',
         folderId: ''
       },
       token: '',
       tokenExp: 0,
-      user: null, // { name, email, picture }
-      sourceMode: 'demo', // 'drive' | 'links' | 'local' | 'demo'
+      user: null,
+      sourceMode: 'demo',
       library: [],
+      rawFiles: [], // Kept so Re-Match Posters works instantly even without re-scanning Drive
       tmdbCache: {},
-      manualMatches: {},
+      overrides: {}, // { [groupKey]: { mediaType, rawTmdbId, customPoster, customBackdrop } }
       progress: {},
-      watchlist: [],
+      myList: [],
 
-      // UI state
       activeTab: 'home',
       searchQuery: '',
       heroItems: [],
@@ -1051,29 +1095,27 @@
       detailSeason: 1,
       detailTrailerActive: false,
 
-      // Player state
       player: {
         item: null,
         episode: null,
-        engine: 'direct', // 'direct' | 'embed'
+        engine: 'direct',
         blobUrl: null,
         stallTimer: null,
-        hideTimer: null,
-        lastProgressSave: 0
+        iframeSpinnerTimer: null,
+        lastProgressSave: 0,
+        safariHelperDismissed: false
       }
     };
 
     /* ==========================================================
-       3. GIS ASYNC READINESS QUEUE
+       3. GOOGLE IDENTITY SERVICES READINESS QUEUE
     ========================================================== */
     let gisReady = false;
     const gisQueue = [];
-
-    window.__onGISScriptLoaded = function() {
+    window.__onGISReady = function() {
       gisReady = true;
       while (gisQueue.length) {
-        const fn = gisQueue.shift();
-        try { fn(); } catch {}
+        try { gisQueue.shift()(); } catch {}
       }
     };
 
@@ -1083,11 +1125,10 @@
         cb();
       } else {
         gisQueue.push(cb);
-        // Safety poll in case onload fired before script registration
         const poll = setInterval(() => {
           if (typeof google !== 'undefined' && google.accounts?.oauth2) {
             clearInterval(poll);
-            window.__onGISScriptLoaded();
+            window.__onGISReady();
           }
         }, 200);
         setTimeout(() => clearInterval(poll), 12000);
@@ -1095,7 +1136,7 @@
     }
 
     /* ==========================================================
-       4. UTILITIES (ESCAPE, TIME, FORMAT, TOAST, IMAGE FALLBACK)
+       4. UTILITIES
     ========================================================== */
     function esc(str) {
       return String(str ?? '')
@@ -1142,8 +1183,8 @@
       const stack = document.getElementById('toastStack');
       const el = document.createElement('div');
       const border = type === 'error' ? 'border-red-500/70' : type === 'success' ? 'border-emerald-500/70' : 'border-white/20';
-      const dot = type === 'error' ? 'bg-red-500' : type === 'success' ? 'bg-emerald-400' : 'bg-cinema-red';
-      el.className = `toast-anim pointer-events-auto flex items-center gap-2.5 bg-[#18181f]/95 backdrop-blur-xl border ${border} text-white text-xs sm:text-sm px-4 py-3 rounded-xl shadow-2xl`;
+      const dot = type === 'error' ? 'bg-red-500' : type === 'success' ? 'bg-emerald-400' : 'bg-nf-red';
+      el.className = `toast-anim pointer-events-auto flex items-center gap-2.5 bg-[#1b1b1f]/95 backdrop-blur-xl border ${border} text-white text-xs sm:text-sm px-4 py-3 rounded-xl shadow-2xl`;
       el.innerHTML = `<span class="w-2 h-2 rounded-full ${dot} shrink-0"></span><span class="leading-snug">${esc(msg)}</span>`;
       stack.appendChild(el);
       setTimeout(() => {
@@ -1156,10 +1197,7 @@
 
     function setScanProgress(visible, text = '', pct = 0) {
       const bar = document.getElementById('scanBar');
-      if (!visible) {
-        bar.classList.add('hidden');
-        return;
-      }
+      if (!visible) { bar.classList.add('hidden'); return; }
       bar.classList.remove('hidden');
       document.getElementById('scanBarText').textContent = text;
       const clamped = Math.max(2, Math.min(100, Math.round(pct)));
@@ -1167,32 +1205,7 @@
       document.getElementById('scanBarFill').style.width = `${clamped}%`;
     }
 
-    // Multi-layer image fallback: TMDB Poster -> TMDB Backdrop -> High-Res Drive Thumb -> Typographic Card
-    window.onPosterError = function(img) {
-      const step = Number(img.getAttribute('data-fb-step') || '0');
-      const bd = img.getAttribute('data-fb-backdrop') || '';
-      const dt = img.getAttribute('data-fb-drive') || '';
-
-      if (step === 0 && bd && img.src !== bd) {
-        img.setAttribute('data-fb-step', '1');
-        img.src = bd;
-        return;
-      }
-      if (step <= 1 && dt && img.src !== dt) {
-        img.setAttribute('data-fb-step', '2');
-        img.src = dt;
-        return;
-      }
-
-      img.classList.add('hidden');
-      const typo = img.nextElementSibling;
-      if (typo && typo.classList.contains('typo-card')) {
-        typo.classList.remove('hidden');
-        typo.classList.add('flex');
-      }
-    };
-
-    function copyToClipboard(text) {
+    function copyTextSafe(text) {
       try {
         const ta = document.createElement('textarea');
         ta.value = text;
@@ -1212,8 +1225,25 @@
       return false;
     }
 
+    // Poster fallback chain: TMDB Poster -> Drive Thumb -> Typographic Card
+    window.onPosterError = function(img) {
+      const step = Number(img.getAttribute('data-fb-step') || '0');
+      const dt = img.getAttribute('data-fb-drive') || '';
+      if (step === 0 && dt && img.src !== dt) {
+        img.setAttribute('data-fb-step', '1');
+        img.src = dt;
+        return;
+      }
+      img.classList.add('hidden');
+      const typo = img.nextElementSibling;
+      if (typo && typo.classList.contains('typo-card')) {
+        typo.classList.remove('hidden');
+        typo.classList.add('flex');
+      }
+    };
+
     /* ==========================================================
-       5. TOKEN LIFECYCLE & BULLETPROOF PERSISTENT AUTH
+       5. BULLETPROOF PERSISTENT AUTH & SILENT REFRESH
     ========================================================== */
     function isTokenActive() {
       return Boolean(state.token && state.tokenExp > (Date.now() + 60000));
@@ -1229,10 +1259,11 @@
       const avatar = document.getElementById('headerAvatar');
       const reconnectPill = document.getElementById('reconnectPill');
       const syncBtn = document.getElementById('syncDriveBtn');
+      const rematchBtn = document.getElementById('rematchHeaderBtn');
       const demoBanner = document.getElementById('demoModeBanner');
 
-      // Show Demo banner ONLY when in demo mode
       demoBanner.classList.toggle('hidden', state.sourceMode !== 'demo');
+      rematchBtn.classList.toggle('hidden', state.library.length === 0);
 
       if (hasSavedDriveSession()) {
         syncBtn.classList.remove('hidden');
@@ -1298,25 +1329,25 @@
       return new Promise((resolve, reject) => {
         whenGISReady(() => {
           if (typeof google === 'undefined' || !google.accounts?.oauth2) {
-            reject(new Error('Google Sign-In failed to load. Check internet connection.'));
+            reject(new Error('Google Sign-In failed to load.'));
             return;
           }
-          let done = false;
+          let settled = false;
           try {
             const client = google.accounts.oauth2.initTokenClient({
               client_id: state.settings.clientId || DEFAULTS.CLIENT_ID,
-              scope: 'https://www.googleapis.com/auth/drive.readonly https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
+              scope: DEFAULTS.SCOPES,
               hint: loginHint || undefined,
               callback: async (resp) => {
-                if (done) return;
-                done = true;
+                if (settled) return;
+                settled = true;
                 if (resp.error || !resp.access_token) {
                   reject(new Error(resp.error || 'Sign-in cancelled'));
                   return;
                 }
-                const expiresSec = Number(resp.expires_in) || 3550;
+                const expSec = Number(resp.expires_in) || 3550;
                 state.token = resp.access_token;
-                state.tokenExp = Date.now() + expiresSec * 1000;
+                state.tokenExp = Date.now() + expSec * 1000;
                 lsSetStr(KEYS.TOKEN, state.token);
                 lsSetStr(KEYS.TOKEN_EXP, state.tokenExp);
                 await fetchGoogleProfile(state.token);
@@ -1324,33 +1355,29 @@
                 resolve(state.token);
               },
               error_callback: (err) => {
-                if (done) return;
-                done = true;
-                reject(new Error(err?.type || 'Popup blocked'));
+                if (settled) return;
+                settled = true;
+                reject(new Error(err?.type || 'Popup closed'));
               }
             });
-
-            const reqOpts = { prompt: promptMode };
-            if (loginHint) reqOpts.hint = loginHint;
-            client.requestAccessToken(reqOpts);
+            const req = { prompt: promptMode };
+            if (loginHint) req.hint = loginHint;
+            client.requestAccessToken(req);
           } catch (e) {
-            if (!done) {
-              done = true;
-              reject(e);
-            }
+            if (!settled) { settled = true; reject(e); }
           }
         });
       });
     }
 
-    // 1-Tap Reconnect: uses login_hint with prompt:'' first, falling back cleanly to prompt:'select_account'
-    async function reconnectDriveOneTap() {
+    async function reconnectDriveOneTap(silentOnly = false) {
       const hint = state.user?.email || '';
       try {
         await requestOAuthToken({ promptMode: '', loginHint: hint });
-        showToast('Google Drive reconnected!', 'success');
+        if (!silentOnly) showToast('Google Drive reconnected!', 'success');
         return true;
       } catch {
+        if (silentOnly) return false;
         try {
           await requestOAuthToken({ promptMode: 'select_account', loginHint: hint });
           showToast('Google Drive reconnected!', 'success');
@@ -1369,16 +1396,15 @@
 
       const hint = state.user?.email || '';
       try {
-        const token = await requestOAuthToken({ promptMode: hint ? '' : 'select_account', loginHint: hint });
+        const tok = await requestOAuthToken({ promptMode: hint ? '' : 'select_account', loginHint: hint });
         closeDriveDrawer();
-        await scanGoogleDrive(token, folderId);
+        await scanGoogleDrive(tok, folderId);
       } catch (err) {
-        // Fallback if silent prompt rejected
         if (hint) {
           try {
-            const token = await requestOAuthToken({ promptMode: 'select_account', loginHint: hint });
+            const tok = await requestOAuthToken({ promptMode: 'select_account', loginHint: hint });
             closeDriveDrawer();
-            await scanGoogleDrive(token, folderId);
+            await scanGoogleDrive(tok, folderId);
             return;
           } catch (err2) {
             showToast(`Sign-In error: ${err2.message}`, 'error');
@@ -1395,7 +1421,7 @@
       try {
         let tok = state.token;
         if (!isTokenActive()) {
-          const ok = await reconnectDriveOneTap();
+          const ok = await reconnectDriveOneTap(false);
           if (!ok) return;
           tok = state.token;
         }
@@ -1423,6 +1449,7 @@
       state.token = '';
       state.tokenExp = 0;
       state.user = null;
+      state.rawFiles = [];
       localStorage.removeItem(KEYS.TOKEN);
       localStorage.removeItem(KEYS.TOKEN_EXP);
       localStorage.removeItem(KEYS.USER);
@@ -1432,26 +1459,58 @@
     }
 
     /* ==========================================================
-       6. SMART FILENAME CLEANER & FOLDER-AWARE PARSER
+       6. CRITICAL FIX 2: AGGRESSIVE INDIAN/PIRACY-TAG FILENAME CLEANER
     ========================================================== */
+    function normalizeCompare(str) {
+      return String(str || '')
+        .toLowerCase()
+        .replace(/&/g, ' and ')
+        .replace(/[^a-z0-9\s]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
     function cleanTitle(raw) {
       if (!raw) return '';
       let s = String(raw);
+
+      // Remove file extension
       s = s.replace(/\.(mkv|mp4|avi|mov|webm|m4v|ts|flv|wmv)$/i, '');
+
+      // Remove URLs, domains, Telegram handles, site watermarks
       s = s.replace(/https?:\/\/\S+/gi, ' ');
+      s = s.replace(/[\[(]\s*www\.[^\])]+[\])]/gi, ' ');
       s = s.replace(/\bwww\.[a-z0-9.-]+/gi, ' ');
-      s = s.replace(/\b[a-z0-9-]+\.(com|net|org|in|info|xyz|site|club|lol|to|me|cc|tv|ws|pro|fun|top|vip|nl|mom|pics|ink|click|live|store|world)\b/gi, ' ');
+      s = s.replace(/@[a-z0-9_.-]+/gi, ' ');
+      s = s.replace(/\b(t\.me\/\S+|telegram\s*[-:@]?\s*\S*)/gi, ' ');
+      s = s.replace(/\b[a-z0-9-]+\.(com|net|org|in|info|xyz|site|club|lol|to|me|cc|tv|ws|pro|fun|top|vip|nl|mom|pics|ink|click|live|store|world|cam|buzz|lat|skin|cfd|sbs)\b/gi, ' ');
+
+      // Strip piracy/Indian release site names anywhere
+      s = s.replace(/\b(vegamovies|hdhub4u|moviesmod|bollyflix|filmyzilla|katmoviehd|mkvcinemas|1tamilmv|tamilmv|tamilrockers|pagalmovies|worldfree4u|filmywap|desibbrg|skymovieshd|mp4moviez|9xmovies|khatrimaza|extramovies|SSRMovies|UHDMovies|movies4u|luxmovies|dotmovies|hdmovie2|cinevood|jalshamoviez|mlsbd|yts|yify|rarbg|psa|pahe|galaxyrg|galaxytv|tgx|ettv|eztv)\b/gi, ' ');
+
+      // Strip bracketed tags [1080p], {Hindi-Eng}, (Dual Audio), keeping valid years
       s = s.replace(/\[[^\]]*\]/g, ' ').replace(/\{[^}]*\}/g, ' ');
       s = s.replace(/\((?!19\d{2}\)|20[0-2]\d\))[^)]*\)/g, ' ');
+
+      // Replace separators with spaces
       s = s.replace(/[._|~+]+/g, ' ');
 
-      const cutRx = /\b(480p|540p|720p|1080p|1440p|2160p|4k|uhd|web[\s-]?dl|webrip|bluray|blu[\s-]?ray|brrip|hdrip|dvdrip|x264|x265|hevc|10[\s-]?bit|dual[\s-]?audio|ddp?5[\s.]?1|vegamovies|bollyflix|hdhub4u|katmoviehd|moviesmod|filmyzilla)\b/i;
+      // Truncate at first technical/release tag if title prefix is already meaningful
+      const cutRx = /\b(2160p|4k|uhd|1440p|1080p|720p|540p|480p|360p|web[\s-]?dl|webrip|hdrip|bluray|blu[\s-]?ray|bdrip|brrip|dvdrip|cam|camrip|hdts|predvd|x264|x265|hevc|10[\s-]?bit|hdr10|hdr|dolby|atmos|ddp?5[\s.]?1|aac|ac3|dts|esubs?|msubs?|dual[\s-]?audio|multi[\s-]?audio|hindi|dubbed|uncut|extended|directors?[\s-]?cut|proper|repack)\b/i;
       const mCut = s.match(cutRx);
       if (mCut && mCut.index > 2) s = s.slice(0, mCut.index);
 
-      const stripRx = /\b(480p|540p|720p|1080p|1440p|2160p|4k|uhd|fhd|hd|sd|hdr|hdr10|dv|dolby\s*vision|web[\s-]?dl|webrip|web|bluray|blu[\s-]?ray|bdrip|brrip|hdrip|dvdrip|camrip|x264|x265|h[\s.]?264|h[\s.]?265|hevc|avc|10[\s-]?bit|8[\s-]?bit|aac[\d.]*|ac3|eac3|ddp?[\s.]?5[\s.]?1|atmos|truehd|dts|flac|dual[\s-]?audio|multi[\s-]?audio|hindi|english|eng|hin|tamil|telugu|malayalam|kannada|dubbed|org|esubs?|msubs?|subs?|nf|netflix|amzn|amazon|hmax|hotstar|vegamovies|bollyflix|hdhub4u|katmoviehd|moviesmod|filmyzilla|yify|yts|rarbg|psa|pahe|galaxyrg|galaxytv|extended|remastered|unrated|proper|repack|uncut|imax|60fps)\b/gi;
+      // Strip remaining quality / codec / audio / language / OTT tags
+      const stripRx = /\b(2160p|4k|uhd|1440p|1080p|720p|540p|480p|360p|fhd|hd|sd|web[\s-]?dl|webrip|web|hdrip|bluray|blu[\s-]?ray|bdrip|brrip|dvdrip|cam|camrip|hdts|predvd|x264|x265|h[\s.]?264|h[\s.]?265|hevc|avc|10[\s-]?bit|8[\s-]?bit|hdr10\+?|hdr|dv|dolby[\s-]?vision|dolby|atmos|ddp?[\s.]?5[\s.]?1|dd[\s.]?5[\s.]?1|aac[\d.]*|ac3|eac3|dts|truehd|flac|esubs?|msubs?|subs?|hindi|dual[\s-]?audio|multi[\s-]?audio|english|eng|hin|tamil|telugu|malayalam|kannada|punjabi|bengali|dubbed|uncut|extended|directors?[\s-]?cut|proper|repack|unrated|remastered|imax|nf|netflix|amzn|amazon|prime|dsnp|disney\+?|hs|hotstar|zee5|sonyliv|jiocinema|mx|mxplayer|voot|altbalaji|hmax|appletv|atvp|60fps|org|hq)\b/gi;
       s = s.replace(stripRx, ' ');
-      s = s.replace(/[()]/g, ' ').replace(/\s*[-–—:]+\s*$/g, '').replace(/^\s*[-–—:]+\s*/g, '').replace(/\s+/g, ' ').trim();
+
+      // Clean leftover punctuation
+      s = s.replace(/[()]/g, ' ')
+        .replace(/\s*[-–—:]+\s*$/g, '')
+        .replace(/^\s*[-–—:]+\s*/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+
       return s;
     }
 
@@ -1478,19 +1537,20 @@
       const noExt = fileName.replace(/\.[^/.]+$/, '');
       const norm = noExt.replace(/[._]+/g, ' ').replace(/\s+/g, ' ').trim();
 
+      // Extract Year BEFORE stripping
+      let year = extractYear(norm);
       let mediaType = 'movie';
       let season = null;
       let episode = null;
-      let year = extractYear(norm);
       let title = '';
 
-      // 1. Explicit S01E02 / Season 1 Episode 2 / 1x02
-      const patterns = [
+      // 1. Extract Season/Episode BEFORE stripping
+      const epPatterns = [
         /\bS(\d{1,2})[\s._-]*E(\d{1,3})\b/i,
         /\bSeason[\s._-]*(\d{1,2})[\s._-]*(?:Episode|Ep|E)[\s._-]*(\d{1,3})\b/i,
         /\b(\d{1,2})[xX](\d{1,3})\b/
       ];
-      for (const rx of patterns) {
+      for (const rx of epPatterns) {
         const m = norm.match(rx);
         if (m) {
           mediaType = 'tv';
@@ -1501,17 +1561,16 @@
         }
       }
 
-      // Episode-only in filename (Ep 01, Episode 02, E03)
       if (mediaType !== 'tv') {
-        const epM = norm.match(/\b(?:Episode|Ep|E)[\s._-]*0?(\d{1,3})\b/i);
-        if (epM) {
+        const epOnly = norm.match(/\b(?:Episode|Ep|E)[\s._-]*0?(\d{1,3})\b/i);
+        if (epOnly) {
           mediaType = 'tv';
-          episode = parseInt(epM[1], 10);
-          title = cleanTitle(norm.slice(0, epM.index));
+          episode = parseInt(epOnly[1], 10);
+          title = cleanTitle(norm.slice(0, epOnly.index));
         }
       }
 
-      // 2. Folder context (e.g. "Breaking Bad / Season 1 / E01.mp4")
+      // 2. Folder-aware hierarchy (e.g. "Dhindora / Season 2 / Episode 1.mp4")
       const parent = folderPath.length >= 1 ? folderPath[folderPath.length - 1] : '';
       const grandParent = folderPath.length >= 2 ? folderPath[folderPath.length - 2] : '';
       const parentSeason = detectSeasonFolder(parent);
@@ -1551,7 +1610,8 @@
         title = cleanTitle(cut);
       }
 
-      if ((!title || /^(movie|video|film|main|play)$/i.test(title)) && parent && !isGenericFolder(parent)) {
+      // If filename is generic ("movie.mp4"), use parent folder
+      if ((!title || /^(movie|video|film|main|play|part\s*\d*)$/i.test(title)) && parent && !isGenericFolder(parent)) {
         if (!year) year = extractYear(parent);
         const pClean = cleanTitle(parent.replace(/\b(19[5-9]\d|20[0-2]\d)\b/g, ''));
         if (pClean) title = pClean;
@@ -1560,7 +1620,7 @@
       if (year && title.endsWith(year)) title = title.slice(0, -year.length).trim();
       if (!title) title = noExt;
 
-      const groupKey = `${mediaType}:${title.toLowerCase().replace(/[^a-z0-9]+/g, '')}:${year || ''}`;
+      const groupKey = `${mediaType}:${normalizeCompare(title).replace(/\s+/g, '')}:${year || ''}`;
       return {
         title,
         year,
@@ -1568,32 +1628,31 @@
         season: mediaType === 'tv' ? (season || 1) : null,
         episode: mediaType === 'tv' ? (episode || 1) : null,
         groupKey,
+        folderKey: folderPath.join('/').toLowerCase(),
         folderPathText: folderPath.join(' / '),
         fileName
       };
     }
 
     /* ==========================================================
-       7. THROTTLED TMDB FETCHER (4 CONCURRENT + 429 RETRY)
+       7. SMART SCORED TMDB MATCHING + TITLE LOGOS
     ========================================================== */
     async function tmdbFetch(endpoint, params = {}, bypassCache = false, attempt = 0) {
       const url = new URL(`${TMDB_API}${endpoint}`);
       url.searchParams.set('api_key', state.settings.tmdbKey || DEFAULTS.TMDB_KEY);
-      url.searchParams.set('language', 'en-US');
+      if (!params.noLanguage) url.searchParams.set('language', 'en-US');
       Object.entries(params).forEach(([k, v]) => {
+        if (k === 'noLanguage') return;
         if (v !== undefined && v !== null && v !== '') url.searchParams.set(k, String(v));
       });
 
       const cacheKey = url.pathname + url.search.replace(state.settings.tmdbKey || DEFAULTS.TMDB_KEY, 'K');
-      if (!bypassCache && state.tmdbCache[cacheKey]) {
-        return state.tmdbCache[cacheKey];
-      }
+      if (!bypassCache && state.tmdbCache[cacheKey]) return state.tmdbCache[cacheKey];
 
       try {
         const res = await fetch(url.toString());
         if (res.status === 429 && attempt < 3) {
-          const waitMs = 600 * (attempt + 1);
-          await new Promise(r => setTimeout(r, waitMs));
+          await new Promise(r => setTimeout(r, 600 * (attempt + 1)));
           return tmdbFetch(endpoint, params, bypassCache, attempt + 1);
         }
         if (!res.ok) return null;
@@ -1603,6 +1662,65 @@
       } catch {
         return null;
       }
+    }
+
+    // Score top 5 TMDB results instead of blindly taking results[0]
+    function pickBestScoredResult(results, queryTitle, queryYear, expectedType = null) {
+      if (!Array.isArray(results) || !results.length) return null;
+      const qNorm = normalizeCompare(queryTitle);
+      const qYr = queryYear ? parseInt(queryYear, 10) : null;
+
+      const candidates = results
+        .filter(r => !expectedType || !r.media_type || r.media_type === 'movie' || r.media_type === 'tv')
+        .slice(0, 5);
+
+      let best = null;
+      let bestScore = -1e9;
+
+      for (const r of candidates) {
+        let score = 0;
+        const rTitle = normalizeCompare(r.title || r.name || '');
+        const rOrig = normalizeCompare(r.original_title || r.original_name || '');
+
+        // Exact normalized title match (+60), starts-with/contains (+25)
+        if (rTitle === qNorm || rOrig === qNorm) {
+          score += 60;
+        } else if (
+          (rTitle && qNorm && (rTitle.startsWith(qNorm) || qNorm.startsWith(rTitle) || rTitle.includes(qNorm) || qNorm.includes(rTitle))) ||
+          (rOrig && qNorm && (rOrig.startsWith(qNorm) || qNorm.startsWith(rOrig)))
+        ) {
+          score += 25;
+        }
+
+        // Year match (+40) or within ±1 year (+15)
+        const rDate = r.release_date || r.first_air_date || '';
+        const rYr = rDate ? parseInt(rDate.slice(0, 4), 10) : null;
+        if (qYr && rYr) {
+          const diff = Math.abs(qYr - rYr);
+          if (diff === 0) score += 40;
+          else if (diff === 1) score += 15;
+          else if (diff > 5) score -= 10;
+        }
+
+        // Has both poster_path and backdrop_path (+20)
+        if (r.poster_path && r.backdrop_path) score += 20;
+        else if (r.poster_path) score += 8;
+
+        // Expected media type bonus if from multi search
+        if (expectedType && r.media_type === expectedType) score += 12;
+
+        // Vote count & popularity tie-breaker
+        const votes = Number(r.vote_count) || 0;
+        const pop = Number(r.popularity) || 0;
+        score += Math.min(12, Math.log10(votes + 1) * 3) + Math.min(8, Math.log10(pop + 1) * 2.5);
+
+        if (score > bestScore) {
+          bestScore = score;
+          best = r;
+        }
+      }
+
+      return best;
     }
 
     function pickBestTrailer(videosObj) {
@@ -1630,7 +1748,9 @@
         title: d.title || d.name || 'Untitled',
         overview: d.overview || 'Stream in original source quality from your personal library.',
         poster: d.poster_path ? `${IMG_POSTER}${d.poster_path}` : '',
-        backdrop: d.backdrop_path ? `${IMG_BACKDROP}${d.backdrop_path}` : '',
+        backdrop: d.backdrop_path ? `${IMG_BACKDROP_ORIG}${d.backdrop_path}` : '',
+        hasTmdbBackdrop: Boolean(d.backdrop_path),
+        titleLogo: '',
         rating: d.vote_average ? Number(d.vote_average.toFixed(1)) : 0,
         year: dateStr ? dateStr.slice(0, 4) : 'N/A',
         runtime: runtimeStr,
@@ -1640,48 +1760,70 @@
       };
     }
 
+    async function fetchBillboardLogo(item) {
+      if (!item?.rawTmdbId || !item.mediaType) return;
+      const imgs = await tmdbFetch(`/${item.mediaType}/${item.rawTmdbId}/images`, {
+        noLanguage: true,
+        include_image_language: 'en,hi,null'
+      });
+      if (!imgs) return;
+      const logos = imgs.logos || [];
+      const chosen = logos.find(l => l.iso_639_1 === 'en' && (l.file_path.endsWith('.png') || l.file_path.endsWith('.svg')))
+        || logos.find(l => l.iso_639_1 === 'hi')
+        || logos[0];
+      if (chosen?.file_path) {
+        item.titleLogo = `${IMG_LOGO}${chosen.file_path}`;
+      }
+    }
+
     async function resolveTmdbMetadata(parsed, driveThumb = '') {
-      // 0. Manual override check
-      const override = state.manualMatches[parsed.groupKey];
-      if (override?.rawTmdbId && override?.mediaType) {
-        const full = await fetchTmdbDetails(override.mediaType, override.rawTmdbId);
-        if (full) return { ...full, groupKey: parsed.groupKey, driveThumb };
+      // 0. Check permanent manual override first
+      const ov = state.overrides[parsed.groupKey];
+      if (ov?.rawTmdbId && ov?.mediaType) {
+        const full = await fetchTmdbDetails(ov.mediaType, ov.rawTmdbId);
+        if (full) {
+          if (ov.customPoster) full.poster = ov.customPoster;
+          if (ov.customBackdrop) {
+            full.backdrop = ov.customBackdrop;
+            full.hasTmdbBackdrop = true;
+          }
+          return { ...full, groupKey: parsed.groupKey, driveThumb };
+        }
       }
 
       let hit = null;
       let resolvedType = parsed.mediaType;
 
-      // Tier 1: Exact endpoint with year
+      // TV Series -> search /search/tv ONLY first (fallback /search/multi)
+      // Movie -> search /search/movie ONLY first (fallback /search/tv)
       if (parsed.mediaType === 'tv') {
-        const res = await tmdbFetch('/search/tv', { query: parsed.title, first_air_date_year: parsed.year });
-        hit = res?.results?.[0] || null;
+        const resTv = await tmdbFetch('/search/tv', { query: parsed.title });
+        hit = pickBestScoredResult(resTv?.results, parsed.title, parsed.year, 'tv');
+        if (!hit) {
+          const resMulti = await tmdbFetch('/search/multi', { query: parsed.title });
+          hit = pickBestScoredResult(resMulti?.results, parsed.title, parsed.year, 'tv');
+          if (hit?.media_type) resolvedType = hit.media_type;
+        }
       } else {
-        const res = await tmdbFetch('/search/movie', { query: parsed.title, year: parsed.year });
-        hit = res?.results?.[0] || null;
+        const resMov = await tmdbFetch('/search/movie', { query: parsed.title });
+        hit = pickBestScoredResult(resMov?.results, parsed.title, parsed.year, 'movie');
+        if (!hit) {
+          const resTv = await tmdbFetch('/search/tv', { query: parsed.title });
+          hit = pickBestScoredResult(resTv?.results, parsed.title, parsed.year, 'tv');
+          if (hit) resolvedType = 'tv';
+        }
       }
 
-      // Tier 2: Multi search without year
-      if (!hit) {
-        const res = await tmdbFetch('/search/multi', { query: parsed.title });
-        const valid = (res?.results || []).filter(r => r.media_type === 'movie' || r.media_type === 'tv');
-        hit = valid.find(r => r.media_type === parsed.mediaType) || valid[0] || null;
-        if (hit) resolvedType = hit.media_type;
-      }
-
-      // Tier 3: Progressive word trim fallback
+      // Progressive word-trim fallback if still not found
       if (!hit) {
         const words = parsed.title.split(/\s+/).filter(Boolean);
         for (let len = Math.min(words.length - 1, 5); len >= 1; len--) {
           const q = words.slice(0, len).join(' ');
           if (q.length < 2) continue;
-          const ep = parsed.mediaType === 'tv' ? '/search/tv' : '/search/multi';
+          const ep = parsed.mediaType === 'tv' ? '/search/tv' : '/search/movie';
           const res = await tmdbFetch(ep, { query: q });
-          const valid = (res?.results || []).filter(r => ep !== '/search/multi' || r.media_type === 'movie' || r.media_type === 'tv');
-          if (valid.length) {
-            hit = valid[0];
-            resolvedType = ep === '/search/tv' ? 'tv' : (hit.media_type || parsed.mediaType);
-            break;
-          }
+          hit = pickBestScoredResult(res?.results, q, parsed.year, parsed.mediaType);
+          if (hit) { resolvedType = parsed.mediaType; break; }
         }
       }
 
@@ -1697,9 +1839,11 @@
         groupKey: parsed.groupKey,
         mediaType: parsed.mediaType,
         title: parsed.title,
-        overview: 'Original video from your storage. Click "Fix Match" to link official TMDB artwork & details.',
-        poster: driveThumb || '',
-        backdrop: driveThumb || '',
+        overview: 'Original video from your storage. Click "Fix Match / Change Poster" to link official TMDB artwork.',
+        poster: '',
+        backdrop: '',
+        hasTmdbBackdrop: false,
+        titleLogo: '',
         driveThumb,
         rating: 0,
         year: parsed.year || 'N/A',
@@ -1714,7 +1858,6 @@
       if (!show?.rawTmdbId || show.mediaType !== 'tv') return;
       const eps = show.seasons?.[seasonNum];
       if (!eps?.length) return;
-
       const sData = await tmdbFetch(`/tv/${show.rawTmdbId}/season/${seasonNum}`);
       if (!sData?.episodes) return;
 
@@ -1733,8 +1876,7 @@
     }
 
     async function runPool(items, concurrency, fn, onTick) {
-      let idx = 0;
-      let done = 0;
+      let idx = 0, done = 0;
       async function worker() {
         while (idx < items.length) {
           const i = idx++;
@@ -1747,18 +1889,45 @@
     }
 
     /* ==========================================================
-       8. LIBRARY BUILDER & GOOGLE DRIVE SCANNER
+       8. LIBRARY BUILDER, RE-MATCH POSTERS & GOOGLE DRIVE SCANNER
     ========================================================== */
     async function buildLibrary(files, mode = 'drive', persist = true) {
       state.sourceMode = mode;
+      state.rawFiles = files;
       document.getElementById('skeletonSection').classList.remove('hidden');
-      setScanProgress(true, `Analyzing ${files.length} video files...`, 10);
+      setScanProgress(true, `Cleaning & parsing ${files.length} video files...`, 8);
 
       const parsedList = files.map(f => ({
         file: f,
         parsed: parseMediaFile(f.name, f.folderPath || []),
         driveThumb: upscaleDriveThumb(f.thumbnailLink || '')
       }));
+
+      // If multiple videos sit inside the same non-generic folder, treat them as a TV Series
+      const folderCounts = new Map();
+      parsedList.forEach(entry => {
+        const fp = entry.file.folderPath || [];
+        const parent = fp[fp.length - 1] || '';
+        if (parent && !isGenericFolder(parent) && detectSeasonFolder(parent) === null) {
+          const fk = entry.parsed.folderKey;
+          folderCounts.set(fk, (folderCounts.get(fk) || 0) + 1);
+        }
+      });
+
+      parsedList.forEach((entry, idx) => {
+        const fk = entry.parsed.folderKey;
+        if (entry.parsed.mediaType === 'movie' && (folderCounts.get(fk) || 0) >= 3) {
+          const parent = entry.file.folderPath[entry.file.folderPath.length - 1];
+          const pTitle = cleanTitle(parent.replace(/\b(19[5-9]\d|20[0-2]\d)\b/g, ''));
+          if (pTitle) {
+            entry.parsed.mediaType = 'tv';
+            entry.parsed.title = pTitle;
+            entry.parsed.season = 1;
+            entry.parsed.episode = entry.parsed.episode || (idx + 1);
+            entry.parsed.groupKey = `tv:${normalizeCompare(pTitle).replace(/\s+/g, '')}:${entry.parsed.year || ''}`;
+          }
+        }
+      });
 
       // Deduplicate TMDB lookups by groupKey
       const uniqueMap = new Map();
@@ -1773,8 +1942,8 @@
         const meta = await resolveTmdbMetadata(entry.parsed, entry.driveThumb);
         metaMap.set(entry.parsed.groupKey, meta);
       }, (done, total) => {
-        const pct = 15 + Math.round((done / Math.max(1, total)) * 65);
-        setScanProgress(true, `Fetching TMDB posters & metadata (${done}/${total})...`, pct);
+        const pct = 14 + Math.round((done / Math.max(1, total)) * 62);
+        setScanProgress(true, `Matching TMDB posters & ratings (${done}/${total})...`, pct);
       });
 
       const itemMap = new Map();
@@ -1851,7 +2020,7 @@
 
       const lib = Array.from(itemMap.values());
 
-      // Sort seasons & episodes numerically + enrich episodes
+      // Sort seasons & episodes + fetch episode metadata
       const seasonJobs = [];
       lib.filter(i => i.mediaType === 'tv').forEach(show => {
         const sorted = {};
@@ -1866,16 +2035,27 @@
         await runPool(seasonJobs, 4, async ({ show, s }) => {
           await enrichSeasonEpisodes(show, s);
         }, (done, total) => {
-          const pct = 80 + Math.round((done / Math.max(1, total)) * 18);
-          setScanProgress(true, `Building season episode guides (${done}/${total})...`, pct);
+          const pct = 76 + Math.round((done / Math.max(1, total)) * 14);
+          setScanProgress(true, `Building season guides (${done}/${total})...`, pct);
         });
       }
 
       lib.sort((a, b) => (b.rating || 0) - (a.rating || 0));
 
+      // Fetch official transparent TMDB Title Logos for top billboard-eligible items (strict 16:9 backdrop rule)
+      const billboardCandidates = lib.filter(i => i.hasTmdbBackdrop && i.backdrop).slice(0, 6);
+      if (billboardCandidates.length) {
+        setScanProgress(true, 'Fetching official TMDB billboard logos...', 94);
+        await runPool(billboardCandidates, 4, async (it) => {
+          await fetchBillboardLogo(it);
+        });
+      }
+
       lsSetJSON(KEYS.TMDB_CACHE, state.tmdbCache);
       if (persist && (mode === 'drive' || mode === 'links')) {
-        lsSetJSON(KEYS.LIBRARY, { mode, items: lib, savedAt: Date.now() });
+        // Save minimal rawFiles (without localFile blobs) so Re-Match Posters works offline/without re-scanning Drive
+        const serializableRaw = files.map(({ localFile, ...rest }) => rest);
+        lsSetJSON(KEYS.LIBRARY, { mode, items: lib, rawFiles: serializableRaw, savedAt: Date.now() });
       }
 
       setScanProgress(false);
@@ -1886,14 +2066,33 @@
     function mountLibrary(lib, mode) {
       state.library = lib;
       state.sourceMode = mode;
-      const featured = lib.filter(i => i.backdrop || i.poster).slice(0, 6);
-      state.heroItems = featured.length ? featured : lib.slice(0, 6);
+
+      // STRICT BILLBOARD QUALITY RULE: ONLY feature titles with a valid TMDB 16:9 backdrop_path
+      const validBillboards = lib.filter(i => i.hasTmdbBackdrop && i.backdrop);
+      state.heroItems = validBillboards.slice(0, 6);
       state.heroIndex = 0;
 
       updateAuthUI();
       renderHero();
       startHeroCycle();
       renderCurrentView();
+    }
+
+    async function rematchAllPosters() {
+      // Clear ONLY TMDB auto-match cache — keep user login, overrides, progress, and My List intact!
+      state.tmdbCache = {};
+      localStorage.removeItem(KEYS.TMDB_CACHE);
+
+      if (state.rawFiles && state.rawFiles.length > 0) {
+        showToast('Re-matching posters with improved cleaner...', 'info');
+        await buildLibrary(state.rawFiles, state.sourceMode, state.sourceMode === 'drive' || state.sourceMode === 'links');
+        showToast('Posters & billboards refreshed!', 'success');
+      } else if (hasSavedDriveSession()) {
+        showToast('Re-scanning Drive to refresh all posters...', 'info');
+        await syncDriveLibrary();
+      } else {
+        await loadDemoLibrary(true);
+      }
     }
 
     async function scanGoogleDrive(accessToken, rootFolderId = '') {
@@ -1953,7 +2152,7 @@
 
         const validVideos = rawVideos.filter(f =>
           (f.mimeType && f.mimeType.startsWith('video/')) ||
-          /\.(mkv|mp4|mov|avi|webm|m4v|ts)$/i.test(f.name || '')
+          /\.(mkv|mp4|mov|avi|webm|m4v|ts|flv|wmv)$/i.test(f.name || '')
         );
 
         function getPath(parentId) {
@@ -2013,10 +2212,7 @@
 
     async function importDriveShareLinks() {
       const raw = document.getElementById('shareLinksTextarea').value.trim();
-      if (!raw) {
-        showToast('Paste at least one Google Drive share link.', 'error');
-        return;
-      }
+      if (!raw) { showToast('Paste at least one Google Drive share link.', 'error'); return; }
       const lines = raw.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
       const files = [];
 
@@ -2024,10 +2220,9 @@
         const [linkPart, titlePart] = line.split('|').map(s => s.trim());
         const idMatch = linkPart.match(/\/d\/([a-zA-Z0-9_-]{15,})/) || linkPart.match(/[?&]id=([a-zA-Z0-9_-]{15,})/);
         if (idMatch) {
-          const fid = idMatch[1];
           files.push({
-            id: `gdrive-${fid}`,
-            driveFileId: fid,
+            id: `gdrive-${idMatch[1]}`,
+            driveFileId: idMatch[1],
             name: titlePart ? `${titlePart}.mp4` : `Drive_Video_${idx + 1}.mp4`,
             folderPath: [],
             source: 'links',
@@ -2036,11 +2231,7 @@
         }
       });
 
-      if (!files.length) {
-        showToast('Could not find valid Google Drive file IDs in those links.', 'error');
-        return;
-      }
-
+      if (!files.length) { showToast('No valid Google Drive file IDs found.', 'error'); return; }
       closeDriveDrawer();
       await buildLibrary(files, 'links', true);
       showToast(`Imported ${files.length} Drive share link${files.length > 1 ? 's' : ''}!`, 'success');
@@ -2048,10 +2239,7 @@
 
     async function connectWithDirectToken() {
       const tok = document.getElementById('directTokenInput').value.trim();
-      if (!tok) {
-        showToast('Paste a valid OAuth access token first.', 'error');
-        return;
-      }
+      if (!tok) { showToast('Paste a valid OAuth access token.', 'error'); return; }
       state.token = tok;
       state.tokenExp = Date.now() + 3500 * 1000;
       lsSetStr(KEYS.TOKEN, tok);
@@ -2063,12 +2251,9 @@
 
     async function handleLocalFiles(fileList) {
       const vids = Array.from(fileList).filter(f =>
-        f.type.startsWith('video/') || /\.(mp4|mkv|webm|mov|avi|m4v)$/i.test(f.name)
+        f.type.startsWith('video/') || /\.(mp4|mkv|webm|mov|avi|m4v|flv|wmv)$/i.test(f.name)
       );
-      if (!vids.length) {
-        showToast('No video files found in selection.', 'error');
-        return;
-      }
+      if (!vids.length) { showToast('No video files found in selection.', 'error'); return; }
       closeDriveDrawer();
       const formatted = vids.map((f, i) => {
         const parts = (f.webkitRelativePath || '').split('/').filter(Boolean);
@@ -2087,7 +2272,7 @@
     }
 
     /* ==========================================================
-       9. GLITCH-FREE BILLBOARD & AUTOPLAY YOUTUBE TRAILERS
+       9. HERO BILLBOARD (16:9 BACKDROPS, OFFICIAL LOGOS, TRAILERS)
     ========================================================== */
     function stopBillboardTrailer() {
       clearTimeout(state.trailerTimer);
@@ -2121,35 +2306,39 @@
     }
 
     function renderHero() {
+      const heroSec = document.getElementById('heroSection');
       const hero = state.heroItems[state.heroIndex];
-      if (!hero) return;
+
+      // If no title in library has a valid 16:9 TMDB backdrop, keep hero sleekly hidden on Home
+      if (!hero) {
+        stopBillboardTrailer();
+        heroSec.classList.add('hidden');
+        document.getElementById('homeRowsSection').classList.remove('-mt-6', 'sm:-mt-10');
+        document.getElementById('homeRowsSection').classList.add('pt-24');
+        return;
+      }
+
+      if (state.activeTab === 'home' && !state.searchQuery) {
+        heroSec.classList.remove('hidden');
+        document.getElementById('homeRowsSection').classList.add('-mt-6', 'sm:-mt-10');
+        document.getElementById('homeRowsSection').classList.remove('pt-24');
+      }
 
       stopBillboardTrailer();
 
       const bg = document.getElementById('heroBackdrop');
       const fb = document.getElementById('heroFallbackBg');
-      const imgUrl = hero.backdrop || hero.driveThumb || hero.poster || '';
-
       bg.classList.remove('ken-burns');
       bg.style.opacity = '0';
-
-      if (imgUrl) {
-        fb.classList.add('hidden');
-        bg.classList.remove('hidden');
-        bg.onload = () => {
-          bg.style.opacity = '1';
-          void bg.offsetWidth;
-          bg.classList.add('ken-burns');
-        };
-        bg.onerror = () => {
-          bg.classList.add('hidden');
-          fb.classList.remove('hidden');
-        };
-        bg.src = imgUrl;
-      } else {
-        bg.classList.add('hidden');
-        fb.classList.remove('hidden');
-      }
+      fb.classList.add('hidden');
+      bg.classList.remove('hidden');
+      bg.onload = () => {
+        bg.style.opacity = '1';
+        void bg.offsetWidth;
+        bg.classList.add('ken-burns');
+      };
+      bg.onerror = () => { bg.classList.add('hidden'); fb.classList.remove('hidden'); };
+      bg.src = hero.backdrop;
 
       document.getElementById('heroTypeBadge').textContent = hero.mediaType === 'tv' ? 'TV SERIES' : 'MOVIE';
       document.getElementById('heroStarBadge').textContent = hero.rating > 0 ? `★ ${hero.rating}` : '★ HD';
@@ -2167,21 +2356,38 @@
       } else if (hero.genres?.[0]) {
         extra.textContent = hero.genres[0];
         extra.classList.remove('hidden');
-      } else {
-        extra.classList.add('hidden');
-      }
+      } else extra.classList.add('hidden');
 
-      document.getElementById('heroTitle').textContent = hero.title;
+      // Official TMDB transparent Title Logo OR crisp typography fallback
+      const logoWrap = document.getElementById('heroLogoWrap');
+      const logoImg = document.getElementById('heroLogoImg');
+      const titleEl = document.getElementById('heroTitle');
+
+      if (hero.titleLogo) {
+        logoImg.src = hero.titleLogo;
+        logoImg.alt = hero.title;
+        logoImg.onload = () => {
+          logoWrap.classList.remove('hidden');
+          titleEl.classList.add('hidden');
+        };
+        logoImg.onerror = () => {
+          logoWrap.classList.add('hidden');
+          titleEl.classList.remove('hidden');
+        };
+      } else {
+        logoWrap.classList.add('hidden');
+        titleEl.classList.remove('hidden');
+      }
+      titleEl.textContent = hero.title;
       document.getElementById('heroOverview').textContent = hero.overview;
       updateHeroWatchlistIcon(hero.tmdbId);
 
-      // Slide dots
       document.getElementById('heroDots').innerHTML = state.heroItems.map((_, idx) => `
         <button onclick="jumpHero(${idx})" aria-label="Slide ${idx + 1}"
-          class="h-1.5 rounded-full transition-all duration-300 ${idx === state.heroIndex ? 'w-6 bg-cinema-red' : 'w-2 bg-white/40 hover:bg-white/75'}"></button>
+          class="h-1.5 rounded-full transition-all duration-300 ${idx === state.heroIndex ? 'w-6 bg-nf-red' : 'w-2 bg-white/40 hover:bg-white/75'}"></button>
       `).join('');
 
-      // Autoplay muted YouTube trailer after 1.5s if enabled
+      // Muted iPad-safe YouTube trailer autoplay after 1.6s
       if (hero.trailerKey && state.settings.autoplayTrailers) {
         state.trailerTimer = setTimeout(() => {
           const modalOpen = !document.getElementById('detailModal').classList.contains('hidden');
@@ -2202,12 +2408,12 @@
             muteBtn.classList.remove('hidden');
             muteBtn.classList.add('flex');
           };
-        }, 1500);
+        }, 1600);
       }
     }
 
     function updateHeroWatchlistIcon(tmdbId) {
-      const saved = state.watchlist.includes(tmdbId);
+      const saved = state.myList.includes(tmdbId);
       document.getElementById('heroWatchlistIcon').innerHTML = saved
         ? '<path d="M20 6 9 17l-5-5"/>'
         : '<path d="M12 5v14M5 12h14"/>';
@@ -2232,7 +2438,7 @@
         const modalOpen = !document.getElementById('detailModal').classList.contains('hidden');
         const drawerOpen = !document.getElementById('driveDrawerOverlay').classList.contains('hidden');
         const playerOpen = !document.getElementById('playerOverlay').classList.contains('hidden');
-        if (!modalOpen && !drawerOpen && !playerOpen && state.activeTab === 'home' && !state.searchQuery) {
+        if (!modalOpen && !drawerOpen && !playerOpen && state.activeTab === 'home' && !state.searchQuery && state.heroItems.length > 1) {
           shiftHero(1);
         }
       }, 14000);
@@ -2242,21 +2448,19 @@
       const h = state.heroItems[state.heroIndex];
       if (h) quickPlay(h.tmdbId);
     }
-
     function openHeroDetails() {
       const h = state.heroItems[state.heroIndex];
       if (h) openDetailModal(h.tmdbId);
     }
-
     function toggleHeroWatchlist() {
       const h = state.heroItems[state.heroIndex];
       if (!h) return;
-      toggleWatchlist(h.tmdbId);
+      toggleMyList(h.tmdbId);
       updateHeroWatchlistIcon(h.tmdbId);
     }
 
     /* ==========================================================
-       10. CAROUSELS, CONTINUE WATCHING & NAVIGATION VIEWS
+       10. ROWS, STRICT 2:3 POSTER CARDS & NAVIGATION
     ========================================================== */
     function renderCurrentView() {
       const heroSec = document.getElementById('heroSection');
@@ -2292,7 +2496,7 @@
       mobileSearchBox.classList.add('hidden');
 
       if (state.activeTab === 'home') {
-        heroSec.classList.remove('hidden');
+        if (state.heroItems.length) heroSec.classList.remove('hidden');
         rowsSec.classList.remove('hidden');
         gridSec.classList.add('hidden');
         renderHomeRows();
@@ -2309,7 +2513,7 @@
           const mv = state.library.filter(i => i.mediaType === 'movie');
           renderGrid('Movies', `${mv.length} movies sorted by TMDB rating`, mv);
         } else if (state.activeTab === 'mylist') {
-          const ml = state.library.filter(i => state.watchlist.includes(i.tmdbId));
+          const ml = state.library.filter(i => state.myList.includes(i.tmdbId));
           renderGrid('My List', `${ml.length} saved title${ml.length === 1 ? '' : 's'}`, ml);
         }
       }
@@ -2355,9 +2559,9 @@
       const movies = state.library.filter(i => i.mediaType === 'movie');
       if (movies.length) rows.push({ id: 'movies', title: 'Movies', kind: 'poster', items: movies });
 
-      // 5. Recently Added
-      const recent = [...state.library].sort((a, b) => (b.addedAt || 0) - (a.addedAt || 0)).slice(0, 20);
-      if (recent.length) rows.push({ id: 'recent', title: 'Recently Added', kind: 'poster', items: recent });
+      // 5. My List
+      const myListItems = state.library.filter(i => state.myList.includes(i.tmdbId));
+      if (myListItems.length) rows.push({ id: 'mylist', title: 'My List', kind: 'poster', items: myListItems });
 
       // 6. Dynamic Genre Rows
       const genreMap = new Map();
@@ -2385,7 +2589,7 @@
             <h2 class="text-base sm:text-xl font-bold text-gray-100 mb-2 px-0.5 tracking-tight">${esc(r.title)}</h2>
             <div class="relative">
               <button onclick="scrollRow('row-${r.id}', -1)" aria-label="Scroll left"
-                class="hidden md:flex opacity-0 group-hover/row:opacity-100 absolute left-0 top-0 bottom-3 z-30 w-12 items-center justify-center bg-gradient-to-r from-[#0b0b0d]/95 to-transparent text-white hover:scale-110 transition">
+                class="hidden md:flex opacity-0 group-hover/row:opacity-100 absolute left-0 top-0 bottom-3 z-30 w-12 items-center justify-center bg-gradient-to-r from-[#141414]/95 to-transparent text-white hover:scale-110 transition">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
               </button>
 
@@ -2394,7 +2598,7 @@
               </div>
 
               <button onclick="scrollRow('row-${r.id}', 1)" aria-label="Scroll right"
-                class="hidden md:flex opacity-0 group-hover/row:opacity-100 absolute right-0 top-0 bottom-3 z-30 w-12 items-center justify-center bg-gradient-to-l from-[#0b0b0d]/95 to-transparent text-white hover:scale-110 transition">
+                class="hidden md:flex opacity-0 group-hover/row:opacity-100 absolute right-0 top-0 bottom-3 z-30 w-12 items-center justify-center bg-gradient-to-l from-[#141414]/95 to-transparent text-white hover:scale-110 transition">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
               </button>
             </div>
@@ -2405,34 +2609,34 @@
 
     function buildPosterCard(item, rank = null, isGrid = false) {
       const sizeCls = isGrid ? 'w-full' : 'snap-card shrink-0 w-[138px] sm:w-[172px] md:w-[192px]';
-      const primarySrc = item.poster || item.backdrop || item.driveThumb || '';
+      // Strictly prefer vertical TMDB poster (w500) — never stretch a horizontal backdrop into a vertical slot
+      const primarySrc = item.poster || item.driveThumb || '';
       const seasonCount = item.mediaType === 'tv' ? Object.keys(item.seasons || {}).length : 0;
       const rightBadge = rank
         ? `<span class="px-1.5 py-0.5 rounded bg-white text-black text-[10px] font-black shadow">#${rank}</span>`
-        : (seasonCount > 0 ? `<span class="px-1.5 py-0.5 rounded bg-cinema-red text-white text-[10px] font-bold">${seasonCount}S</span>` : '');
+        : (seasonCount > 0 ? `<span class="px-1.5 py-0.5 rounded bg-nf-red text-white text-[10px] font-bold">${seasonCount}S</span>` : '');
 
       return `
         <div onclick="openDetailModal('${esc(item.tmdbId)}')"
-          class="media-card relative ${sizeCls} aspect-[2/3] rounded-xl overflow-hidden bg-cinema-surface cursor-pointer border border-white/10">
+          class="media-card poster-aspect relative ${sizeCls} rounded-xl overflow-hidden bg-nf-surface cursor-pointer border border-white/10">
           ${primarySrc ? `
             <img src="${esc(primarySrc)}"
               data-fb-step="0"
-              data-fb-backdrop="${esc(item.backdrop || '')}"
               data-fb-drive="${esc(item.driveThumb || '')}"
               alt="${esc(item.title)}"
               loading="lazy"
               onerror="onPosterError(this)"
-              class="w-full h-full object-cover" />
+              class="poster-img" />
           ` : ''}
 
-          <!-- Crisp Typographic Fallback Card -->
-          <div class="typo-card ${primarySrc ? 'hidden' : 'flex'} absolute inset-0 flex-col justify-between p-3.5 bg-gradient-to-br from-[#30090e] via-[#15151b] to-[#0b0b0d]">
-            <span class="text-[10px] font-black tracking-widest text-cinema-red">DRIVEFLIX</span>
+          <!-- Typographic Fallback Card -->
+          <div class="typo-card ${primarySrc ? 'hidden' : 'flex'} absolute inset-0 flex-col justify-between p-3.5 bg-gradient-to-br from-[#35090e] via-[#1b1b1f] to-[#141414]">
+            <span class="text-[10px] font-black tracking-widest text-nf-red">DRIVEFLIX</span>
             <div class="space-y-1 my-auto">
               <p class="text-sm font-extrabold text-white leading-snug line-clamp-4">${esc(item.title)}</p>
               <p class="text-[11px] text-gray-400">${esc(item.year)} • ${item.mediaType === 'tv' ? 'Series' : 'Movie'}</p>
             </div>
-            <div class="h-0.5 w-8 bg-cinema-red rounded-full"></div>
+            <div class="h-0.5 w-8 bg-nf-red rounded-full"></div>
           </div>
 
           <!-- Top Rating & Rank/Season Badges -->
@@ -2443,8 +2647,14 @@
             ${rightBadge}
           </div>
 
-          <!-- Hover Overlay (Desktop only via @media hover:hover) -->
-          <div class="card-hover-overlay opacity-0 transition-opacity duration-200 absolute inset-0 z-10 bg-gradient-to-t from-black via-black/45 to-transparent flex flex-col justify-end p-3">
+          <!-- Subtle 1-Click Fix Match / Edit Poster Icon -->
+          <button onclick="event.stopPropagation(); openDetailModal('${esc(item.tmdbId)}', true)" title="Fix Match / Change Poster"
+            class="card-edit-btn opacity-75 md:opacity-0 transition-opacity duration-200 absolute bottom-2 right-2 z-20 w-7 h-7 rounded-full bg-black/75 hover:bg-nf-red border border-white/20 text-white flex items-center justify-center">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          </button>
+
+          <!-- Desktop Hover Overlay -->
+          <div class="card-hover-overlay opacity-0 transition-opacity duration-200 absolute inset-0 z-10 bg-gradient-to-t from-black via-black/45 to-transparent flex flex-col justify-end p-3 pr-10">
             <h3 class="text-sm font-bold text-white line-clamp-2 leading-snug">${esc(item.title)}</h3>
             <p class="text-[11px] text-gray-300 mt-0.5">${esc(item.year)} • ${item.mediaType === 'tv' ? 'Series' : 'Movie'}</p>
             <div class="flex items-center gap-1.5 mt-2">
@@ -2452,10 +2662,6 @@
                 class="flex-1 flex items-center justify-center gap-1 bg-white hover:bg-gray-200 text-black text-xs font-bold py-1.5 rounded-md transition">
                 <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                 Play
-              </button>
-              <button onclick="event.stopPropagation(); openDetailModal('${esc(item.tmdbId)}')"
-                class="w-7 h-7 flex items-center justify-center rounded-md bg-white/20 hover:bg-white/35 text-white transition" title="Info">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
               </button>
             </div>
           </div>
@@ -2473,20 +2679,18 @@
 
       return `
         <div onclick="${playCall}"
-          class="media-card snap-card relative shrink-0 w-[230px] sm:w-[270px] aspect-video rounded-xl overflow-hidden bg-cinema-surface cursor-pointer border border-white/10">
+          class="media-card snap-card relative shrink-0 w-[230px] sm:w-[270px] aspect-video rounded-xl overflow-hidden bg-nf-surface cursor-pointer border border-white/10">
           ${thumb ? `
             <img src="${esc(thumb)}" data-fb-step="0" data-fb-drive="${esc(item.driveThumb || '')}" alt="${esc(item.title)}" loading="lazy"
               onerror="onPosterError(this)" class="w-full h-full object-cover" />
           ` : ''}
-          <div class="typo-card ${thumb ? 'hidden' : 'flex'} absolute inset-0 items-center justify-center p-4 bg-gradient-to-br from-[#30090e] to-[#0e0e12]">
+          <div class="typo-card ${thumb ? 'hidden' : 'flex'} absolute inset-0 items-center justify-center p-4 bg-gradient-to-br from-[#35090e] to-[#141414]">
             <span class="text-sm font-bold text-white text-center line-clamp-2">${esc(item.title)}</span>
           </div>
-
           <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/25 to-transparent"></div>
 
-          <!-- Remove from Continue Watching -->
           <button onclick="event.stopPropagation(); removeContinueWatching('${esc(mediaId)}')" title="Remove"
-            class="absolute top-2 right-2 z-20 w-7 h-7 rounded-full bg-black/70 hover:bg-cinema-red text-gray-200 hover:text-white flex items-center justify-center transition">
+            class="absolute top-2 right-2 z-20 w-7 h-7 rounded-full bg-black/70 hover:bg-nf-red text-gray-200 hover:text-white flex items-center justify-center transition">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
           </button>
 
@@ -2500,9 +2704,8 @@
             <h3 class="text-sm font-bold text-white truncate">${esc(item.title)}</h3>
             <p class="text-[11px] text-gray-300 truncate">${esc(sub)}</p>
           </div>
-
           <div class="absolute bottom-0 left-0 right-0 h-1 bg-white/25">
-            <div class="h-full bg-cinema-red" style="width:${pct}%"></div>
+            <div class="h-full bg-nf-red" style="width:${pct}%"></div>
           </div>
         </div>
       `;
@@ -2520,7 +2723,6 @@
       document.getElementById('gridSubtitle').textContent = subtitle;
       const grid = document.getElementById('gridCards');
       const empty = document.getElementById('gridEmpty');
-
       if (!items.length) {
         grid.innerHTML = '';
         empty.classList.remove('hidden');
@@ -2545,7 +2747,6 @@
         document.getElementById('mobileClearSearch').classList.add('hidden');
       }
 
-      // Sync Top Nav
       document.querySelectorAll('.top-nav-btn').forEach(btn => {
         const active = btn.getAttribute('data-tab') === tab;
         btn.classList.toggle('text-white', active);
@@ -2553,7 +2754,6 @@
         btn.classList.toggle('text-gray-300', !active);
       });
 
-      // Sync Bottom Nav
       document.querySelectorAll('.bottom-nav-btn').forEach(btn => {
         const active = btn.getAttribute('data-btab') === tab;
         btn.classList.toggle('text-white', active);
@@ -2564,10 +2764,7 @@
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
       renderCurrentView();
-
-      if (tab === 'search') {
-        setTimeout(() => document.getElementById('mobileSearchInput')?.focus(), 100);
-      }
+      if (tab === 'search') setTimeout(() => document.getElementById('mobileSearchInput')?.focus(), 100);
     }
 
     function handleSearchInput(val) {
@@ -2584,23 +2781,23 @@
       if (state.activeTab === 'search') document.getElementById('mobileSearchInput').focus();
     }
 
-    function toggleWatchlist(tmdbId) {
-      const idx = state.watchlist.indexOf(tmdbId);
+    function toggleMyList(tmdbId) {
+      const idx = state.myList.indexOf(tmdbId);
       if (idx === -1) {
-        state.watchlist.push(tmdbId);
+        state.myList.push(tmdbId);
         showToast('Added to My List', 'success');
       } else {
-        state.watchlist.splice(idx, 1);
+        state.myList.splice(idx, 1);
         showToast('Removed from My List', 'info');
       }
-      lsSetJSON(KEYS.WATCHLIST, state.watchlist);
-      if (state.activeTab === 'mylist') renderCurrentView();
+      lsSetJSON(KEYS.MYLIST, state.myList);
+      if (state.activeTab === 'mylist' || state.activeTab === 'home') renderCurrentView();
     }
 
     /* ==========================================================
-       11. DETAIL MODAL, SYNCED SEASON SELECTOR & FIX MATCH
+       11. DETAIL MODAL, SEASONS, & 1-CLICK FIX MATCH + ARTWORK PICKER
     ========================================================== */
-    function openDetailModal(tmdbId) {
+    function openDetailModal(tmdbId, openFixMatchImmediately = false) {
       const item = state.library.find(i => i.tmdbId === tmdbId);
       if (!item) return;
 
@@ -2648,7 +2845,6 @@
         fRow.classList.remove('hidden');
       } else fRow.classList.add('hidden');
 
-      // Trailer preview toggle button
       const trBtn = document.getElementById('detailTrailerBtn');
       if (item.trailerKey) {
         trBtn.classList.remove('hidden');
@@ -2659,16 +2855,14 @@
         trBtn.classList.remove('flex');
       }
 
-      // Play / Resume button
       document.getElementById('detailPlayBtn').onclick = () => {
         closeDetailModal();
         quickPlay(item.tmdbId);
       };
 
-      // Watchlist button
       syncDetailWatchlistBtn(item.tmdbId);
       document.getElementById('detailWatchlistBtn').onclick = () => {
-        toggleWatchlist(item.tmdbId);
+        toggleMyList(item.tmdbId);
         syncDetailWatchlistBtn(item.tmdbId);
         const h = state.heroItems[state.heroIndex];
         if (h && h.tmdbId === item.tmdbId) updateHeroWatchlistIcon(item.tmdbId);
@@ -2702,10 +2896,12 @@
       modal.classList.add('flex');
       document.getElementById('detailModalScroll').scrollTop = 0;
       document.body.style.overflow = 'hidden';
+
+      if (openFixMatchImmediately) toggleFixMatch(true);
     }
 
     function syncDetailWatchlistBtn(tmdbId) {
-      const saved = state.watchlist.includes(tmdbId);
+      const saved = state.myList.includes(tmdbId);
       document.getElementById('detailWatchlistText').textContent = saved ? 'In My List' : 'My List';
       document.getElementById('detailWatchlistIcon').innerHTML = saved
         ? '<path d="M20 6 9 17l-5-5"/>'
@@ -2717,7 +2913,6 @@
       if (!item?.trailerKey) return;
       const iframe = document.getElementById('detailTrailerIframe');
       const txt = document.getElementById('detailTrailerBtnText');
-
       state.detailTrailerActive = !state.detailTrailerActive;
       if (state.detailTrailerActive) {
         iframe.src = `https://www.youtube.com/embed/${item.trailerKey}?playsinline=1&autoplay=1&rel=0&modestbranding=1`;
@@ -2736,18 +2931,15 @@
 
       state.detailSeason = seasonNum;
       const sNums = Object.keys(item.seasons || {}).map(Number).sort((a, b) => a - b);
-
-      // Sync dropdown
       document.getElementById('detailSeasonSelect').value = String(seasonNum);
 
-      // Sync Touch-Friendly Season Pills
       document.getElementById('detailSeasonPills').innerHTML = sNums.map(s => {
         const active = s === seasonNum;
         return `
           <button type="button" onclick="selectSeason(${s})"
             class="px-4 py-2 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap transition active:scale-95 border ${
               active
-                ? 'bg-cinema-red border-cinema-red text-white shadow-lg shadow-cinema-red/30'
+                ? 'bg-nf-red border-nf-red text-white shadow-lg shadow-nf-red/30'
                 : 'bg-white/10 hover:bg-white/20 border-white/15 text-gray-200'
             }">
             Season ${s}
@@ -2757,14 +2949,11 @@
 
       renderEpisodes(item, seasonNum);
 
-      // Fetch TMDB episode metadata on-demand if missing
       const eps = item.seasons[seasonNum] || [];
       if (item.rawTmdbId && eps.some(e => !e.tmdbMatched)) {
         await enrichSeasonEpisodes(item, seasonNum);
         lsSetJSON(KEYS.TMDB_CACHE, state.tmdbCache);
-        if (state.sourceMode === 'drive' || state.sourceMode === 'links') {
-          lsSetJSON(KEYS.LIBRARY, { mode: state.sourceMode, items: state.library, savedAt: Date.now() });
-        }
+        persistCurrentLibrary();
         if (state.detailItemId === item.tmdbId && state.detailSeason === seasonNum) {
           renderEpisodes(item, seasonNum);
         }
@@ -2774,7 +2963,6 @@
     function renderEpisodes(item, seasonNum) {
       const eps = item.seasons?.[seasonNum] || [];
       const list = document.getElementById('detailEpisodesList');
-
       if (!eps.length) {
         list.innerHTML = `<p class="text-sm text-gray-400 text-center py-6">No episodes found for Season ${seasonNum}.</p>`;
         return;
@@ -2788,7 +2976,7 @@
 
         return `
           <div onclick="closeDetailModal(); playMedia('${esc(item.tmdbId)}', ${ep.season}, ${ep.episode})"
-            class="group flex flex-col sm:flex-row items-start sm:items-center gap-3.5 p-3 rounded-xl bg-white/[0.035] hover:bg-white/[0.085] border border-white/10 cursor-pointer transition active:scale-[0.99]">
+            class="group flex flex-col sm:flex-row items-start sm:items-center gap-3.5 p-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.09] border border-white/10 cursor-pointer transition active:scale-[0.99]">
             <div class="flex items-center gap-3 w-full sm:w-auto shrink-0">
               <span class="text-base font-extrabold text-gray-400 w-7 text-center shrink-0">${ep.episode}</span>
               <div class="relative w-36 sm:w-44 aspect-video rounded-lg overflow-hidden bg-[#101014] shrink-0 border border-white/10">
@@ -2796,7 +2984,7 @@
                   <img src="${esc(still)}" data-fb-step="0" data-fb-drive="${esc(ep.driveThumb || '')}" alt="${esc(ep.title)}" loading="lazy"
                     onerror="onPosterError(this)" class="w-full h-full object-cover" />
                 ` : ''}
-                <div class="typo-card ${still ? 'hidden' : 'flex'} absolute inset-0 items-center justify-center bg-gradient-to-br from-[#30090e] to-[#0e0e12]">
+                <div class="typo-card ${still ? 'hidden' : 'flex'} absolute inset-0 items-center justify-center bg-gradient-to-br from-[#35090e] to-[#141414]">
                   <span class="text-xs font-bold text-gray-200">S${ep.season} E${ep.episode}</span>
                 </div>
                 <div class="absolute inset-0 bg-black/35 flex items-center justify-center">
@@ -2804,7 +2992,7 @@
                     <svg class="w-4 h-4 fill-current ml-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                   </div>
                 </div>
-                ${pct > 0 ? `<div class="absolute bottom-0 left-0 right-0 h-1 bg-white/25"><div class="h-full bg-cinema-red" style="width:${pct}%"></div></div>` : ''}
+                ${pct > 0 ? `<div class="absolute bottom-0 left-0 right-0 h-1 bg-white/25"><div class="h-full bg-nf-red" style="width:${pct}%"></div></div>` : ''}
               </div>
             </div>
 
@@ -2832,7 +3020,14 @@
       document.body.style.overflow = '';
     }
 
-    /* ----- 1-CLICK FIX MATCH / CHANGE POSTER ----- */
+    function persistCurrentLibrary() {
+      if (state.sourceMode === 'drive' || state.sourceMode === 'links') {
+        const serializableRaw = (state.rawFiles || []).map(({ localFile, ...rest }) => rest);
+        lsSetJSON(KEYS.LIBRARY, { mode: state.sourceMode, items: state.library, rawFiles: serializableRaw, savedAt: Date.now() });
+      }
+    }
+
+    /* ----- 1-CLICK FIX MATCH & ARTWORK PICKER ----- */
     function toggleFixMatch(force = null) {
       const box = document.getElementById('fixMatchBox');
       const open = force !== null ? force : box.classList.contains('hidden');
@@ -2841,8 +3036,10 @@
         const item = state.library.find(i => i.tmdbId === state.detailItemId);
         if (item) {
           document.getElementById('fixMatchInput').value = item.title;
-          document.getElementById('fixMatchType').value = item.mediaType === 'tv' ? 'tv' : 'multi';
+          document.getElementById('fixMatchType').value = item.mediaType === 'tv' ? 'tv' : 'movie';
           searchFixMatch();
+          if (item.rawTmdbId) loadArtworkPicker(item.mediaType, item.rawTmdbId);
+          else document.getElementById('artworkPickerSection').classList.add('hidden');
         }
       }
     }
@@ -2871,13 +3068,60 @@
         return `
           <button type="button" onclick="applyFixMatch('${mt}', ${r.id})"
             class="flex items-center gap-3 p-2.5 rounded-xl bg-black/45 hover:bg-white/15 border border-white/10 text-left transition active:scale-[0.98]">
-            <div class="w-11 h-16 rounded-md overflow-hidden bg-[#141418] shrink-0 flex items-center justify-center">
+            <div class="w-11 h-16 rounded-md overflow-hidden bg-[#141414] shrink-0 flex items-center justify-center">
               ${poster ? `<img src="${esc(poster)}" class="w-full h-full object-cover" />` : `<span class="text-[10px] text-gray-500">N/A</span>`}
             </div>
             <div class="min-w-0 flex-1">
               <p class="text-xs sm:text-sm font-bold text-white truncate">${esc(title)}</p>
-              <p class="text-[11px] text-gray-400 mt-0.5">${yr} • <span class="uppercase text-cinema-red font-semibold">${mt}</span></p>
+              <p class="text-[11px] text-gray-400 mt-0.5">${yr} • <span class="uppercase text-nf-red font-semibold">${mt}</span></p>
             </div>
+          </button>
+        `;
+      }).join('');
+    }
+
+    async function loadArtworkPicker(mediaType, rawId) {
+      const sec = document.getElementById('artworkPickerSection');
+      const pGrid = document.getElementById('artworkPostersGrid');
+      const bGrid = document.getElementById('artworkBackdropsGrid');
+
+      const imgs = await tmdbFetch(`/${mediaType}/${rawId}/images`, {
+        noLanguage: true,
+        include_image_language: 'en,hi,null'
+      });
+
+      const posters = (imgs?.posters || []).slice(0, 14);
+      const backdrops = (imgs?.backdrops || []).slice(0, 10);
+
+      if (!posters.length && !backdrops.length) {
+        sec.classList.add('hidden');
+        return;
+      }
+
+      sec.classList.remove('hidden');
+      document.getElementById('artworkCountLabel').textContent = `${posters.length} posters • ${backdrops.length} backdrops`;
+
+      const item = state.library.find(i => i.tmdbId === state.detailItemId);
+
+      pGrid.innerHTML = posters.map(p => {
+        const fullUrl = `${IMG_POSTER}${p.file_path}`;
+        const active = item?.poster === fullUrl;
+        return `
+          <button type="button" onclick="applyCustomArtwork('poster', '${esc(fullUrl)}')"
+            class="shrink-0 w-20 poster-aspect rounded-lg overflow-hidden border-2 transition active:scale-95 ${active ? 'border-nf-red shadow-lg shadow-nf-red/40' : 'border-white/15 hover:border-white/50'}">
+            <img src="${esc(fullUrl)}" loading="lazy" class="poster-img" />
+          </button>
+        `;
+      }).join('');
+
+      bGrid.innerHTML = backdrops.map(b => {
+        const thumbUrl = `${IMG_BACKDROP}${b.file_path}`;
+        const fullUrl = `${IMG_BACKDROP_ORIG}${b.file_path}`;
+        const active = item?.backdrop === fullUrl || item?.backdrop === thumbUrl;
+        return `
+          <button type="button" onclick="applyCustomArtwork('backdrop', '${esc(fullUrl)}')"
+            class="shrink-0 w-36 aspect-video rounded-lg overflow-hidden border-2 transition active:scale-95 ${active ? 'border-nf-red shadow-lg shadow-nf-red/40' : 'border-white/15 hover:border-white/50'}">
+            <img src="${esc(thumbUrl)}" loading="lazy" class="w-full h-full object-cover" />
           </button>
         `;
       }).join('');
@@ -2889,14 +3133,12 @@
 
       showToast('Updating TMDB artwork & details...', 'info');
       const full = await fetchTmdbDetails(mediaType, rawId);
-      if (!full) {
-        showToast('Could not fetch TMDB metadata.', 'error');
-        return;
-      }
+      if (!full) { showToast('Could not fetch TMDB metadata.', 'error'); return; }
+      await fetchBillboardLogo(full);
 
       if (item.groupKey) {
-        state.manualMatches[item.groupKey] = { mediaType, rawTmdbId: rawId };
-        lsSetJSON(KEYS.MANUAL_MATCHES, state.manualMatches);
+        state.overrides[item.groupKey] = { mediaType, rawTmdbId: rawId };
+        lsSetJSON(KEYS.OVERRIDES, state.overrides);
       }
 
       const oldId = item.tmdbId;
@@ -2907,6 +3149,8 @@
         overview: full.overview,
         poster: full.poster,
         backdrop: full.backdrop,
+        hasTmdbBackdrop: full.hasTmdbBackdrop,
+        titleLogo: full.titleLogo,
         rating: full.rating,
         year: full.year,
         runtime: full.runtime,
@@ -2915,10 +3159,10 @@
         trailerKey: full.trailerKey
       });
 
-      const wlIdx = state.watchlist.indexOf(oldId);
+      const wlIdx = state.myList.indexOf(oldId);
       if (wlIdx !== -1) {
-        state.watchlist[wlIdx] = item.tmdbId;
-        lsSetJSON(KEYS.WATCHLIST, state.watchlist);
+        state.myList[wlIdx] = item.tmdbId;
+        lsSetJSON(KEYS.MYLIST, state.myList);
       }
 
       if (item.mediaType === 'tv' && item.seasons) {
@@ -2929,18 +3173,45 @@
       }
 
       lsSetJSON(KEYS.TMDB_CACHE, state.tmdbCache);
-      if (state.sourceMode === 'drive' || state.sourceMode === 'links') {
-        lsSetJSON(KEYS.LIBRARY, { mode: state.sourceMode, items: state.library, savedAt: Date.now() });
-      }
+      persistCurrentLibrary();
 
+      // Refresh billboard pool in case backdrop changed
+      state.heroItems = state.library.filter(i => i.hasTmdbBackdrop && i.backdrop).slice(0, 6);
       renderHero();
       renderCurrentView();
-      openDetailModal(item.tmdbId);
-      showToast(`Matched to "${full.title}" permanently!`, 'success');
+      openDetailModal(item.tmdbId, true);
+      showToast(`Matched to "${full.title}"! You can also pick a custom poster below.`, 'success');
+    }
+
+    function applyCustomArtwork(kind, url) {
+      const item = state.library.find(i => i.tmdbId === state.detailItemId);
+      if (!item) return;
+
+      if (kind === 'poster') item.poster = url;
+      else {
+        item.backdrop = url;
+        item.hasTmdbBackdrop = true;
+      }
+
+      if (item.groupKey) {
+        const cur = state.overrides[item.groupKey] || { mediaType: item.mediaType, rawTmdbId: item.rawTmdbId };
+        if (kind === 'poster') cur.customPoster = url;
+        else cur.customBackdrop = url;
+        state.overrides[item.groupKey] = cur;
+        lsSetJSON(KEYS.OVERRIDES, state.overrides);
+      }
+
+      persistCurrentLibrary();
+      state.heroItems = state.library.filter(i => i.hasTmdbBackdrop && i.backdrop).slice(0, 6);
+      renderHero();
+      renderCurrentView();
+      document.getElementById('detailBackdrop').src = item.backdrop || item.poster;
+      if (item.rawTmdbId) loadArtworkPicker(item.mediaType, item.rawTmdbId);
+      showToast(`Custom ${kind} saved permanently!`, 'success');
     }
 
     /* ==========================================================
-       12. ZERO-GLITCH DUAL-ENGINE 4K VIDEO PLAYER
+       12. CRITICAL FIX 1: SMART DUAL-ENGINE 4K PLAYER & EXTERNAL SHEET
     ========================================================== */
     function quickPlay(tmdbId) {
       const item = state.library.find(i => i.tmdbId === tmdbId);
@@ -2949,8 +3220,7 @@
       if (item.mediaType === 'tv') {
         const all = Object.keys(item.seasons || {}).map(Number).sort((a, b) => a - b)
           .flatMap(s => item.seasons[s]);
-        let pick = all[0];
-        let latest = 0;
+        let pick = all[0], latest = 0;
         all.forEach(ep => {
           const p = state.progress[ep.id];
           if (p && (p.updatedAt || 0) > latest) { latest = p.updatedAt; pick = ep; }
@@ -2963,11 +3233,15 @@
 
     function getDirect4KUrl(driveFileId) {
       if (!driveFileId || !state.token) return '';
-      return `https://www.googleapis.com/drive/v3/files/${driveFileId}?alt=media&access_token=${encodeURIComponent(state.token)}`;
+      return `https://www.googleapis.com/drive/v3/files/${driveFileId}?alt=media&supportsAllDrives=true&access_token=${encodeURIComponent(state.token)}`;
     }
 
-    function isNativelyStreamable(fileName = '') {
-      return /\.(mp4|m4v|webm|mov)$/i.test(fileName);
+    function isBrowserDirectFriendly(fileName = '') {
+      return /\.(mp4|m4v|mov|webm)$/i.test(fileName);
+    }
+
+    function isKnownEmbedOnlyCodec(fileName = '') {
+      return /\.(mkv|avi|flv|wmv)$/i.test(fileName);
     }
 
     async function playMedia(tmdbId, seasonNum = null, episodeNum = null) {
@@ -2983,18 +3257,15 @@
       const srcObj = ep || item;
       const isDrive = Boolean(srcObj.driveFileId);
 
-      // If Drive file & token expired, trigger 1-tap reconnect automatically
       if (isDrive && state.sourceMode === 'drive' && !isTokenActive()) {
-        showToast('Refreshing Drive session for 4K playback...', 'info');
-        await reconnectDriveOneTap();
+        showToast('Refreshing Drive session for playback...', 'info');
+        await reconnectDriveOneTap(false);
       }
 
       stopBillboardTrailer();
-
       state.player.item = item;
       state.player.episode = ep;
 
-      // Choose engine smartly based on settings, codec & token availability
       const pref = state.settings.preferredPlayer || 'auto';
       if (!isDrive) {
         state.player.engine = 'direct';
@@ -3005,72 +3276,60 @@
       } else if (pref === 'direct') {
         state.player.engine = 'direct';
       } else {
-        // Smart Auto: 4K Direct for .mp4/.m4v/.webm/.mov; Instant Drive Stream for .mkv/.avi
-        state.player.engine = isNativelyStreamable(srcObj.fileName) ? 'direct' : 'embed';
+        // Smart Auto: .mkv/.avi/.flv/.wmv start directly in Drive Stream; .mp4/.m4v/.mov/.webm try 4K Direct first
+        state.player.engine = isKnownEmbedOnlyCodec(srcObj.fileName)
+          ? 'embed'
+          : (isBrowserDirectFriendly(srcObj.fileName) ? 'direct' : 'embed');
       }
 
       document.getElementById('playerTitle').textContent = item.title;
       document.getElementById('playerSub').textContent = ep
         ? `Season ${ep.season} • Episode ${ep.episode} — ${ep.title}`
         : `${item.year} • ${item.genres?.[0] || 'Movie'}`;
+      document.getElementById('playerQualityBadge').textContent = fmtRes(srcObj.width, srcObj.height) || '4K UHD';
 
-      const initQual = fmtRes(srcObj.width, srcObj.height) || '4K UHD';
-      setPlayerQualityUI(initQual);
-
-      const sw = document.getElementById('engineSwitcher');
-      const cpBtn = document.getElementById('copy4KLinkBtn');
-      sw.classList.toggle('hidden', !isDrive);
-      sw.classList.toggle('flex', isDrive);
-      cpBtn.classList.toggle('hidden', !isDrive);
-      cpBtn.classList.toggle('flex', isDrive);
+      // Toggle Drive-specific HUD controls
+      ['engineSwitcher', 'externalPlayerBtn', 'openInDriveBtn'].forEach(id => {
+        const el = document.getElementById(id);
+        el.classList.toggle('hidden', !isDrive);
+        el.classList.toggle('flex', isDrive);
+      });
       updateEnginePills();
 
       const hasNext = Boolean(getNextEp(item, ep));
-      ['topNextEpBtn', 'bottomNextEpBtn'].forEach(id => {
-        const el = document.getElementById(id);
-        el.classList.toggle('hidden', !hasNext);
-        el.classList.toggle('flex', hasNext);
-      });
+      const nextBtn = document.getElementById('topNextEpBtn');
+      nextBtn.classList.toggle('hidden', !hasNext);
+      nextBtn.classList.toggle('flex', hasNext);
 
       const overlay = document.getElementById('playerOverlay');
       overlay.classList.remove('hidden');
-      overlay.classList.add('flex');
+      overlay.style.display = 'flex';
       document.body.style.overflow = 'hidden';
 
       loadPlayerEngine();
-      bumpPlayerHUD();
-    }
-
-    function setPlayerQualityUI(label) {
-      document.getElementById('playerQualityBadge').textContent = label;
-      document.getElementById('bottomQualityPill').textContent = label;
     }
 
     function updateEnginePills() {
       const direct = state.player.engine === 'direct';
-      document.getElementById('btnEngineDirect').className = `px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold transition ${direct ? 'bg-cinema-red text-white shadow' : 'text-gray-300 hover:text-white'}`;
-      document.getElementById('btnEngineEmbed').className = `px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold transition ${!direct ? 'bg-cinema-red text-white shadow' : 'text-gray-300 hover:text-white'}`;
+      document.getElementById('btnEngineDirect').className = `px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold transition ${direct ? 'bg-nf-red text-white shadow' : 'text-gray-300 hover:text-white'}`;
+      document.getElementById('btnEngineEmbed').className = `px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold transition ${!direct ? 'bg-nf-red text-white shadow' : 'text-gray-300 hover:text-white'}`;
     }
 
     async function switchPlayerEngine(engine) {
       const srcObj = state.player.episode || state.player.item;
       if (!srcObj) return;
-
       if (engine === 'direct' && srcObj.driveFileId && !isTokenActive()) {
-        const ok = await reconnectDriveOneTap();
+        const ok = await reconnectDriveOneTap(false);
         if (!ok) return;
       }
-
       state.player.engine = engine;
       updateEnginePills();
       loadPlayerEngine();
     }
 
-    function clearStallTimer() {
-      if (state.player.stallTimer) {
-        clearTimeout(state.player.stallTimer);
-        state.player.stallTimer = null;
-      }
+    function clearPlayerTimers() {
+      if (state.player.stallTimer) { clearTimeout(state.player.stallTimer); state.player.stallTimer = null; }
+      if (state.player.iframeSpinnerTimer) { clearTimeout(state.player.iframeSpinnerTimer); state.player.iframeSpinnerTimer = null; }
     }
 
     function loadPlayerEngine() {
@@ -3079,11 +3338,11 @@
 
       const video = document.getElementById('videoEl');
       const iframe = document.getElementById('driveEmbedIframe');
-      const bottomBar = document.getElementById('playerBottomBar');
-      const clickLayer = document.getElementById('playerClickLayer');
       const spinner = document.getElementById('playerSpinner');
+      const helper = document.getElementById('safariHelperPill');
+      const directExtras = document.getElementById('directExtrasBar');
 
-      clearStallTimer();
+      clearPlayerTimers();
       if (state.player.blobUrl) {
         URL.revokeObjectURL(state.player.blobUrl);
         state.player.blobUrl = null;
@@ -3095,23 +3354,42 @@
       iframe.src = 'about:blank';
       Array.from(video.querySelectorAll('track')).forEach(t => t.remove());
 
-      // ENGINE 2: INSTANT GOOGLE DRIVE EMBED STREAM
+      // ENGINE 2: DRIVE STREAM (IFRAME)
       if (state.player.engine === 'embed' && srcObj.driveFileId) {
         video.classList.add('hidden');
-        bottomBar.classList.add('hidden');
-        clickLayer.classList.add('hidden');
-        spinner.classList.add('hidden');
+        directExtras.classList.add('hidden');
+        directExtras.classList.remove('flex');
         iframe.classList.remove('hidden');
+
+        // Clean loading spinner that disappears on onload or after 2.5s max
+        spinner.classList.remove('hidden');
+        document.getElementById('playerSpinnerText').textContent = 'Opening Google Drive Stream...';
+
+        iframe.onload = () => {
+          clearPlayerTimers();
+          spinner.classList.add('hidden');
+        };
+        state.player.iframeSpinnerTimer = setTimeout(() => {
+          spinner.classList.add('hidden');
+        }, 2500);
+
         iframe.src = `https://drive.google.com/file/d/${srcObj.driveFileId}/preview`;
-        document.getElementById('playerTopBar').style.opacity = '1';
+
+        // Show subtle dismissible iPad Safari helper pill
+        if (!state.player.safariHelperDismissed) {
+          helper.classList.remove('hidden');
+          helper.classList.add('flex');
+        }
         return;
       }
 
-      // ENGINE 1: ORIGINAL 4K PROGRESSIVE DIRECT STREAM
+      // ENGINE 1: 4K DIRECT HTML5 VIDEO
       iframe.classList.add('hidden');
+      helper.classList.add('hidden');
+      helper.classList.remove('flex');
       video.classList.remove('hidden');
-      bottomBar.classList.remove('hidden');
-      clickLayer.classList.remove('hidden');
+      directExtras.classList.remove('hidden');
+      directExtras.classList.add('flex');
       spinner.classList.remove('hidden');
       document.getElementById('playerSpinnerText').textContent = 'Starting 4K Direct Stream...';
 
@@ -3133,64 +3411,113 @@
       }
 
       video.src = url;
+      video.playbackRate = parseFloat(document.getElementById('speedSelect').value || '1');
 
-      // 5-Second Automatic Fallback to Drive Stream (ZERO infinite loading ever!)
+      // 6-second stall/error auto-switch to Drive Stream
       if (srcObj.driveFileId) {
         state.player.stallTimer = setTimeout(() => {
           if (state.player.engine === 'direct' && video.readyState < 2) {
-            showToast('Direct stream stalled — switched to Instant Drive Stream.', 'info');
+            showToast('Direct stream stalled on browser — switched to Drive Stream.', 'info');
             state.player.engine = 'embed';
             updateEnginePills();
             loadPlayerEngine();
           }
-        }, 5000);
+        }, 6000);
       }
 
       const mediaId = state.player.episode ? state.player.episode.id : state.player.item.fileId;
       const saved = state.progress[mediaId];
 
       video.onloadedmetadata = () => {
-        clearStallTimer();
+        clearPlayerTimers();
         spinner.classList.add('hidden');
-        const liveQual = fmtRes(video.videoWidth, video.videoHeight) || 'ORIGINAL';
-        setPlayerQualityUI(liveQual);
-        document.getElementById('timeDuration').textContent = fmtTime(video.duration);
+        const liveQual = fmtRes(video.videoWidth, video.videoHeight);
+        if (liveQual) document.getElementById('playerQualityBadge').textContent = liveQual;
         if (saved && saved.currentTime > 5 && saved.currentTime < (video.duration - 15)) {
           video.currentTime = saved.currentTime;
         }
         video.play().catch(() => {});
-        syncPlayPauseSvg();
       };
 
       video.oncanplay = () => {
-        clearStallTimer();
+        clearPlayerTimers();
         spinner.classList.add('hidden');
       };
 
       video.onerror = () => {
-        clearStallTimer();
+        clearPlayerTimers();
         if (srcObj.driveFileId && state.player.engine === 'direct') {
-          showToast('Browser codec unsupported — switched to Drive Stream.', 'info');
+          showToast('Codec/CORS unsupported in Safari — switched to Drive Stream.', 'info');
           state.player.engine = 'embed';
           updateEnginePills();
           loadPlayerEngine();
         } else {
           spinner.classList.add('hidden');
-          showToast('Unable to decode this local file in browser.', 'error');
+          showToast('Could not decode this video in browser.', 'error');
         }
       };
     }
 
-    function copy4KLink() {
+    function dismissSafariHelper() {
+      state.player.safariHelperDismissed = true;
+      const h = document.getElementById('safariHelperPill');
+      h.classList.add('hidden');
+      h.classList.remove('flex');
+    }
+
+    function openCurrentInDrive() {
       const srcObj = state.player.episode || state.player.item;
       if (!srcObj?.driveFileId) return;
-      const url = getDirect4KUrl(srcObj.driveFileId);
-      if (!url) {
-        showToast('Reconnect Drive first to generate your authenticated 4K URL.', 'error');
+      window.open(`https://drive.google.com/file/d/${srcObj.driveFileId}/view`, '_blank', 'noopener,noreferrer');
+    }
+
+    function openExternalPlayerSheet() {
+      const srcObj = state.player.episode || state.player.item;
+      if (!srcObj?.driveFileId) return;
+
+      const directUrl = getDirect4KUrl(srcObj.driveFileId);
+      const driveViewUrl = `https://drive.google.com/file/d/${srcObj.driveFileId}/view`;
+
+      document.getElementById('deepLinkDrive').href = driveViewUrl;
+      document.getElementById('copyDirectUrlText').textContent = 'Copy Direct 4K Stream URL';
+
+      const infuseEl = document.getElementById('deepLinkInfuse');
+      const vlcEl = document.getElementById('deepLinkVLC');
+
+      if (directUrl) {
+        infuseEl.href = `infuse://x-callback-url/play?url=${encodeURIComponent(directUrl)}`;
+        vlcEl.href = `vlc-x-callback://x-callback-url/stream?url=${encodeURIComponent(directUrl)}`;
+      } else {
+        infuseEl.href = '#';
+        vlcEl.href = '#';
+        infuseEl.onclick = (e) => { e.preventDefault(); showToast('Reconnect Drive first to generate 4K URL.', 'error'); };
+        vlcEl.onclick = (e) => { e.preventDefault(); showToast('Reconnect Drive first to generate 4K URL.', 'error'); };
+      }
+
+      const m = document.getElementById('externalPlayerModal');
+      m.classList.remove('hidden');
+      m.classList.add('flex');
+    }
+
+    function closeExternalPlayerSheet() {
+      const m = document.getElementById('externalPlayerModal');
+      m.classList.add('hidden');
+      m.classList.remove('flex');
+    }
+
+    function copyDirect4KUrlFromSheet() {
+      const srcObj = state.player.episode || state.player.item;
+      if (!srcObj?.driveFileId) return;
+      const directUrl = getDirect4KUrl(srcObj.driveFileId);
+      if (!directUrl) {
+        showToast('Reconnect Drive first to copy authenticated 4K URL.', 'error');
         return;
       }
-      copyToClipboard(url);
-      showToast('4K Direct Link copied! Open Network Stream in VLC or Infuse.', 'success');
+      copyTextSafe(directUrl);
+      const lbl = document.getElementById('copyDirectUrlText');
+      lbl.textContent = 'Copied!';
+      showToast('4K Direct Stream URL copied!', 'success');
+      setTimeout(() => { lbl.textContent = 'Copy Direct 4K Stream URL'; }, 2200);
     }
 
     function getNextEp(item, ep) {
@@ -3217,12 +3544,13 @@
 
     function closePlayer() {
       const v = document.getElementById('videoEl');
-      clearStallTimer();
+      clearPlayerTimers();
       savePlaybackProgress();
       v.pause();
       v.removeAttribute('src');
       v.load();
       document.getElementById('driveEmbedIframe').src = 'about:blank';
+      closeExternalPlayerSheet();
 
       if (state.player.blobUrl) {
         URL.revokeObjectURL(state.player.blobUrl);
@@ -3232,58 +3560,9 @@
 
       const overlay = document.getElementById('playerOverlay');
       overlay.classList.add('hidden');
-      overlay.classList.remove('flex');
+      overlay.style.display = 'none';
       document.body.style.overflow = '';
       renderCurrentView();
-    }
-
-    /* ----- PLAYER HUD CONTROLS ----- */
-    function togglePlayPause() {
-      const v = document.getElementById('videoEl');
-      if (v.paused) v.play().catch(() => {});
-      else v.pause();
-      syncPlayPauseSvg();
-      bumpPlayerHUD();
-    }
-
-    function syncPlayPauseSvg() {
-      const v = document.getElementById('videoEl');
-      document.getElementById('playPauseSvg').innerHTML = v.paused
-        ? '<path d="M8 5v14l11-7z"/>'
-        : '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
-    }
-
-    function seekBy(sec) {
-      const v = document.getElementById('videoEl');
-      if (!v.duration) return;
-      v.currentTime = Math.max(0, Math.min(v.duration, v.currentTime + sec));
-      bumpPlayerHUD();
-    }
-
-    function seekToPercent(pct) {
-      const v = document.getElementById('videoEl');
-      if (v.duration) v.currentTime = (pct / 100) * v.duration;
-    }
-
-    function setVideoVolume(val) {
-      const v = document.getElementById('videoEl');
-      v.volume = val;
-      v.muted = Number(val) === 0;
-      syncVolSvg();
-    }
-
-    function toggleMuteVideo() {
-      const v = document.getElementById('videoEl');
-      v.muted = !v.muted;
-      document.getElementById('volSlider').value = v.muted ? 0 : v.volume;
-      syncVolSvg();
-    }
-
-    function syncVolSvg() {
-      const v = document.getElementById('videoEl');
-      document.getElementById('volSvg').innerHTML = (v.muted || v.volume === 0)
-        ? '<path d="M11 5 6 9H2v6h4l5 4V5Z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>'
-        : '<path d="M11 5 6 9H2v6h4l5 4V5Z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>';
     }
 
     function setVideoSpeed(rate) {
@@ -3320,35 +3599,10 @@
       reader.readAsText(file);
     }
 
-    function toggleFullscreen() {
-      const stage = document.getElementById('playerStage');
-      if (!document.fullscreenElement) stage.requestFullscreen?.().catch(() => {});
-      else document.exitFullscreen?.().catch(() => {});
-    }
-
-    function bumpPlayerHUD() {
-      const top = document.getElementById('playerTopBar');
-      const bot = document.getElementById('playerBottomBar');
-      const stage = document.getElementById('playerStage');
-      top.style.opacity = '1';
-      bot.style.opacity = '1';
-      stage.style.cursor = 'default';
-
-      clearTimeout(state.player.hideTimer);
-      state.player.hideTimer = setTimeout(() => {
-        const v = document.getElementById('videoEl');
-        if (!v.paused && state.player.engine === 'direct') {
-          top.style.opacity = '0';
-          bot.style.opacity = '0';
-          stage.style.cursor = 'none';
-        }
-      }, 3200);
-    }
-
     /* ==========================================================
        13. DRIVE & SETTINGS DRAWER
     ========================================================== */
-    function openDriveDrawer(initialTab = 'oauth') {
+    function openDriveDrawer(tab = 'oauth') {
       stopBillboardTrailer();
       document.getElementById('drawerFolderId').value = state.settings.folderId || '';
       document.getElementById('settingTmdbKey').value = state.settings.tmdbKey || DEFAULTS.TMDB_KEY;
@@ -3366,12 +3620,12 @@
         document.getElementById('drawerUserEmail').textContent = state.user?.email || '';
         document.getElementById('drawerTokenStatus').textContent = isTokenActive()
           ? `Active Session • ${state.library.length} titles cached`
-          : `Session cached (${state.library.length} titles) • Tap Sync or Play to refresh token`;
+          : `Library cached (${state.library.length} titles) • Tap Reconnect or Play`;
       } else {
         card.classList.add('hidden');
       }
 
-      switchDrawerTab(initialTab);
+      switchDrawerTab(tab);
       const ov = document.getElementById('driveDrawerOverlay');
       ov.classList.remove('hidden');
       ov.classList.add('flex');
@@ -3389,7 +3643,7 @@
       ['oauth', 'links', 'local', 'settings'].forEach(t => {
         document.getElementById(`dpanel-${t}`).classList.toggle('hidden', t !== tab);
         const btn = document.getElementById(`dtab-${t}`);
-        btn.classList.toggle('border-cinema-red', t === tab);
+        btn.classList.toggle('border-nf-red', t === tab);
         btn.classList.toggle('text-white', t === tab);
         btn.classList.toggle('border-transparent', t !== tab);
         btn.classList.toggle('text-gray-400', t !== tab);
@@ -3399,10 +3653,7 @@
     function saveSettings() {
       const tk = document.getElementById('settingTmdbKey').value.trim();
       const cid = document.getElementById('settingClientId').value.trim();
-      if (!tk || !cid) {
-        showToast('TMDB API Key and Google Client ID cannot be empty.', 'error');
-        return;
-      }
+      if (!tk || !cid) { showToast('TMDB API Key and Google Client ID are required.', 'error'); return; }
       state.settings.tmdbKey = tk;
       state.settings.clientId = cid;
       state.settings.preferredPlayer = document.getElementById('settingPreferredPlayer').value;
@@ -3412,14 +3663,8 @@
       showToast('Settings saved!', 'success');
     }
 
-    function clearTmdbCacheOnly() {
-      state.tmdbCache = {};
-      localStorage.removeItem(KEYS.TMDB_CACHE);
-      showToast('TMDB poster cache cleared. Tap Sync to refetch.', 'info');
-    }
-
     /* ==========================================================
-       14. DEMO LIBRARY (FALLBACK ONLY WHEN NO DRIVE LIBRARY SAVED)
+       14. DEMO LIBRARY
     ========================================================== */
     const DEMO_URLS = [
       'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
@@ -3429,17 +3674,16 @@
     ];
 
     const DEMO_FILES = [
-      { id: 'demo-1', name: 'Inception.2010.2160p.4K.UHD.BluRay.mp4', folderPath: ['Movies'], source: 'demo', url: DEMO_URLS[0], size: 6442450944, videoMediaMetadata: { width: 3840, height: 2160 } },
-      { id: 'demo-2', name: 'Interstellar.2014.2160p.4K.HDR.mp4', folderPath: ['Movies'], source: 'demo', url: DEMO_URLS[1], size: 8589934592, videoMediaMetadata: { width: 3840, height: 2160 } },
-      { id: 'demo-3', name: 'Dune.Part.Two.2024.2160p.WEB-DL.mp4', folderPath: ['Movies'], source: 'demo', url: DEMO_URLS[2], size: 7516192768, videoMediaMetadata: { width: 3840, height: 2160 } },
-      { id: 'demo-4', name: 'The.Dark.Knight.2008.1080p.BluRay.mp4', folderPath: ['Movies'], source: 'demo', url: DEMO_URLS[3], size: 3221225472, videoMediaMetadata: { width: 1920, height: 1080 } },
-      { id: 'demo-5', name: 'Episode 01.mp4', folderPath: ['TV Series', 'Dark', 'Season 1'], source: 'demo', url: DEMO_URLS[0], size: 1610612736, videoMediaMetadata: { width: 3840, height: 2160 } },
-      { id: 'demo-6', name: 'Episode 02.mp4', folderPath: ['TV Series', 'Dark', 'Season 1'], source: 'demo', url: DEMO_URLS[1], size: 1510612736, videoMediaMetadata: { width: 3840, height: 2160 } },
-      { id: 'demo-7', name: 'Episode 01.mp4', folderPath: ['TV Series', 'Dark', 'Season 2'], source: 'demo', url: DEMO_URLS[2], size: 1810612736, videoMediaMetadata: { width: 3840, height: 2160 } },
-      { id: 'demo-8', name: 'Breaking.Bad.S01E01.1080p.mp4', folderPath: ['TV Shows'], source: 'demo', url: DEMO_URLS[0], size: 1410612736, videoMediaMetadata: { width: 1920, height: 1080 } },
-      { id: 'demo-9', name: 'Breaking.Bad.S02E01.1080p.mp4', folderPath: ['TV Shows'], source: 'demo', url: DEMO_URLS[1], size: 1450612736, videoMediaMetadata: { width: 1920, height: 1080 } },
-      { id: 'demo-10', name: 'Stranger.Things.S01E01.2160p.4K.mp4', folderPath: ['TV Shows'], source: 'demo', url: DEMO_URLS[2], size: 2810612736, videoMediaMetadata: { width: 3840, height: 2160 } },
-      { id: 'demo-11', name: 'Stranger.Things.S04E01.2160p.4K.mp4', folderPath: ['TV Shows'], source: 'demo', url: DEMO_URLS[3], size: 3210612736, videoMediaMetadata: { width: 3840, height: 2160 } }
+      { id: 'demo-1', name: '[Vegamovies.NL] Inception.2010.2160p.4K.UHD.BluRay.Dual.Audio.Hindi.Eng.x265.mp4', folderPath: ['Movies'], source: 'demo', url: DEMO_URLS[0], size: 6442450944, videoMediaMetadata: { width: 3840, height: 2160 } },
+      { id: 'demo-2', name: 'HDHub4u.Interstellar.2014.2160p.4K.HDR10.DDP5.1.ESubs.mp4', folderPath: ['Movies'], source: 'demo', url: DEMO_URLS[1], size: 8589934592, videoMediaMetadata: { width: 3840, height: 2160 } },
+      { id: 'demo-3', name: 'Dune.Part.Two.2024.2160p.WEB-DL.Atmos.MoviesMod.mp4', folderPath: ['Movies'], source: 'demo', url: DEMO_URLS[2], size: 7516192768, videoMediaMetadata: { width: 3840, height: 2160 } },
+      { id: 'demo-4', name: '3.Idiots.2009.1080p.BluRay.Hindi.ESub.BollyFlix.mp4', folderPath: ['Bollywood'], source: 'demo', url: DEMO_URLS[3], size: 3221225472, videoMediaMetadata: { width: 1920, height: 1080 } },
+      { id: 'demo-5', name: 'Episode 01.mp4', folderPath: ['TV Series', 'Dhindora', 'Season 1'], source: 'demo', url: DEMO_URLS[0], size: 1110612736, videoMediaMetadata: { width: 1920, height: 1080 } },
+      { id: 'demo-6', name: 'Episode 02.mp4', folderPath: ['TV Series', 'Dhindora', 'Season 1'], source: 'demo', url: DEMO_URLS[1], size: 1050612736, videoMediaMetadata: { width: 1920, height: 1080 } },
+      { id: 'demo-7', name: 'Breaking.Bad.S01E01.1080p.NF.WEB-DL.mp4', folderPath: ['TV Shows'], source: 'demo', url: DEMO_URLS[2], size: 1410612736, videoMediaMetadata: { width: 1920, height: 1080 } },
+      { id: 'demo-8', name: 'Breaking.Bad.S02E01.1080p.NF.WEB-DL.mp4', folderPath: ['TV Shows'], source: 'demo', url: DEMO_URLS[3], size: 1450612736, videoMediaMetadata: { width: 1920, height: 1080 } },
+      { id: 'demo-9', name: 'Mirzapur.S01E01.1080p.AMZN.WEB-DL.Hindi.mp4', folderPath: ['Web Series'], source: 'demo', url: DEMO_URLS[0], size: 1310612736, videoMediaMetadata: { width: 1920, height: 1080 } },
+      { id: 'demo-10', name: 'Stranger.Things.S01E01.2160p.4K.NF.mp4', folderPath: ['TV Shows'], source: 'demo', url: DEMO_URLS[1], size: 2810612736, videoMediaMetadata: { width: 3840, height: 2160 } }
     ];
 
     async function loadDemoLibrary(notify = false) {
@@ -3449,78 +3693,63 @@
     }
 
     /* ==========================================================
-       15. GLOBAL EVENTS & INSTANT (<100ms) BOOT HYDRATION
+       15. GLOBAL EVENTS & INSTANT (<100ms) BOOTSTRAP
     ========================================================== */
     window.addEventListener('scroll', () => {
       const hdr = document.getElementById('topHeader');
       if (window.scrollY > 30) {
-        hdr.classList.add('bg-[#0b0b0d]/95', 'backdrop-blur-xl', 'border-b', 'border-white/10', 'shadow-xl');
-        hdr.classList.remove('bg-gradient-to-b', 'from-[#0b0b0d]/95', 'via-[#0b0b0d]/55', 'to-transparent');
+        hdr.classList.add('bg-[#141414]/95', 'backdrop-blur-xl', 'border-b', 'border-white/10', 'shadow-xl');
+        hdr.classList.remove('bg-gradient-to-b', 'from-[#141414]/95', 'via-[#141414]/55', 'to-transparent');
       } else {
-        hdr.classList.remove('bg-[#0b0b0d]/95', 'backdrop-blur-xl', 'border-b', 'border-white/10', 'shadow-xl');
-        hdr.classList.add('bg-gradient-to-b', 'from-[#0b0b0d]/95', 'via-[#0b0b0d]/55', 'to-transparent');
+        hdr.classList.remove('bg-[#141414]/95', 'backdrop-blur-xl', 'border-b', 'border-white/10', 'shadow-xl');
+        hdr.classList.add('bg-gradient-to-b', 'from-[#141414]/95', 'via-[#141414]/55', 'to-transparent');
       }
     }, { passive: true });
 
     const videoEl = document.getElementById('videoEl');
     videoEl.addEventListener('timeupdate', () => {
       if (!videoEl.duration) return;
-      document.getElementById('seekSlider').value = (videoEl.currentTime / videoEl.duration) * 100;
-      document.getElementById('timeCurrent').textContent = fmtTime(videoEl.currentTime);
       const now = Date.now();
       if (now - state.player.lastProgressSave >= 5000) {
         state.player.lastProgressSave = now;
         savePlaybackProgress();
       }
     });
-    videoEl.addEventListener('play', syncPlayPauseSvg);
-    videoEl.addEventListener('pause', () => { syncPlayPauseSvg(); savePlaybackProgress(); });
+    videoEl.addEventListener('pause', savePlaybackProgress);
     videoEl.addEventListener('waiting', () => {
       if (state.player.engine === 'direct') document.getElementById('playerSpinner').classList.remove('hidden');
     });
     videoEl.addEventListener('playing', () => {
-      clearStallTimer();
+      clearPlayerTimers();
       document.getElementById('playerSpinner').classList.add('hidden');
     });
 
-    document.getElementById('playerStage').addEventListener('mousemove', bumpPlayerHUD);
-    document.getElementById('playerStage').addEventListener('touchstart', bumpPlayerHUD, { passive: true });
-
-    // Backdrop click-to-close for modals & drawer
     document.getElementById('detailModal').addEventListener('click', e => { if (e.target.id === 'detailModal') closeDetailModal(); });
     document.getElementById('driveDrawerOverlay').addEventListener('click', e => { if (e.target.id === 'driveDrawerOverlay') closeDriveDrawer(); });
     document.getElementById('signOutModal').addEventListener('click', e => { if (e.target.id === 'signOutModal') closeSignOutConfirm(); });
+    document.getElementById('externalPlayerModal').addEventListener('click', e => { if (e.target.id === 'externalPlayerModal') closeExternalPlayerSheet(); });
 
-    // Keyboard shortcuts
     document.addEventListener('keydown', (e) => {
-      const playerOpen = !document.getElementById('playerOverlay').classList.contains('hidden');
       if (e.key === 'Escape') {
-        if (playerOpen) closePlayer();
+        if (!document.getElementById('externalPlayerModal').classList.contains('hidden')) closeExternalPlayerSheet();
+        else if (!document.getElementById('playerOverlay').classList.contains('hidden')) closePlayer();
         else if (!document.getElementById('signOutModal').classList.contains('hidden')) closeSignOutConfirm();
         else if (!document.getElementById('detailModal').classList.contains('hidden')) closeDetailModal();
         else if (!document.getElementById('driveDrawerOverlay').classList.contains('hidden')) closeDriveDrawer();
-        return;
       }
-      if (!playerOpen || state.player.engine !== 'direct') return;
-      if (e.code === 'Space') { e.preventDefault(); togglePlayPause(); }
-      else if (e.key === 'ArrowRight') { e.preventDefault(); seekBy(10); }
-      else if (e.key === 'ArrowLeft') { e.preventDefault(); seekBy(-10); }
-      else if (e.key.toLowerCase() === 'f') { e.preventDefault(); toggleFullscreen(); }
-      else if (e.key.toLowerCase() === 'm') { e.preventDefault(); toggleMuteVideo(); }
     });
 
-    // BOOTSTRAP: Hydrate from localStorage IMMEDIATELY (<100ms), never wait for GIS
     function bootApp() {
-      // 1. Dismiss silky 0.8s splash cleanly
+      // Dismiss 0.7s launch splash
       setTimeout(() => {
         const sp = document.getElementById('introSplash');
         if (sp) {
           sp.style.opacity = '0';
-          setTimeout(() => sp.remove(), 520);
+          setTimeout(() => sp.remove(), 500);
         }
-      }, 800);
+      }, 700);
 
-      // 2. Hydrate all df_v3_* persisted state
+      // Hydrate all df_v4_* state immediately (<100ms)
       const savedSettings = lsGetJSON(KEYS.SETTINGS, null);
       if (savedSettings && typeof savedSettings === 'object') {
         state.settings = { ...state.settings, ...savedSettings };
@@ -3529,14 +3758,13 @@
       state.tokenExp = Number(lsGetStr(KEYS.TOKEN_EXP, '0')) || 0;
       state.user = lsGetJSON(KEYS.USER, null);
       state.tmdbCache = lsGetJSON(KEYS.TMDB_CACHE, {});
-      state.manualMatches = lsGetJSON(KEYS.MANUAL_MATCHES, {});
+      state.overrides = lsGetJSON(KEYS.OVERRIDES, {});
       state.progress = lsGetJSON(KEYS.PROGRESS, {});
-      state.watchlist = lsGetJSON(KEYS.WATCHLIST, []);
+      state.myList = lsGetJSON(KEYS.MYLIST, []);
 
       const savedLib = lsGetJSON(KEYS.LIBRARY, null);
-
-      // 3. Instant hydration into user's library if cached
       if (savedLib && Array.isArray(savedLib.items) && savedLib.items.length > 0) {
+        state.rawFiles = Array.isArray(savedLib.rawFiles) ? savedLib.rawFiles : [];
         mountLibrary(savedLib.items, savedLib.mode || 'drive');
       } else {
         loadDemoLibrary(false);
