@@ -177,38 +177,62 @@
     .safe-bottom { padding-bottom: max(0.45rem, var(--sab)); }
 
     /* =======================================================
-       NON-COLLAPSING FULL-BLEED PLAYER & IMMERSIVE MODE
+       NON-COLLAPSING FULL-BLEED PLAYER, FULLSCREEN & FLOATING DOCK
     ======================================================= */
     #playerOverlay {
       position: fixed;
       inset: 0;
-      z-index: 9999;
+      z-index: 99999;
       background: #000000;
       flex-direction: column;
     }
+    #playerOverlay.is-cinema-fill,
+    #playerOverlay:fullscreen,
+    #playerOverlay:-webkit-full-screen {
+      position: fixed !important;
+      inset: 0 !important;
+      width: 100vw !important;
+      height: 100dvh !important;
+      z-index: 99999 !important;
+      background: #000000 !important;
+    }
+
     #playerTopBar {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
-      z-index: 30;
-      background: linear-gradient(180deg, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.65) 70%, transparent 100%);
-      transition: opacity 0.3s var(--ease-out-expo), transform 0.3s var(--ease-out-expo);
+      z-index: 100000;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.94) 0%, rgba(0, 0, 0, 0.72) 72%, transparent 100%);
+      transition: opacity 0.28s var(--ease-out-expo), transform 0.28s var(--ease-out-expo);
       transform: translate3d(0, 0, 0);
     }
     #playerTopBar.hud-hidden {
       opacity: 0;
-      transform: translate3d(0, -16px, 0);
+      transform: translate3d(0, -18px, 0);
       pointer-events: none;
     }
-    #playerOverlay.immersive-mode #playerTopBar {
-      display: none !important;
+
+    /* Always-Accessible Floating Quick Dock (Never Trapped Over Drive Iframe) */
+    #floatingQuickDock {
+      position: fixed;
+      top: max(10px, env(safe-area-inset-top));
+      left: 50%;
+      transform: translate3d(-50%, -12px, 0);
+      z-index: 100001;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.26s var(--ease-out-expo), transform 0.26s var(--ease-out-expo), background-color 0.2s ease;
     }
-    #immersiveRestorePill {
-      display: none;
+    #floatingQuickDock.dock-visible {
+      pointer-events: auto;
+      opacity: 0.58;
+      transform: translate3d(-50%, 0, 0);
     }
-    #playerOverlay.immersive-mode #immersiveRestorePill {
-      display: flex;
+    #floatingQuickDock.dock-visible:hover,
+    #floatingQuickDock.dock-visible:active,
+    #floatingQuickDock.dock-visible.dock-bright {
+      opacity: 1;
     }
 
     #playerStage {
@@ -218,12 +242,19 @@
       min-height: 0;
       overflow: hidden;
       background: #000000;
-      transition: filter 0.32s ease;
+      transition: filter 0.3s ease;
     }
-    /* Subtle Cinema Enhance visual boost */
-    #playerStage.cinema-enhanced {
-      filter: contrast(1.09) saturate(1.14) brightness(1.03);
+    /* Multi-Mode Cinema Enhance Visual Filters */
+    #playerStage.enhance-cinema {
+      filter: contrast(1.09) saturate(1.15) brightness(1.03);
     }
+    #playerStage.enhance-vivid {
+      filter: contrast(1.18) saturate(1.32) brightness(1.06);
+    }
+    #playerStage.enhance-crisp {
+      filter: contrast(1.14) saturate(1.08) brightness(1.04) drop-shadow(0 0 0.4px rgba(255, 255, 255, 0.18));
+    }
+
     #videoEl, #driveEmbedIframe {
       position: absolute;
       inset: 0;
@@ -240,7 +271,7 @@
       bottom: 0;
       left: 0;
       right: 0;
-      z-index: 30;
+      z-index: 100000;
       background: linear-gradient(0deg, rgba(0, 0, 0, 0.94) 0%, rgba(0, 0, 0, 0.65) 72%, transparent 100%);
       transition: opacity 0.3s var(--ease-out-expo), transform 0.3s var(--ease-out-expo);
       transform: translate3d(0, 0, 0);
@@ -875,22 +906,37 @@
   ========================================================== -->
   <div id="playerOverlay" class="hidden select-none" onmousemove="revealPlayerHud()" ontouchstart="revealPlayerHud()">
 
-    <!-- Floating Restore Pill (Visible ONLY in Cinema Fill / Immersive Mode) -->
-    <div id="immersiveRestorePill" class="fixed top-3 right-3 z-40 items-center gap-1.5 bg-black/65 hover:bg-black/90 backdrop-blur-md border border-white/20 rounded-full px-3 py-1.5 safe-top transition">
-      <button onclick="toggleImmersiveMode(false)" class="text-[11px] font-semibold text-white hover:text-nf-red transition px-1">
-        Show Controls
+    <!-- Always-Accessible Floating Quick Dock (Visible when Top Bar hides or Fullscreen is active) -->
+    <div id="floatingQuickDock" class="flex items-center gap-1 sm:gap-1.5 bg-[#141414]/80 backdrop-blur-xl border border-white/20 rounded-full px-2 py-1.5 shadow-2xl max-w-[96vw]">
+      <button type="button" onclick="event.stopPropagation(); closePlayer();"
+        class="flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-white/10 hover:bg-nf-red text-white text-[11px] sm:text-xs font-bold transition active:scale-95 whitespace-nowrap">
+        <span>← Back</span>
       </button>
-      <span class="text-white/30">|</span>
-      <button onclick="closePlayer()" class="text-[11px] font-semibold text-gray-300 hover:text-white transition px-1">
-        Exit
+
+      <button type="button" id="dockEnhanceBtn" onclick="event.stopPropagation(); cycleCinemaEnhance();"
+        class="flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-white/10 hover:bg-white/25 text-gray-100 text-[11px] sm:text-xs font-semibold transition active:scale-95 whitespace-nowrap">
+        <span class="text-amber-400">✨</span>
+        <span id="dockEnhanceLabel">Off</span>
+      </button>
+
+      <button type="button" id="dockFsBtn" onclick="event.stopPropagation(); togglePlayerFullscreen();"
+        class="flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-white/10 hover:bg-white/25 text-white text-[11px] sm:text-xs font-semibold transition active:scale-95 whitespace-nowrap">
+        <span id="dockFsLabel">⛶ Full</span>
+      </button>
+
+      <button type="button" onclick="event.stopPropagation(); expandFullPlayerControls();"
+        class="flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-white/10 hover:bg-white/25 text-gray-100 text-[11px] sm:text-xs font-semibold transition active:scale-95 whitespace-nowrap">
+        <span>☰ Controls</span>
       </button>
     </div>
 
-    <!-- Auto-Hiding Top Control Bar (Clean Title ONLY — Never shows raw URLs/tokens) -->
+    <!-- Auto-Hiding Full Top Control Bar (Clean Title ONLY — Never shows raw URLs/tokens) -->
     <div id="playerTopBar" class="safe-top px-3 sm:px-5 py-3 flex flex-wrap items-center justify-between gap-2">
       <div class="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
-        <button onclick="closePlayer()" aria-label="Back" class="p-2 rounded-full bg-white/10 hover:bg-white/25 text-white transition active:scale-90 shrink-0">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+        <button type="button" onclick="closePlayer()" aria-label="Back"
+          class="flex items-center gap-1.5 px-3 py-2 rounded-full bg-white/15 hover:bg-nf-red text-white text-xs font-bold transition active:scale-90 shrink-0">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+          <span class="hidden sm:inline">Back</span>
         </button>
         <div class="min-w-0">
           <h3 id="playerTitle" class="text-sm sm:text-base font-bold text-white truncate">Title</h3>
@@ -898,49 +944,50 @@
         </div>
       </div>
 
-      <!-- Right Controls: Cinema Enhance | Drive Stream / Direct HTML5 | Cinema Fill | Fullscreen | Open Drive | Next Ep -->
+      <!-- Right Controls: Enhance Mode | Drive Stream / Direct HTML5 | Subtitles | Next Ep | Drive App | Fullscreen -->
       <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 shrink-0">
-        <!-- Cinema Enhance -->
-        <button id="cinemaEnhanceBtn" onclick="toggleCinemaEnhance()" title="Cinema Enhance Visual Boost"
+        <!-- Multi-Mode Cinema Enhance -->
+        <button type="button" id="cinemaEnhanceBtn" onclick="cycleCinemaEnhance()" title="Cycle Cinema Enhance (E)"
           class="flex items-center gap-1 bg-white/10 hover:bg-white/20 border border-white/15 text-gray-200 text-[11px] sm:text-xs font-semibold px-2.5 py-1.5 rounded-full transition active:scale-95">
-          <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 3l1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3z"/></svg>
-          <span class="hidden sm:inline">Enhance</span>
+          <span class="text-amber-400">✨</span>
+          <span id="topEnhanceLabel">Enhance: Off</span>
         </button>
 
         <!-- Engine Switcher (Default: Drive Stream) -->
         <div id="engineSwitcher" class="hidden items-center bg-black/70 border border-white/20 rounded-full p-0.5">
-          <button id="btnEngineEmbed" onclick="switchPlayerEngine('embed')" class="px-2.5 py-1 rounded-full text-[11px] font-semibold transition">Drive Stream</button>
-          <button id="btnEngineDirect" onclick="switchPlayerEngine('direct')" class="px-2.5 py-1 rounded-full text-[11px] font-semibold transition">Direct HTML5</button>
+          <button type="button" id="btnEngineEmbed" onclick="switchPlayerEngine('embed')" class="px-2.5 py-1 rounded-full text-[11px] font-semibold transition">Drive Stream</button>
+          <button type="button" id="btnEngineDirect" onclick="switchPlayerEngine('direct')" class="px-2.5 py-1 rounded-full text-[11px] font-semibold transition">Direct HTML5</button>
         </div>
 
-        <!-- Cinema Fill / Immersive Mode (True edge-to-edge on iPadOS Safari) -->
-        <button onclick="toggleImmersiveMode(true)" title="Cinema Fill — Hide all bars for edge-to-edge viewing"
-          class="flex items-center gap-1 bg-white/10 hover:bg-white/20 border border-white/15 text-gray-100 text-[11px] sm:text-xs font-semibold px-2.5 py-1.5 rounded-full transition active:scale-95">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M8 5v14M16 5v14"/></svg>
-          <span class="hidden md:inline">Cinema Fill</span>
-        </button>
-
-        <!-- Dedicated Fullscreen Button (F) -->
-        <button onclick="togglePlayerFullscreen()" title="Fullscreen (F)"
-          class="flex items-center gap-1 bg-white/15 hover:bg-white/25 border border-white/25 text-white text-[11px] sm:text-xs font-semibold px-2.5 py-1.5 rounded-full transition active:scale-95">
-          <svg id="fsIcon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
-          <span class="hidden sm:inline">Fullscreen</span>
-        </button>
-
-        <!-- Open in Drive App -->
-        <button id="openInDriveBtn" onclick="openCurrentInDrive()" title="Open in Google Drive App"
-          class="hidden items-center gap-1 bg-white/10 hover:bg-white/20 border border-white/15 text-gray-100 text-[11px] sm:text-xs font-semibold px-2.5 py-1.5 rounded-full transition active:scale-95">
-          <span>Drive App</span>
-        </button>
+        <!-- Quick Subtitles (Direct HTML5 only) -->
+        <label id="topSubBtn" class="hidden items-center gap-1 bg-white/10 hover:bg-white/20 border border-white/15 text-gray-100 text-[11px] sm:text-xs font-semibold px-2.5 py-1.5 rounded-full cursor-pointer transition active:scale-95">
+          <span>CC</span>
+          <input type="file" accept=".srt,.vtt" class="hidden" onchange="loadSubtitleFile(this.files[0]); this.value='';" />
+        </label>
 
         <!-- Next Episode -->
-        <button id="topNextEpBtn" onclick="playNextEpisode()"
+        <button type="button" id="topNextEpBtn" onclick="playNextEpisode()"
           class="hidden items-center gap-1 bg-nf-red hover:bg-nf-redHover text-white text-[11px] sm:text-xs font-bold px-3 py-1.5 rounded-full transition active:scale-95">
           <span>Next Ep</span>
           <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
         </button>
+
+        <!-- Open in Drive App -->
+        <button type="button" id="openInDriveBtn" onclick="openCurrentInDrive()" title="Open in Google Drive App"
+          class="hidden items-center gap-1 bg-white/10 hover:bg-white/20 border border-white/15 text-gray-100 text-[11px] sm:text-xs font-semibold px-2.5 py-1.5 rounded-full transition active:scale-95">
+          <span>Drive App</span>
+        </button>
+
+        <!-- Dedicated Fullscreen / Exit Fullscreen Button (F) -->
+        <button type="button" id="topFsBtn" onclick="togglePlayerFullscreen()" title="Toggle Fullscreen (F)"
+          class="flex items-center gap-1 bg-white/15 hover:bg-white/25 border border-white/25 text-white text-[11px] sm:text-xs font-semibold px-3 py-1.5 rounded-full transition active:scale-95">
+          <span id="topFsLabel">⛶ Fullscreen</span>
+        </button>
       </div>
     </div>
+
+    <!-- In-Player Toast (Visible even inside Native Fullscreen) -->
+    <div id="playerToast" class="hidden fixed bottom-20 left-1/2 -translate-x-1/2 z-[100002] pointer-events-none bg-[#18181b]/95 backdrop-blur-xl border border-white/20 text-white text-xs sm:text-sm font-semibold px-4 py-2 rounded-full shadow-2xl"></div>
 
     <!-- Non-Collapsing Video Stage -->
     <div id="playerStage">
@@ -1097,7 +1144,7 @@
         clientId: DEFAULTS.CLIENT_ID,
         autoplayTrailers: true,
         folderId: '',
-        cinemaEnhance: false
+        cinemaEnhance: 'off'
       },
       token: '',
       tokenExp: 0,
@@ -1126,26 +1173,256 @@
         item: null,
         episode: null,
         engine: 'embed',
-        immersive: false,
+        cinemaFill: false,
         blobUrl: null,
         subBlobUrl: null,
         stallTimer: null,
         iframeSpinnerTimer: null,
         hudHideTimer: null,
+        playerToastTimer: null,
         lastProgressSave: 0
       }
     };
 
     /* ==========================================================
-       3. GOOGLE IDENTITY SERVICES QUEUE
+       13. FULLSCREEN, FLOATING DOCK & CRASH-FREE STREAMING PLAYER
     ========================================================== */
-    let gisReady = false;
-    const gisQueue = [];
-    window.__onGISReady = function() {
-      gisReady = true;
-      while (gisQueue.length) {
-        try { gisQueue.shift()(); } catch {}
+    const ENHANCE_MODES = [
+      { id: 'off', label: 'Off', cls: '' },
+      { id: 'cinema', label: 'Cinema', cls: 'enhance-cinema' },
+      { id: 'vivid', label: 'Vivid HDR', cls: 'enhance-vivid' },
+      { id: 'crisp', label: 'Crisp', cls: 'enhance-crisp' }
+    ];
+
+    function showPlayerToast(msg) {
+      const el = document.getElementById('playerToast');
+      if (!el) return;
+      el.textContent = msg;
+      el.classList.remove('hidden');
+      clearTimeout(state.player.playerToastTimer);
+      state.player.playerToastTimer = setTimeout(() => el.classList.add('hidden'), 2200);
+    }
+
+    function normalizeEnhanceMode(val) {
+      if (val === true) return 'cinema';
+      if (val === false || !val) return 'off';
+      return ENHANCE_MODES.some(m => m.id === val) ? val : 'off';
+    }
+
+    function isNativeFullscreen() {
+      return Boolean(document.fullscreenElement || document.webkitFullscreenElement);
+    }
+
+    function isPlayerFullscreenActive() {
+      return isNativeFullscreen() || state.player.cinemaFill;
+    }
+
+    function quickPlay(tmdbId) {
+      const item = state.library.find(i => i.tmdbId === tmdbId);
+      if (!item) return;
+      if (item.mediaType === 'tv') {
+        const all = Object.keys(item.seasons || {}).map(Number).sort((a, b) => a - b).flatMap(s => item.seasons[s]);
+        let pick = all[0], latest = 0;
+        all.forEach(ep => {
+          const p = state.progress[ep.id];
+          if (p && (p.updatedAt || 0) > latest) { latest = p.updatedAt; pick = ep; }
+        });
+        if (pick) playMedia(tmdbId, pick.season, pick.episode);
+      } else {
+        playMedia(tmdbId);
       }
+    }
+
+    function playMedia(tmdbId, seasonNum = null, episodeNum = null) {
+      const item = state.library.find(i => i.tmdbId === tmdbId);
+      if (!item) return;
+
+      let ep = null;
+      if (item.mediaType === 'tv') {
+        ep = item.seasons?.[seasonNum]?.find(e => e.episode === episodeNum) || Object.values(item.seasons || {})[0]?.[0];
+        if (!ep) return;
+      }
+
+      const srcObj = ep || item;
+      const isDrive = Boolean(srcObj.driveFileId);
+
+      stopBillboardTrailer();
+      closeSearchOverlay();
+      state.player.item = item;
+      state.player.episode = ep;
+      state.player.engine = isDrive ? 'embed' : 'direct';
+      state.player.cinemaFill = false;
+
+      // Clean Movie/Episode title ONLY — NEVER display raw URLs or access_token
+      document.getElementById('playerTitle').textContent = item.title;
+      document.getElementById('playerSub').textContent = ep
+        ? `Season ${ep.season} • Episode ${ep.episode} — ${ep.title}`
+        : `${item.year} • ${item.genres?.[0] || 'Movie'}`;
+
+      ['engineSwitcher', 'openInDriveBtn'].forEach(id => {
+        const el = document.getElementById(id);
+        el.classList.toggle('hidden', !isDrive);
+        el.classList.toggle('flex', isDrive);
+      });
+      updateEnginePills();
+      syncCinemaEnhanceUI();
+      syncFullscreenUI();
+
+      const hasNext = Boolean(getNextEp(item, ep));
+      const nextBtn = document.getElementById('topNextEpBtn');
+      nextBtn.classList.toggle('hidden', !hasNext);
+      nextBtn.classList.toggle('flex', hasNext);
+
+      const overlay = document.getElementById('playerOverlay');
+      overlay.classList.remove('hidden', 'is-cinema-fill');
+      overlay.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+
+      loadPlayerEngine();
+      expandFullPlayerControls();
+    }
+
+    function showFloatingDock(bright = false) {
+      const dock = document.getElementById('floatingQuickDock');
+      dock.classList.add('dock-visible');
+      dock.classList.toggle('dock-bright', bright);
+    }
+
+    function hideFloatingDock() {
+      const dock = document.getElementById('floatingQuickDock');
+      dock.classList.remove('dock-visible', 'dock-bright');
+    }
+
+    function hideTopBarAndShowDock() {
+      const overlayOpen = !document.getElementById('playerOverlay').classList.contains('hidden');
+      if (!overlayOpen) return;
+      document.getElementById('playerTopBar').classList.add('hud-hidden');
+      if (state.player.engine === 'direct' && !document.getElementById('videoEl').paused) {
+        document.getElementById('directControlsHud').classList.add('hud-hidden');
+      }
+      showFloatingDock(false);
+    }
+
+    function expandFullPlayerControls() {
+      const topBar = document.getElementById('playerTopBar');
+      const directHud = document.getElementById('directControlsHud');
+      hideFloatingDock();
+      topBar.classList.remove('hud-hidden');
+      if (state.player.engine === 'direct') directHud.classList.remove('hud-hidden');
+
+      clearTimeout(state.player.hudHideTimer);
+      state.player.hudHideTimer = setTimeout(hideTopBarAndShowDock, 3500);
+    }
+
+    function revealPlayerHud() {
+      // If in fullscreen/cinema-fill and top bar is already hidden, keep the dock accessible without blocking the video
+      const topHidden = document.getElementById('playerTopBar').classList.contains('hud-hidden');
+      if (isPlayerFullscreenActive() && topHidden) {
+        showFloatingDock(false);
+        return;
+      }
+      expandFullPlayerControls();
+    }
+
+    function syncFullscreenUI() {
+      const active = isPlayerFullscreenActive();
+      const overlay = document.getElementById('playerOverlay');
+      overlay.classList.toggle('is-cinema-fill', state.player.cinemaFill);
+
+      document.getElementById('topFsLabel').textContent = active ? '⤢ Exit Full' : '⛶ Fullscreen';
+      document.getElementById('dockFsLabel').textContent = active ? '⤢ Exit Full' : '⛶ Full';
+    }
+
+    function enterPlayerFullscreen() {
+      const overlay = document.getElementById('playerOverlay');
+      state.player.cinemaFill = true;
+      overlay.classList.add('is-cinema-fill');
+
+      // Always request fullscreen on the ENTIRE #playerOverlay wrapper — never iframe or video alone
+      if (overlay.requestFullscreen) {
+        overlay.requestFullscreen().catch(() => {});
+      } else if (overlay.webkitRequestFullscreen) {
+        try { overlay.webkitRequestFullscreen(); } catch {}
+      }
+
+      syncFullscreenUI();
+      hideTopBarAndShowDock();
+      showPlayerToast('Fullscreen ON — Back & Enhance pinned at top');
+    }
+
+    function exitPlayerFullscreen() {
+      state.player.cinemaFill = false;
+      document.getElementById('playerOverlay').classList.remove('is-cinema-fill');
+
+      if (document.fullscreenElement && document.exitFullscreen) {
+        document.exitFullscreen().catch(() => {});
+      } else if (document.webkitFullscreenElement && document.webkitExitFullscreen) {
+        try { document.webkitExitFullscreen(); } catch {}
+      }
+
+      syncFullscreenUI();
+      expandFullPlayerControls();
+      showPlayerToast('Exited Fullscreen');
+    }
+
+    function togglePlayerFullscreen() {
+      if (isPlayerFullscreenActive()) exitPlayerFullscreen();
+      else enterPlayerFullscreen();
+    }
+
+    function updateEnginePills() {
+      const embed = state.player.engine === 'embed';
+      document.getElementById('btnEngineEmbed').className = `px-2.5 py-1 rounded-full text-[11px] font-semibold transition ${embed ? 'bg-nf-red text-white shadow' : 'text-gray-300 hover:text-white'}`;
+      document.getElementById('btnEngineDirect').className = `px-2.5 py-1 rounded-full text-[11px] font-semibold transition ${!embed ? 'bg-nf-red text-white shadow' : 'text-gray-300 hover:text-white'}`;
+      document.getElementById('directControlsHud').classList.toggle('hidden', embed);
+      const topSub = document.getElementById('topSubBtn');
+      topSub.classList.toggle('hidden', embed);
+      topSub.classList.toggle('flex', !embed);
+    }
+
+    function cycleCinemaEnhance() {
+      const cur = normalizeEnhanceMode(state.settings.cinemaEnhance);
+      const idx = ENHANCE_MODES.findIndex(m => m.id === cur);
+      const next = ENHANCE_MODES[(idx + 1) % ENHANCE_MODES.length];
+      state.settings.cinemaEnhance = next.id;
+      lsSetJSON(KEYS.SETTINGS, state.settings);
+      syncCinemaEnhanceUI();
+      showPlayerToast(`✨ Enhance: ${next.label}`);
+    }
+
+    function syncCinemaEnhanceUI() {
+      const curId = normalizeEnhanceMode(state.settings.cinemaEnhance);
+      const mode = ENHANCE_MODES.find(m => m.id === curId) || ENHANCE_MODES[0];
+      const stage = document.getElementById('playerStage');
+      stage.classList.remove('enhance-cinema', 'enhance-vivid', 'enhance-crisp');
+      if (mode.cls) stage.classList.add(mode.cls);
+
+      const isOn = mode.id !== 'off';
+      document.getElementById('topEnhanceLabel').textContent = `Enhance: ${mode.label}`;
+      document.getElementById('dockEnhanceLabel').textContent = mode.label;
+
+      const topBtn = document.getElementById('cinemaEnhanceBtn');
+      topBtn.classList.toggle('bg-amber-500/25', isOn);
+      topBtn.classList.toggle('border-amber-400/60', isOn);
+      topBtn.classList.toggle('text-amber-200', isOn);
+
+      const dockBtn = document.getElementById('dockEnhanceBtn');
+      dockBtn.classList.toggle('bg-amber-500/30', isOn);
+      dockBtn.classList.toggle('text-amber-200', isOn);
+    }
+
+    async function switchPlayerEngine(engine) {
+      const srcObj = state.player.episode || state.player.item;
+      if (!srcObj) return;
+      if (engine === 'direct' && srcObj.driveFileId && !isTokenActive()) {
+        const ok = await reconnectDriveOneTap();
+        if (!ok) return;
+      }
+      state.player.engine = engine;
+      updateEnginePills();
+      loadPlayerEngine();
+      expandFullPlayerControls();
+    }
     };
 
     function whenGISReady(cb) {
@@ -3405,18 +3682,23 @@
       const v = document.getElementById('videoEl');
       clearPlayerTimers();
       clearTimeout(state.player.hudHideTimer);
+      clearTimeout(state.player.playerToastTimer);
       savePlaybackProgress();
       cleanupVideoElement(v);
       document.getElementById('driveEmbedIframe').src = 'about:blank';
       if (state.player.blobUrl) { URL.revokeObjectURL(state.player.blobUrl); state.player.blobUrl = null; }
       if (state.player.subBlobUrl) { URL.revokeObjectURL(state.player.subBlobUrl); state.player.subBlobUrl = null; }
-      if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
-      else if (document.webkitFullscreenElement && document.webkitExitFullscreen) document.webkitExitFullscreen();
+      if (document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(() => {});
+      else if (document.webkitFullscreenElement && document.webkitExitFullscreen) {
+        try { document.webkitExitFullscreen(); } catch {}
+      }
 
-      state.player.immersive = false;
+      state.player.cinemaFill = false;
+      hideFloatingDock();
+      document.getElementById('playerToast').classList.add('hidden');
       const overlay = document.getElementById('playerOverlay');
       overlay.classList.add('hidden');
-      overlay.classList.remove('immersive-mode');
+      overlay.classList.remove('is-cinema-fill');
       overlay.style.display = 'none';
       document.body.style.overflow = '';
       renderCurrentView();
@@ -3547,19 +3829,58 @@
     document.getElementById('driveDrawerOverlay').addEventListener('click', e => { if (e.target.id === 'driveDrawerOverlay') closeDriveDrawer(); });
     document.getElementById('signOutModal').addEventListener('click', e => { if (e.target.id === 'signOutModal') closeSignOutConfirm(); });
 
-    // Keyboard Shortcuts: F (Fullscreen), Esc (Close), Space (Play/Pause Direct), M (Mute)
+    // Keep Fullscreen & Floating Quick Dock synced when user exits native fullscreen
+    ['fullscreenchange', 'webkitfullscreenchange'].forEach(evt => {
+      document.addEventListener(evt, () => {
+        if (!isNativeFullscreen()) {
+          state.player.cinemaFill = false;
+        }
+        syncFullscreenUI();
+        if (!document.getElementById('playerOverlay').classList.contains('hidden')) {
+          if (isPlayerFullscreenActive()) hideTopBarAndShowDock();
+          else expandFullPlayerControls();
+        }
+      });
+    });
+
+    // Keyboard Shortcuts: Esc (Exit Fullscreen first, then Close), F (Fullscreen), E (Enhance), Space (Play/Pause Direct), M (Mute)
     document.addEventListener('keydown', (e) => {
       const tag = (e.target?.tagName || '').toLowerCase();
       const typing = tag === 'input' || tag === 'textarea' || tag === 'select';
       const playerOpen = !document.getElementById('playerOverlay').classList.contains('hidden');
 
       if (e.key === 'Escape') {
-        if (playerOpen) closePlayer();
+        if (playerOpen) {
+          if (isPlayerFullscreenActive()) exitPlayerFullscreen();
+          else closePlayer();
+        }
         else if (!document.getElementById('searchOverlay').classList.contains('hidden')) closeSearchOverlay();
         else if (!document.getElementById('signOutModal').classList.contains('hidden')) closeSignOutConfirm();
         else if (!document.getElementById('detailModal').classList.contains('hidden')) closeDetailModal();
         else if (!document.getElementById('driveDrawerOverlay').classList.contains('hidden')) closeDriveDrawer();
         return;
+      }
+
+      if (typing) return;
+
+      if (playerOpen) {
+        if (e.key === 'f' || e.key === 'F') { e.preventDefault(); togglePlayerFullscreen(); }
+        else if (e.key === 'e' || e.key === 'E') { e.preventDefault(); cycleCinemaEnhance(); }
+        else if (e.key === ' ' && state.player.engine === 'direct') { e.preventDefault(); toggleDirectPlayPause(); }
+        else if ((e.key === 'm' || e.key === 'M') && state.player.engine === 'direct') { e.preventDefault(); toggleDirectMute(); }
+      } else {
+        if (e.key === 'm' || e.key === 'M') {
+          const muteBtnVisible = !document.getElementById('trailerMuteBtn').classList.contains('hidden');
+          if (muteBtnVisible) { e.preventDefault(); toggleBillboardMute(); }
+        }
+      }
+    });
+
+    function bootApp() {
+      const savedSettings = lsGetJSON(KEYS.SETTINGS, null);
+      if (savedSettings && typeof savedSettings === 'object') {
+        state.settings = { ...state.settings, ...savedSettings };
+        state.settings.cinemaEnhance = normalizeEnhanceMode(state.settings.cinemaEnhance);
       }
 
       if (typing) return;
