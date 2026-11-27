@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
-  <title>DriveFlix — Personal Google Drive Cinema</title>
+  <title>DriveFlix — Personal Netflix Google Drive Cinema</title>
 
   <!-- iOS / iPadOS Native Web App Meta -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -54,6 +54,7 @@
       color-scheme: dark;
       --sat: env(safe-area-inset-top, 0px);
       --sab: env(safe-area-inset-bottom, 0px);
+      --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     html, body {
@@ -64,8 +65,10 @@
       -webkit-font-smoothing: antialiased;
       -webkit-tap-highlight-color: transparent;
       overscroll-behavior-y: none;
+      scroll-behavior: smooth;
     }
 
+    /* Hide scrollbars cleanly */
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar {
       -ms-overflow-style: none;
@@ -86,65 +89,96 @@
       display: block;
     }
 
-    /* GPU hover ONLY on true hover devices — zero sticky hover glitches on iPad/touch */
+    /* Hardware-accelerated 60fps card transitions — guarded for true hover devices */
     .media-card {
-      transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease, border-color 0.22s ease;
+      transition: transform 0.28s var(--ease-out-expo), box-shadow 0.28s var(--ease-out-expo), border-color 0.24s ease;
       will-change: transform;
-      transform: translateZ(0);
+      transform: translate3d(0, 0, 0);
+      backface-visibility: hidden;
     }
-    .media-card:active { transform: scale(0.97); }
+    .media-card:active {
+      transform: scale3d(0.96, 0.96, 1);
+    }
     @media (hover: hover) and (pointer: fine) {
       .media-card:hover {
-        transform: scale(1.06) translateY(-5px);
-        z-index: 20;
-        box-shadow: 0 22px 44px rgba(0, 0, 0, 0.85);
-        border-color: rgba(255, 255, 255, 0.28);
+        transform: translate3d(0, -6px, 0) scale3d(1.06, 1.06, 1);
+        z-index: 25;
+        box-shadow: 0 24px 48px rgba(0, 0, 0, 0.88);
+        border-color: rgba(255, 255, 255, 0.32);
       }
       .media-card:hover .card-hover-overlay { opacity: 1; }
-      .media-card:hover .card-edit-btn { opacity: 1; }
+    }
+
+    /* Top 10 Rank Card styling */
+    .top10-card {
+      transition: transform 0.28s var(--ease-out-expo);
+      will-change: transform;
+      transform: translate3d(0, 0, 0);
+    }
+    .top10-card:active { transform: scale3d(0.97, 0.97, 1); }
+    @media (hover: hover) and (pointer: fine) {
+      .top10-card:hover {
+        transform: translate3d(0, -5px, 0) scale3d(1.04, 1.04, 1);
+        z-index: 20;
+      }
+    }
+
+    /* Sticky Navbar Smooth State */
+    #topHeader {
+      background: linear-gradient(180deg, rgba(20,20,20,0.92) 0%, rgba(20,20,20,0.45) 65%, transparent 100%);
+      transition: background-color 0.32s var(--ease-out-expo), border-color 0.32s ease, box-shadow 0.32s ease, backdrop-filter 0.32s ease;
+    }
+    #topHeader.scrolled {
+      background: rgba(20, 20, 20, 0.96);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
     }
 
     /* Billboard subtle Ken Burns */
     @keyframes kenBurns {
-      0% { transform: scale(1.0); }
-      100% { transform: scale(1.06); }
+      0% { transform: scale3d(1, 1, 1); }
+      100% { transform: scale3d(1.065, 1.065, 1); }
     }
-    .ken-burns { animation: kenBurns 15s ease-out forwards; }
+    .ken-burns { animation: kenBurns 15s var(--ease-out-expo) forwards; }
 
-    /* Skeleton shimmer */
+    /* Skeleton Shimmer */
     @keyframes shimmer {
       0% { background-position: -200% 0; }
       100% { background-position: 200% 0; }
     }
     .skeleton {
-      background: linear-gradient(90deg, #1b1b1f 25%, #2a2a32 50%, #1b1b1f 75%);
+      background: linear-gradient(90deg, #1b1b20 25%, #2b2b34 50%, #1b1b20 75%);
       background-size: 200% 100%;
       animation: shimmer 1.25s infinite linear;
     }
 
-    /* Smooth modal, drawer & toast transitions */
+    /* Modal, Drawer, Search & Toast Hardware-Accelerated Transitions */
     @keyframes modalIn {
-      from { opacity: 0; transform: translateY(14px) scale(0.97); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
+      from { opacity: 0; transform: translate3d(0, 18px, 0) scale3d(0.96, 0.96, 1); }
+      to { opacity: 1; transform: translate3d(0, 0, 0) scale3d(1, 1, 1); }
     }
-    .modal-anim { animation: modalIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .modal-anim { animation: modalIn 0.26s var(--ease-out-expo) forwards; }
 
     @keyframes drawerIn {
-      from { opacity: 0; transform: translateX(28px); }
-      to { opacity: 1; transform: translateX(0); }
+      from { opacity: 0; transform: translate3d(32px, 0, 0); }
+      to { opacity: 1; transform: translate3d(0, 0, 0); }
     }
-    .drawer-anim { animation: drawerIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .drawer-anim { animation: drawerIn 0.26s var(--ease-out-expo) forwards; }
 
     @keyframes toastIn {
-      from { opacity: 0; transform: translateY(10px) scale(0.96); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
+      from { opacity: 0; transform: translate3d(0, 12px, 0) scale3d(0.95, 0.95, 1); }
+      to { opacity: 1; transform: translate3d(0, 0, 0) scale3d(1, 1, 1); }
     }
-    .toast-anim { animation: toastIn 0.2s ease-out forwards; }
+    .toast-anim { animation: toastIn 0.22s var(--ease-out-expo) forwards; }
 
     .safe-top { padding-top: var(--sat); }
     .safe-bottom { padding-bottom: max(0.45rem, var(--sab)); }
 
-    /* Non-collapsing full-bleed player architecture */
+    /* =======================================================
+       NON-COLLAPSING FULL-BLEED PLAYER & IMMERSIVE MODE
+    ======================================================= */
     #playerOverlay {
       position: fixed;
       inset: 0;
@@ -153,10 +187,30 @@
       flex-direction: column;
     }
     #playerTopBar {
-      min-height: 62px;
-      flex-shrink: 0;
-      z-index: 20;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 30;
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.65) 70%, transparent 100%);
+      transition: opacity 0.3s var(--ease-out-expo), transform 0.3s var(--ease-out-expo);
+      transform: translate3d(0, 0, 0);
     }
+    #playerTopBar.hud-hidden {
+      opacity: 0;
+      transform: translate3d(0, -16px, 0);
+      pointer-events: none;
+    }
+    #playerOverlay.immersive-mode #playerTopBar {
+      display: none !important;
+    }
+    #immersiveRestorePill {
+      display: none;
+    }
+    #playerOverlay.immersive-mode #immersiveRestorePill {
+      display: flex;
+    }
+
     #playerStage {
       position: relative;
       flex: 1;
@@ -164,9 +218,9 @@
       min-height: 0;
       overflow: hidden;
       background: #000000;
-      transition: filter 0.3s ease;
+      transition: filter 0.32s ease;
     }
-    /* Cinema Enhance: subtle crisp contrast/saturation boost without GPU lag */
+    /* Subtle Cinema Enhance visual boost */
     #playerStage.cinema-enhanced {
       filter: contrast(1.09) saturate(1.14) brightness(1.03);
     }
@@ -179,6 +233,48 @@
       background: #000000;
     }
     #videoEl { object-fit: contain; }
+
+    /* Direct HTML5 Custom Bottom Control HUD */
+    #directControlsHud {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 30;
+      background: linear-gradient(0deg, rgba(0, 0, 0, 0.94) 0%, rgba(0, 0, 0, 0.65) 72%, transparent 100%);
+      transition: opacity 0.3s var(--ease-out-expo), transform 0.3s var(--ease-out-expo);
+      transform: translate3d(0, 0, 0);
+    }
+    #directControlsHud.hud-hidden {
+      opacity: 0;
+      transform: translate3d(0, 16px, 0);
+      pointer-events: none;
+    }
+
+    /* Custom Netflix Range Slider */
+    input[type="range"].nf-range {
+      -webkit-appearance: none;
+      appearance: none;
+      background: rgba(255, 255, 255, 0.25);
+      height: 5px;
+      border-radius: 999px;
+      outline: none;
+      cursor: pointer;
+    }
+    input[type="range"].nf-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: #E50914;
+      box-shadow: 0 0 10px rgba(229, 9, 20, 0.85);
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+    input[type="range"].nf-range::-webkit-slider-thumb:hover {
+      transform: scale(1.22);
+    }
   </style>
 </head>
 <body class="bg-nf-bg text-white min-h-screen selection:bg-nf-red selection:text-white">
@@ -186,12 +282,12 @@
   <!-- =========================================================
        STICKY TRANSLUCENT NETFLIX NAVBAR
   ========================================================== -->
-  <header id="topHeader" class="fixed top-0 left-0 right-0 z-40 safe-top transition-all duration-300 bg-gradient-to-b from-[#141414]/95 via-[#141414]/60 to-transparent">
+  <header id="topHeader" class="fixed top-0 left-0 right-0 z-40 safe-top">
     <div class="max-w-[1800px] mx-auto px-4 sm:px-8 h-16 sm:h-[70px] flex items-center justify-between gap-2.5">
-      <!-- Left: Custom 'D' Play-Ribbon Logo + Desktop Navigation -->
-      <div class="flex items-center gap-6 lg:gap-10 min-w-0">
+      <!-- Left: Brand Logo + Desktop Nav -->
+      <div class="flex items-center gap-6 lg:gap-9 min-w-0">
         <button onclick="navigateTab('home')" class="flex items-center gap-2.5 shrink-0 active:scale-95 transition">
-          <svg class="w-8 h-8 sm:w-9 sm:h-9 drop-shadow-[0_0_12px_rgba(229,9,20,0.55)]" viewBox="0 0 64 64" fill="none">
+          <svg class="w-8 h-8 sm:w-9 sm:h-9 drop-shadow-[0_0_14px_rgba(229,9,20,0.6)]" viewBox="0 0 64 64" fill="none">
             <defs>
               <linearGradient id="brandGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
                 <stop offset="0%" stop-color="#FF2430"/>
@@ -206,29 +302,31 @@
           <span class="text-xl sm:text-2xl font-black tracking-tight text-white">DRIVE<span class="text-nf-red">FLIX</span></span>
         </button>
 
-        <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+        <nav class="hidden md:flex items-center gap-5 lg:gap-7 text-sm font-medium">
           <button data-tab="home" onclick="navigateTab('home')" class="top-nav-btn text-white font-semibold transition hover:text-white">Home</button>
           <button data-tab="tv" onclick="navigateTab('tv')" class="top-nav-btn text-gray-300 transition hover:text-white">TV Shows</button>
           <button data-tab="movie" onclick="navigateTab('movie')" class="top-nav-btn text-gray-300 transition hover:text-white">Movies</button>
+          <button data-tab="top10" onclick="navigateTab('top10')" class="top-nav-btn text-gray-300 transition hover:text-white">Top 10</button>
           <button data-tab="mylist" onclick="navigateTab('mylist')" class="top-nav-btn text-gray-300 transition hover:text-white">My List</button>
         </nav>
       </div>
 
-      <!-- Right: Search, Reconnect Pill, Sync Drive, Profile -->
+      <!-- Right: Live Search, Surprise Me, Reconnect Pill, Sync, Profile -->
       <div class="flex items-center gap-2 shrink-0">
-        <!-- Expandable Desktop Search -->
-        <div class="hidden sm:flex relative items-center bg-white/[0.08] hover:bg-white/[0.14] border border-white/10 rounded-full transition-all duration-300 w-10 focus-within:w-60 focus-within:bg-[#18181b]/95 focus-within:border-white/35 overflow-hidden">
-          <button onclick="document.getElementById('desktopSearchInput').focus()" aria-label="Search" class="p-2.5 text-gray-200 hover:text-white shrink-0">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-          </button>
-          <input id="desktopSearchInput" type="text" placeholder="Titles, genres, years..." oninput="handleSearchInput(this.value)"
-            class="bg-transparent text-sm text-white placeholder-gray-400 outline-none w-full pr-8 py-1.5" />
-          <button id="desktopClearSearch" onclick="clearSearch()" class="hidden absolute right-2 text-gray-400 hover:text-white p-1">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
-          </button>
-        </div>
+        <!-- Live Search Button -->
+        <button onclick="openSearchOverlay()" aria-label="Search Library" title="Search (Title, Genre, Cast)"
+          class="p-2.5 rounded-full bg-white/[0.08] hover:bg-white/[0.16] border border-white/10 text-gray-100 hover:text-white transition active:scale-95">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        </button>
 
-        <!-- 1-Tap Reconnect Drive Pill (When 1-hour OAuth token expires) -->
+        <!-- Surprise Me Random Play -->
+        <button onclick="playSurpriseMe()" title="Surprise Me — Play a random movie or episode"
+          class="hidden sm:flex items-center gap-1.5 bg-white/[0.08] hover:bg-white/[0.18] border border-white/10 text-xs font-semibold text-gray-100 px-3 py-2 rounded-full transition active:scale-95">
+          <svg class="w-3.5 h-3.5 text-nf-red" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+          <span class="hidden lg:inline">Surprise Me</span>
+        </button>
+
+        <!-- 1-Tap Reconnect Drive Pill -->
         <button id="reconnectPill" onclick="reconnectDriveOneTap()"
           class="hidden items-center gap-1.5 bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/50 text-amber-200 hover:text-white text-xs font-semibold px-3 py-2 rounded-full transition active:scale-95 backdrop-blur-md">
           <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
@@ -237,12 +335,12 @@
 
         <!-- Sync Drive -->
         <button id="syncDriveBtn" onclick="syncDriveLibrary()" title="Sync Google Drive"
-          class="hidden items-center gap-1.5 bg-white/[0.08] hover:bg-white/[0.16] border border-white/10 text-xs sm:text-sm font-medium px-3 py-2 rounded-full transition active:scale-95 backdrop-blur-md">
+          class="hidden items-center gap-1.5 bg-white/[0.08] hover:bg-white/[0.16] border border-white/10 text-xs font-medium px-3 py-2 rounded-full transition active:scale-95 backdrop-blur-md">
           <svg id="syncIcon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>
             <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/>
           </svg>
-          <span class="hidden lg:inline">Sync Drive</span>
+          <span class="hidden xl:inline">Sync</span>
         </button>
 
         <!-- Profile / Connect Pill -->
@@ -250,7 +348,7 @@
           class="flex items-center gap-2 bg-white/[0.1] hover:bg-white/[0.18] border border-white/15 text-xs sm:text-sm font-medium pl-2.5 pr-3 py-1.5 rounded-full transition active:scale-95 backdrop-blur-md">
           <img id="headerAvatar" src="" alt="" class="hidden w-6 h-6 rounded-full object-cover border border-white/30" />
           <span id="headerStatusDot" class="w-2 h-2 rounded-full bg-amber-400 shrink-0"></span>
-          <span id="headerStatusLabel" class="max-w-[115px] truncate">Connect Drive</span>
+          <span id="headerStatusLabel" class="max-w-[110px] truncate">Connect Drive</span>
         </button>
       </div>
     </div>
@@ -287,7 +385,7 @@
     </div>
 
     <!-- HERO BILLBOARD (16:9 TMDB BACKDROPS + OFFICIAL LOGOS + AUTOPLAY TRAILERS) -->
-    <section id="heroSection" class="relative w-full h-[68vh] sm:h-[76vh] lg:h-[82vh] min-h-[500px] max-h-[860px] overflow-hidden bg-nf-bg">
+    <section id="heroSection" class="relative w-full h-[70vh] sm:h-[78vh] lg:h-[84vh] min-h-[500px] max-h-[860px] overflow-hidden bg-nf-bg">
       <img id="heroBackdrop" src="" alt="Featured" class="absolute inset-0 w-full h-full object-cover object-top opacity-0 transition-opacity duration-700" />
       <div id="heroFallbackBg" class="hidden absolute inset-0 bg-gradient-to-br from-[#35090e] via-[#18181b] to-[#141414]"></div>
 
@@ -301,7 +399,7 @@
 
       <!-- Rich Netflix Vignettes -->
       <div class="absolute inset-0 bg-gradient-to-r from-[#141414] via-[#141414]/65 to-transparent z-[3]"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-[#141414] via-[#141414]/25 to-[#141414]/55 z-[3]"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-[#141414] via-[#141414]/20 to-[#141414]/55 z-[3]"></div>
 
       <!-- Hero Content -->
       <div class="relative z-10 max-w-[1800px] mx-auto h-full px-5 sm:px-10 md:px-14 flex flex-col justify-end pb-14 sm:pb-20">
@@ -314,7 +412,7 @@
           </div>
 
           <!-- Official TMDB Transparent Title Logo OR Bold Fallback Title -->
-          <div id="heroLogoWrap" class="hidden max-w-[300px] sm:max-w-[440px]">
+          <div id="heroLogoWrap" class="hidden max-w-[290px] sm:max-w-[440px]">
             <img id="heroLogoImg" src="" alt="" class="max-h-24 sm:max-h-32 w-auto object-contain drop-shadow-[0_6px_24px_rgba(0,0,0,0.95)]" />
           </div>
           <h1 id="heroTitle" class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.08] drop-shadow-2xl">
@@ -336,8 +434,12 @@
               <span>More Info</span>
             </button>
 
-            <button onclick="toggleHeroWatchlist()" aria-label="My List" class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-black/55 hover:bg-white/20 border border-white/30 text-white flex items-center justify-center transition active:scale-95">
+            <button onclick="toggleHeroWatchlist()" aria-label="My List" title="Add to My List" class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-black/55 hover:bg-white/20 border border-white/30 text-white flex items-center justify-center transition active:scale-95">
               <svg id="heroWatchlistIcon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
+
+            <button onclick="playSurpriseMe()" title="Surprise Me" class="sm:hidden w-11 h-11 rounded-full bg-black/55 hover:bg-white/20 border border-white/30 text-white flex items-center justify-center transition active:scale-95">
+              <svg class="w-4 h-4 text-nf-red" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
             </button>
           </div>
         </div>
@@ -345,7 +447,7 @@
 
       <!-- Bottom-Right: Mute/Unmute Trailer + Maturity Badge -->
       <div class="absolute bottom-14 sm:bottom-20 right-4 sm:right-12 z-20 flex items-center gap-2.5">
-        <button id="trailerMuteBtn" onclick="toggleBillboardMute()" title="Mute / Unmute Trailer"
+        <button id="trailerMuteBtn" onclick="toggleBillboardMute()" title="Mute / Unmute Trailer (M)"
           class="hidden w-10 h-10 rounded-full border border-white/35 bg-black/60 hover:bg-black/90 backdrop-blur-md items-center justify-center text-white transition active:scale-95">
           <svg id="trailerMuteIcon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path d="M11 5 6 9H2v6h4l5 4V5Z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
@@ -368,8 +470,13 @@
       </div>
     </section>
 
-    <!-- SKELETON LOADER -->
-    <section id="skeletonSection" class="max-w-[1800px] mx-auto px-4 sm:px-10 md:px-14 -mt-6 relative z-20 space-y-8 hidden">
+    <!-- QUICK GENRE FILTER CHIPS -->
+    <section id="genreFilterBar" class="max-w-[1800px] mx-auto px-4 sm:px-10 md:px-14 -mt-5 sm:-mt-8 relative z-20 mb-6">
+      <div id="genreChipsContainer" class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1.5"></div>
+    </section>
+
+    <!-- SKELETON SHIMMER LOADER -->
+    <section id="skeletonSection" class="max-w-[1800px] mx-auto px-4 sm:px-10 md:px-14 relative z-20 space-y-8 hidden">
       <div>
         <div class="h-5 w-48 skeleton rounded mb-4"></div>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-3.5">
@@ -384,27 +491,16 @@
     </section>
 
     <!-- HOME CAROUSEL ROWS -->
-    <section id="homeRowsSection" class="max-w-[1800px] mx-auto px-4 sm:px-10 md:px-14 -mt-6 sm:-mt-10 relative z-20 space-y-8 sm:space-y-10"></section>
+    <section id="homeRowsSection" class="max-w-[1800px] mx-auto px-4 sm:px-10 md:px-14 relative z-20 space-y-8 sm:space-y-10"></section>
 
-    <!-- GRID / SEARCH / MY LIST VIEW -->
+    <!-- GRID VIEW (TV Shows / Movies / Top 10 / My List / Filtered Genre) -->
     <section id="gridViewSection" class="max-w-[1800px] mx-auto px-4 sm:px-10 md:px-14 pt-24 sm:pt-28 hidden">
-      <div id="mobileSearchBox" class="hidden mb-6">
-        <div class="relative flex items-center bg-nf-surface border border-white/15 rounded-xl px-3.5 py-2.5 focus-within:border-nf-red transition">
-          <svg class="w-5 h-5 text-gray-400 shrink-0 mr-2.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-          <input id="mobileSearchInput" type="text" placeholder="Search movies, series, genres, year..." oninput="handleSearchInput(this.value)"
-            class="bg-transparent text-sm text-white placeholder-gray-400 outline-none w-full" />
-          <button id="mobileClearSearch" onclick="clearSearch()" class="hidden text-gray-400 hover:text-white p-1">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
-          </button>
-        </div>
-      </div>
-
       <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
         <div>
           <h2 id="gridTitle" class="text-2xl sm:text-3xl font-extrabold text-white">Library</h2>
           <p id="gridSubtitle" class="text-xs sm:text-sm text-gray-400 mt-0.5"></p>
         </div>
-        <button onclick="navigateTab('home')" class="text-xs sm:text-sm text-gray-200 hover:text-white flex items-center gap-1.5 bg-white/10 hover:bg-white/15 px-3.5 py-2 rounded-full transition active:scale-95">
+        <button onclick="resetToHome()" class="text-xs sm:text-sm text-gray-200 hover:text-white flex items-center gap-1.5 bg-white/10 hover:bg-white/15 px-3.5 py-2 rounded-full transition active:scale-95">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
           Home
         </button>
@@ -414,7 +510,7 @@
 
       <div id="gridEmpty" class="hidden text-center py-20 text-gray-400">
         <p class="text-lg font-bold text-white mb-1.5">Nothing here yet</p>
-        <p class="text-sm">Try another search or add titles to your My List.</p>
+        <p class="text-sm">Try another genre or add titles to your My List.</p>
       </div>
     </section>
 
@@ -422,6 +518,7 @@
 
   <!-- =========================================================
        FROSTED-GLASS MOBILE / IPAD BOTTOM NAVIGATION BAR
+       (Home, Search, Top 10, My List, Drive)
   ========================================================== -->
   <nav id="bottomNav" class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#141414]/90 backdrop-blur-xl border-t border-white/10 safe-bottom">
     <div class="grid grid-cols-5 h-14 max-w-xl mx-auto">
@@ -431,16 +528,16 @@
         <span class="text-[10px] font-semibold">Home</span>
       </button>
 
-      <button data-btab="tv" onclick="navigateTab('tv')" class="bottom-nav-btn relative flex flex-col items-center justify-center gap-0.5 text-gray-400 transition active:scale-95">
+      <button data-btab="search" onclick="openSearchOverlay()" class="bottom-nav-btn relative flex flex-col items-center justify-center gap-0.5 text-gray-400 transition active:scale-95">
         <span class="active-bar hidden absolute top-0 w-7 h-0.5 rounded-full bg-nf-red"></span>
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></svg>
-        <span class="text-[10px] font-semibold">TV Shows</span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <span class="text-[10px] font-semibold">Search</span>
       </button>
 
-      <button data-btab="movie" onclick="navigateTab('movie')" class="bottom-nav-btn relative flex flex-col items-center justify-center gap-0.5 text-gray-400 transition active:scale-95">
+      <button data-btab="top10" onclick="navigateTab('top10')" class="bottom-nav-btn relative flex flex-col items-center justify-center gap-0.5 text-gray-400 transition active:scale-95">
         <span class="active-bar hidden absolute top-0 w-7 h-0.5 rounded-full bg-nf-red"></span>
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
-        <span class="text-[10px] font-semibold">Movies</span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <span class="text-[10px] font-semibold">Top 10</span>
       </button>
 
       <button data-btab="mylist" onclick="navigateTab('mylist')" class="bottom-nav-btn relative flex flex-col items-center justify-center gap-0.5 text-gray-400 transition active:scale-95">
@@ -449,16 +546,46 @@
         <span class="text-[10px] font-semibold">My List</span>
       </button>
 
-      <button data-btab="search" onclick="navigateTab('search')" class="bottom-nav-btn relative flex flex-col items-center justify-center gap-0.5 text-gray-400 transition active:scale-95">
+      <button data-btab="drive" onclick="openDriveDrawer()" class="bottom-nav-btn relative flex flex-col items-center justify-center gap-0.5 text-gray-400 transition active:scale-95">
         <span class="active-bar hidden absolute top-0 w-7 h-0.5 rounded-full bg-nf-red"></span>
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-        <span class="text-[10px] font-semibold">Search</span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        <span class="text-[10px] font-semibold">Drive</span>
       </button>
     </div>
   </nav>
 
   <!-- =========================================================
-       DETAIL MODAL (TRAILER, CAST, TMDB REVIEWS, SEASONS, FIX MATCH)
+       LIVE SEARCH OVERLAY (TITLE, GENRE, CAST, YEAR)
+  ========================================================== -->
+  <div id="searchOverlay" class="fixed inset-0 z-50 hidden flex-col bg-[#141414]/96 backdrop-blur-2xl safe-top">
+    <div class="max-w-6xl w-full mx-auto px-4 sm:px-8 pt-5 pb-4 border-b border-white/10 flex items-center gap-3">
+      <div class="flex-1 flex items-center bg-nf-surface border border-white/15 focus-within:border-nf-red rounded-xl px-4 py-3 transition">
+        <svg class="w-5 h-5 text-gray-400 shrink-0 mr-3" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="liveSearchInput" type="text" placeholder="Search by title, actor/cast, genre, or year..."
+          oninput="renderLiveSearchResults(this.value)"
+          class="bg-transparent text-sm sm:text-base text-white placeholder-gray-400 outline-none w-full" />
+        <button id="liveSearchClear" onclick="document.getElementById('liveSearchInput').value=''; renderLiveSearchResults(''); document.getElementById('liveSearchInput').focus();"
+          class="hidden text-gray-400 hover:text-white p-1">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <button onclick="closeSearchOverlay()" class="px-4 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-sm font-semibold text-white transition active:scale-95">
+        Close
+      </button>
+    </div>
+
+    <div class="flex-1 overflow-y-auto no-scrollbar max-w-6xl w-full mx-auto px-4 sm:px-8 py-6">
+      <p id="liveSearchCount" class="text-xs sm:text-sm text-gray-400 mb-4"></p>
+      <div id="liveSearchGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5 sm:gap-5"></div>
+      <div id="liveSearchEmpty" class="hidden text-center py-20 text-gray-400">
+        <p class="text-lg font-bold text-white mb-1">No matching titles</p>
+        <p class="text-sm">Try searching a different title, genre, or cast member.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       DETAIL MODAL (CAST AVATARS, REVIEWS, SEASONS, FIX MATCH + POSTER PICKER)
   ========================================================== -->
   <div id="detailModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-sm p-2 sm:p-5 overflow-y-auto">
     <div class="modal-anim relative w-full max-w-4xl bg-nf-surface rounded-2xl overflow-hidden shadow-2xl border border-white/10 my-auto max-h-[92vh] flex flex-col">
@@ -502,11 +629,11 @@
           </div>
         </div>
 
-        <!-- FIX MATCH / CHANGE POSTER PANEL -->
+        <!-- FIX MATCH / POSTER & BACKDROP PICKER PANEL -->
         <div id="fixMatchBox" class="hidden mx-4 sm:mx-8 mt-5 p-4 rounded-xl bg-nf-elevated border border-white/15 space-y-4">
           <div class="flex items-center justify-between gap-2">
             <div>
-              <h3 class="text-sm font-bold text-white">Fix Match / Change Poster</h3>
+              <h3 class="text-sm font-bold text-white">Fix Match / Change Poster & Backdrop</h3>
               <p class="text-xs text-gray-400">Saved permanently in this browser for this title.</p>
             </div>
             <button onclick="toggleFixMatch(false)" class="p-1.5 rounded-full hover:bg-white/10 text-gray-400 hover:text-white">
@@ -527,10 +654,22 @@
             </button>
           </div>
 
-          <div id="fixMatchResults" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-56 overflow-y-auto no-scrollbar"></div>
+          <div id="fixMatchResults" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-52 overflow-y-auto no-scrollbar"></div>
+
+          <!-- Artwork Picker (Posters & Backdrops for current TMDB ID) -->
+          <div id="artworkPickerWrap" class="hidden pt-3 border-t border-white/10 space-y-3">
+            <div>
+              <p class="text-xs font-bold text-gray-300 uppercase tracking-wider mb-2">Pick Poster (2:3)</p>
+              <div id="posterPickerList" class="flex gap-2.5 overflow-x-auto no-scrollbar pb-1"></div>
+            </div>
+            <div>
+              <p class="text-xs font-bold text-gray-300 uppercase tracking-wider mb-2">Pick Billboard Backdrop (16:9)</p>
+              <div id="backdropPickerList" class="flex gap-2.5 overflow-x-auto no-scrollbar pb-1"></div>
+            </div>
+          </div>
         </div>
 
-        <!-- Metadata, Overview, Cast, Seasons & Reviews -->
+        <!-- Metadata, Overview, Cast Avatars, Seasons & Reviews -->
         <div class="p-4 sm:p-8 space-y-6">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
             <div class="md:col-span-2 space-y-3">
@@ -545,9 +684,14 @@
             </div>
             <div class="text-xs sm:text-sm space-y-2 text-gray-400">
               <div><span class="text-gray-500">Genres:</span> <span id="detailGenres" class="text-gray-200"></span></div>
-              <div id="detailCastRow" class="hidden"><span class="text-gray-500">Cast:</span> <span id="detailCast" class="text-gray-200"></span></div>
               <div id="detailFolderRow" class="hidden"><span class="text-gray-500">Folder:</span> <span id="detailFolder" class="text-gray-300 break-words"></span></div>
             </div>
+          </div>
+
+          <!-- Cast Row with Circular Avatars -->
+          <div id="detailCastSection" class="hidden space-y-2.5">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-gray-400">Top Cast</h3>
+            <div id="detailCastList" class="flex items-start gap-3.5 overflow-x-auto no-scrollbar pb-1"></div>
           </div>
 
           <!-- Detail Sub-Tabs (Episodes / Reviews) -->
@@ -568,7 +712,6 @@
                 class="bg-nf-elevated text-white text-xs sm:text-sm font-semibold px-3.5 py-2 rounded-lg border border-white/20 outline-none focus:border-nf-red cursor-pointer">
               </select>
             </div>
-
             <div id="detailSeasonPills" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1"></div>
             <div id="detailEpisodesList" class="space-y-3"></div>
           </div>
@@ -728,11 +871,23 @@
   </div>
 
   <!-- =========================================================
-       RELIABLE FULL-BLEED VIDEO PLAYER (ZERO CRASH / ZERO URL LEAK)
+       FULLSCREEN & IMMERSIVE VIDEO PLAYER (CRASH-FREE)
   ========================================================== -->
-  <div id="playerOverlay" class="hidden select-none">
-    <!-- Top Bar: Clean Movie/Episode Title ONLY (Never displays raw URLs or tokens) -->
-    <div id="playerTopBar" class="safe-top bg-[#0c0c0f]/95 border-b border-white/10 px-3 sm:px-5 py-2.5 flex flex-wrap items-center justify-between gap-2">
+  <div id="playerOverlay" class="hidden select-none" onmousemove="revealPlayerHud()" ontouchstart="revealPlayerHud()">
+
+    <!-- Floating Restore Pill (Visible ONLY in Cinema Fill / Immersive Mode) -->
+    <div id="immersiveRestorePill" class="fixed top-3 right-3 z-40 items-center gap-1.5 bg-black/65 hover:bg-black/90 backdrop-blur-md border border-white/20 rounded-full px-3 py-1.5 safe-top transition">
+      <button onclick="toggleImmersiveMode(false)" class="text-[11px] font-semibold text-white hover:text-nf-red transition px-1">
+        Show Controls
+      </button>
+      <span class="text-white/30">|</span>
+      <button onclick="closePlayer()" class="text-[11px] font-semibold text-gray-300 hover:text-white transition px-1">
+        Exit
+      </button>
+    </div>
+
+    <!-- Auto-Hiding Top Control Bar (Clean Title ONLY — Never shows raw URLs/tokens) -->
+    <div id="playerTopBar" class="safe-top px-3 sm:px-5 py-3 flex flex-wrap items-center justify-between gap-2">
       <div class="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
         <button onclick="closePlayer()" aria-label="Back" class="p-2 rounded-full bg-white/10 hover:bg-white/25 text-white transition active:scale-90 shrink-0">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
@@ -743,25 +898,39 @@
         </div>
       </div>
 
-      <!-- Controls: Cinema Enhance | Drive Stream / Direct HTML5 | Open in Drive App | Next Ep -->
+      <!-- Right Controls: Cinema Enhance | Drive Stream / Direct HTML5 | Cinema Fill | Fullscreen | Open Drive | Next Ep -->
       <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 shrink-0">
-        <!-- Cinema Enhance Visual Boost Toggle -->
-        <button id="cinemaEnhanceBtn" onclick="toggleCinemaEnhance()" title="Subtle Cinema Contrast & Color Enhance"
-          class="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 border border-white/15 text-gray-200 text-[11px] sm:text-xs font-semibold px-3 py-1.5 rounded-full transition active:scale-95">
+        <!-- Cinema Enhance -->
+        <button id="cinemaEnhanceBtn" onclick="toggleCinemaEnhance()" title="Cinema Enhance Visual Boost"
+          class="flex items-center gap-1 bg-white/10 hover:bg-white/20 border border-white/15 text-gray-200 text-[11px] sm:text-xs font-semibold px-2.5 py-1.5 rounded-full transition active:scale-95">
           <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 3l1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3z"/></svg>
-          <span>Cinema Enhance</span>
+          <span class="hidden sm:inline">Enhance</span>
         </button>
 
         <!-- Engine Switcher (Default: Drive Stream) -->
         <div id="engineSwitcher" class="hidden items-center bg-black/70 border border-white/20 rounded-full p-0.5">
-          <button id="btnEngineEmbed" onclick="switchPlayerEngine('embed')" class="px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold transition">Drive Stream</button>
-          <button id="btnEngineDirect" onclick="switchPlayerEngine('direct')" class="px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold transition">Direct HTML5</button>
+          <button id="btnEngineEmbed" onclick="switchPlayerEngine('embed')" class="px-2.5 py-1 rounded-full text-[11px] font-semibold transition">Drive Stream</button>
+          <button id="btnEngineDirect" onclick="switchPlayerEngine('direct')" class="px-2.5 py-1 rounded-full text-[11px] font-semibold transition">Direct HTML5</button>
         </div>
 
+        <!-- Cinema Fill / Immersive Mode (True edge-to-edge on iPadOS Safari) -->
+        <button onclick="toggleImmersiveMode(true)" title="Cinema Fill — Hide all bars for edge-to-edge viewing"
+          class="flex items-center gap-1 bg-white/10 hover:bg-white/20 border border-white/15 text-gray-100 text-[11px] sm:text-xs font-semibold px-2.5 py-1.5 rounded-full transition active:scale-95">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M8 5v14M16 5v14"/></svg>
+          <span class="hidden md:inline">Cinema Fill</span>
+        </button>
+
+        <!-- Dedicated Fullscreen Button (F) -->
+        <button onclick="togglePlayerFullscreen()" title="Fullscreen (F)"
+          class="flex items-center gap-1 bg-white/15 hover:bg-white/25 border border-white/25 text-white text-[11px] sm:text-xs font-semibold px-2.5 py-1.5 rounded-full transition active:scale-95">
+          <svg id="fsIcon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+          <span class="hidden sm:inline">Fullscreen</span>
+        </button>
+
         <!-- Open in Drive App -->
-        <button id="openInDriveBtn" onclick="openCurrentInDrive()"
-          class="hidden items-center gap-1 bg-white/10 hover:bg-white/20 border border-white/15 text-gray-100 text-[11px] sm:text-xs font-semibold px-3 py-1.5 rounded-full transition active:scale-95">
-          <span>Open in Drive App</span>
+        <button id="openInDriveBtn" onclick="openCurrentInDrive()" title="Open in Google Drive App"
+          class="hidden items-center gap-1 bg-white/10 hover:bg-white/20 border border-white/15 text-gray-100 text-[11px] sm:text-xs font-semibold px-2.5 py-1.5 rounded-full transition active:scale-95">
+          <span>Drive App</span>
         </button>
 
         <!-- Next Episode -->
@@ -773,9 +942,9 @@
       </div>
     </div>
 
-    <!-- Non-Collapsing Player Stage -->
+    <!-- Non-Collapsing Video Stage -->
     <div id="playerStage">
-      <video id="videoEl" playsinline webkit-playsinline controls preload="metadata" crossorigin="anonymous"></video>
+      <video id="videoEl" playsinline webkit-playsinline preload="metadata" crossorigin="anonymous" onclick="toggleDirectPlayPause()"></video>
       <iframe id="driveEmbedIframe" class="hidden" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen></iframe>
 
       <!-- Clean Loading Spinner -->
@@ -784,19 +953,68 @@
         <p id="playerSpinnerText" class="text-xs sm:text-sm text-gray-200 mt-3 font-medium">Loading stream...</p>
       </div>
     </div>
+
+    <!-- Custom Bottom Controls HUD (Direct HTML5 Mode Only) -->
+    <div id="directControlsHud" class="hidden safe-bottom px-4 sm:px-6 pb-4 pt-6 space-y-2.5">
+      <!-- Seek Bar -->
+      <div class="flex items-center gap-3">
+        <span id="directCurTime" class="text-[11px] sm:text-xs font-mono text-gray-200 w-12 text-right shrink-0">0:00</span>
+        <input id="directSeekBar" type="range" min="0" max="100" value="0" step="0.1" oninput="seekDirectVideo(this.value)" class="nf-range flex-1" />
+        <span id="directDurTime" class="text-[11px] sm:text-xs font-mono text-gray-400 w-12 shrink-0">0:00</span>
+      </div>
+
+      <!-- Playback Buttons -->
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <div class="flex items-center gap-2 sm:gap-3">
+          <button onclick="toggleDirectPlayPause()" aria-label="Play/Pause" class="w-10 h-10 rounded-full bg-white text-black hover:bg-gray-200 flex items-center justify-center transition active:scale-90">
+            <svg id="directPlayIcon" class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+
+          <button onclick="skipDirectVideo(-10)" title="-10 seconds" class="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-bold text-white transition active:scale-95">
+            -10s
+          </button>
+
+          <button onclick="skipDirectVideo(10)" title="+10 seconds" class="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-bold text-white transition active:scale-95">
+            +10s
+          </button>
+
+          <button onclick="toggleDirectMute()" aria-label="Mute" class="p-2 rounded-lg bg-white/10 hover:bg-white/20 text-white transition active:scale-95">
+            <svg id="directMuteIcon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 5 6 9H2v6h4l5 4V5Z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+          </button>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <!-- Playback Speed -->
+          <select id="directSpeedSelect" onchange="setDirectSpeed(this.value)"
+            class="bg-white/10 hover:bg-white/20 border border-white/15 rounded-lg px-2.5 py-1.5 text-xs font-bold text-white outline-none cursor-pointer">
+            <option value="0.75" class="bg-[#18181b]">0.75x</option>
+            <option value="1" selected class="bg-[#18181b]">1x</option>
+            <option value="1.25" class="bg-[#18181b]">1.25x</option>
+            <option value="1.5" class="bg-[#18181b]">1.5x</option>
+            <option value="2" class="bg-[#18181b]">2x</option>
+          </select>
+
+          <!-- Load Local .srt / .vtt Subtitles -->
+          <label class="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 border border-white/15 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-white cursor-pointer transition active:scale-95">
+            <span>CC (.srt/.vtt)</span>
+            <input type="file" accept=".srt,.vtt" class="hidden" onchange="loadSubtitleFile(this.files[0]); this.value='';" />
+          </label>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- TOAST STACK -->
   <div id="toastStack" class="fixed bottom-20 md:bottom-6 right-4 z-[10005] flex flex-col gap-2 max-w-xs sm:max-w-sm pointer-events-none"></div>
 
   <!-- =========================================================
-       DRIVEFLIX v5 CORE ENGINE
+       DRIVEFLIX v6 CORE ENGINE
   ========================================================== -->
   <script>
     'use strict';
 
     /* ==========================================================
-       1. CREDENTIALS & PERSISTENT STORAGE KEYS (df_v5_*)
+       1. PRE-CONFIGURED CREDENTIALS & STORAGE KEYS (df_v6_*)
     ========================================================== */
     const DEFAULTS = {
       TMDB_KEY: '7b9a12af809f78ea58b825ed3090934a',
@@ -805,23 +1023,26 @@
     };
 
     const KEYS = {
-      USER: 'df_v5_user',
-      TOKEN: 'df_v5_token',
-      TOKEN_EXP: 'df_v5_token_exp',
-      LIBRARY: 'df_v5_library',
-      TMDB_CACHE: 'df_v5_tmdb_cache',
-      OVERRIDES: 'df_v5_overrides',
-      PROGRESS: 'df_v5_progress',
-      MYLIST: 'df_v5_mylist',
-      SETTINGS: 'df_v5_settings'
+      USER: 'df_v6_user',
+      TOKEN: 'df_v6_token',
+      TOKEN_EXP: 'df_v6_token_exp',
+      LIBRARY: 'df_v6_library',
+      TMDB_CACHE: 'df_v6_tmdb_cache',
+      OVERRIDES: 'df_v6_overrides',
+      PROGRESS: 'df_v6_progress',
+      MYLIST: 'df_v6_mylist',
+      SETTINGS: 'df_v6_settings'
     };
 
     const TMDB_API = 'https://api.themoviedb.org/3';
     const IMG_POSTER = 'https://image.tmdb.org/t/p/w500';
-    const IMG_BACKDROP = 'https://image.tmdb.org/t/p/w1280';
     const IMG_BACKDROP_ORIG = 'https://image.tmdb.org/t/p/original';
+    const IMG_BACKDROP_SM = 'https://image.tmdb.org/t/p/w500';
     const IMG_LOGO = 'https://image.tmdb.org/t/p/w500';
     const IMG_STILL = 'https://image.tmdb.org/t/p/w500';
+    const IMG_PROFILE = 'https://image.tmdb.org/t/p/w185';
+
+    const QUICK_GENRES = ['All', 'Movies', 'TV Shows', 'Action', 'Comedy', 'Drama', 'Thriller', 'Sci-Fi'];
 
     const GENERIC_FOLDERS = new Set([
       'my drive', 'drive', 'movies', 'movie', 'tv', 'tv shows', 'tv series', 'series',
@@ -890,7 +1111,7 @@
       myList: [],
 
       activeTab: 'home',
-      searchQuery: '',
+      activeGenre: 'All',
       heroItems: [],
       heroIndex: 0,
       heroTimer: null,
@@ -905,9 +1126,12 @@
         item: null,
         episode: null,
         engine: 'embed',
+        immersive: false,
         blobUrl: null,
+        subBlobUrl: null,
         stallTimer: null,
         iframeSpinnerTimer: null,
+        hudHideTimer: null,
         lastProgressSave: 0
       }
     };
@@ -972,7 +1196,7 @@
       stack.appendChild(el);
       setTimeout(() => {
         el.style.opacity = '0';
-        el.style.transform = 'translateY(8px)';
+        el.style.transform = 'translate3d(0, 8px, 0)';
         el.style.transition = 'all 0.25s ease';
         setTimeout(() => el.remove(), 260);
       }, 3400);
@@ -1005,7 +1229,7 @@
     };
 
     /* ==========================================================
-       5. PERSISTENT AUTH & 1-TAP RECONNECT
+       5. BULLETPROOF PERSISTENT AUTH & 1-TAP RECONNECT
     ========================================================== */
     function isTokenActive() {
       return Boolean(state.token && state.tokenExp > (Date.now() + 60000));
@@ -1026,8 +1250,7 @@
       demoBanner.classList.toggle('hidden', state.sourceMode !== 'demo');
 
       if (hasSavedDriveSession()) {
-        syncBtn.classList.remove('hidden');
-        syncBtn.classList.add('flex');
+        syncBtn.classList.remove('hidden'); syncBtn.classList.add('flex');
         if (state.user?.picture) {
           avatar.src = state.user.picture;
           avatar.classList.remove('hidden');
@@ -1035,25 +1258,19 @@
 
         if (isTokenActive()) {
           dot.className = 'w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)] shrink-0';
-          label.textContent = state.user?.name?.split(' ')[0] || 'Drive Connected';
-          reconnectPill.classList.add('hidden');
-          reconnectPill.classList.remove('flex');
+          label.textContent = state.user?.name?.split(' ')[0] || 'Connected';
+          reconnectPill.classList.add('hidden'); reconnectPill.classList.remove('flex');
         } else {
           dot.className = 'w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.9)] shrink-0';
-          label.textContent = state.user?.name?.split(' ')[0] || 'Drive Cached';
-          reconnectPill.classList.remove('hidden');
-          reconnectPill.classList.add('flex');
+          label.textContent = state.user?.name?.split(' ')[0] || 'Cached';
+          reconnectPill.classList.remove('hidden'); reconnectPill.classList.add('flex');
         }
       } else if (state.sourceMode === 'local') {
-        syncBtn.classList.add('hidden');
-        reconnectPill.classList.add('hidden');
-        avatar.classList.add('hidden');
+        syncBtn.classList.add('hidden'); reconnectPill.classList.add('hidden'); avatar.classList.add('hidden');
         dot.className = 'w-2 h-2 rounded-full bg-sky-400 shrink-0';
         label.textContent = `Local (${state.library.length})`;
       } else {
-        syncBtn.classList.add('hidden');
-        reconnectPill.classList.add('hidden');
-        avatar.classList.add('hidden');
+        syncBtn.classList.add('hidden'); reconnectPill.classList.add('hidden'); avatar.classList.add('hidden');
         dot.className = 'w-2 h-2 rounded-full bg-amber-400 shrink-0';
         label.textContent = 'Connect Drive';
       }
@@ -1347,7 +1564,7 @@
     }
 
     /* ==========================================================
-       7. TMDB METADATA, CAST, REVIEWS & OFFICIAL LOGOS
+       7. TMDB METADATA, CAST AVATARS, REVIEWS & LOGOS
     ========================================================== */
     async function tmdbFetch(endpoint, params = {}, bypassCache = false, attempt = 0) {
       const url = new URL(`${TMDB_API}${endpoint}`);
@@ -1423,7 +1640,11 @@
       const dateStr = d.release_date || d.first_air_date || '';
       const runtimeMin = d.runtime || (Array.isArray(d.episode_run_time) ? d.episode_run_time[0] : 0) || 0;
       const runtimeStr = runtimeMin >= 60 ? `${Math.floor(runtimeMin / 60)}h ${runtimeMin % 60}m` : (runtimeMin > 0 ? `${runtimeMin}m` : '');
-      const cast = (d.credits?.cast || []).slice(0, 5).map(c => c.name);
+      const cast = (d.credits?.cast || []).slice(0, 8).map(c => ({
+        name: c.name,
+        character: c.character || '',
+        avatar: c.profile_path ? `${IMG_PROFILE}${c.profile_path}` : ''
+      }));
 
       return {
         tmdbId: `${mediaType}-${d.id}`,
@@ -1462,7 +1683,11 @@
       const ov = state.overrides[parsed.groupKey];
       if (ov?.rawTmdbId && ov?.mediaType) {
         const full = await fetchTmdbDetails(ov.mediaType, ov.rawTmdbId);
-        if (full) return { ...full, groupKey: parsed.groupKey, driveThumb };
+        if (full) {
+          if (ov.customPoster) full.poster = ov.customPoster;
+          if (ov.customBackdrop) { full.backdrop = ov.customBackdrop; full.hasTmdbBackdrop = true; }
+          return { ...full, groupKey: parsed.groupKey, driveThumb };
+        }
       }
 
       let hit = null, resolvedType = parsed.mediaType;
@@ -1710,6 +1935,7 @@
       state.heroIndex = 0;
 
       updateAuthUI();
+      renderGenreChips();
       renderHero();
       startHeroCycle();
       renderCurrentView();
@@ -1881,15 +2107,11 @@
       if (!hero) {
         stopBillboardTrailer();
         heroSec.classList.add('hidden');
-        document.getElementById('homeRowsSection').classList.remove('-mt-6', 'sm:-mt-10');
-        document.getElementById('homeRowsSection').classList.add('pt-24');
         return;
       }
 
-      if (state.activeTab === 'home' && !state.searchQuery) {
+      if (state.activeTab === 'home' && state.activeGenre === 'All') {
         heroSec.classList.remove('hidden');
-        document.getElementById('homeRowsSection').classList.add('-mt-6', 'sm:-mt-10');
-        document.getElementById('homeRowsSection').classList.remove('pt-24');
       }
 
       stopBillboardTrailer();
@@ -1946,7 +2168,8 @@
           const modalOpen = !document.getElementById('detailModal').classList.contains('hidden');
           const drawerOpen = !document.getElementById('driveDrawerOverlay').classList.contains('hidden');
           const playerOpen = !document.getElementById('playerOverlay').classList.contains('hidden');
-          if (modalOpen || drawerOpen || playerOpen || state.activeTab !== 'home' || state.searchQuery) return;
+          const searchOpen = !document.getElementById('searchOverlay').classList.contains('hidden');
+          if (modalOpen || drawerOpen || playerOpen || searchOpen || state.activeTab !== 'home' || state.activeGenre !== 'All') return;
 
           const iframe = document.getElementById('heroTrailerIframe');
           const layer = document.getElementById('heroTrailerLayer');
@@ -1986,7 +2209,8 @@
         const modalOpen = !document.getElementById('detailModal').classList.contains('hidden');
         const drawerOpen = !document.getElementById('driveDrawerOverlay').classList.contains('hidden');
         const playerOpen = !document.getElementById('playerOverlay').classList.contains('hidden');
-        if (!modalOpen && !drawerOpen && !playerOpen && state.activeTab === 'home' && !state.searchQuery && state.heroItems.length > 1) {
+        const searchOpen = !document.getElementById('searchOverlay').classList.contains('hidden');
+        if (!modalOpen && !drawerOpen && !playerOpen && !searchOpen && state.activeTab === 'home' && state.activeGenre === 'All' && state.heroItems.length > 1) {
           shiftHero(1);
         }
       }, 14000);
@@ -1997,57 +2221,103 @@
     function toggleHeroWatchlist() { const h = state.heroItems[state.heroIndex]; if (!h) return; toggleMyList(h.tmdbId); updateHeroWatchlistIcon(h.tmdbId); }
 
     /* ==========================================================
-       10. NETFLIX ROWS, MY LIST & NAVIGATION
+       10. GENRE CHIPS, TOP 10 SVG RANKS, ROWS & SURPRISE ME
     ========================================================== */
+    function renderGenreChips() {
+      const el = document.getElementById('genreChipsContainer');
+      el.innerHTML = QUICK_GENRES.map(g => {
+        const active = state.activeGenre === g;
+        return `
+          <button onclick="selectGenreChip('${g}')"
+            class="px-4 py-1.5 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap transition active:scale-95 border ${
+              active
+                ? 'bg-white text-black border-white shadow-lg'
+                : 'bg-white/[0.08] hover:bg-white/[0.16] text-gray-200 border-white/15 backdrop-blur-md'
+            }">${g}</button>
+        `;
+      }).join('');
+    }
+
+    function selectGenreChip(genre) {
+      state.activeGenre = genre;
+      renderGenreChips();
+      renderCurrentView();
+    }
+
+    function filterByGenreChip(items, genre) {
+      if (genre === 'All') return items;
+      if (genre === 'Movies') return items.filter(i => i.mediaType === 'movie');
+      if (genre === 'TV Shows') return items.filter(i => i.mediaType === 'tv');
+      const gLower = genre.toLowerCase();
+      return items.filter(i => (i.genres || []).some(g => {
+        const gl = g.toLowerCase();
+        if (gLower === 'sci-fi') return gl.includes('sci-fi') || gl.includes('science fiction');
+        return gl.includes(gLower);
+      }));
+    }
+
+    function playSurpriseMe() {
+      if (!state.library.length) { showToast('No videos in library yet.', 'info'); return; }
+      const pick = state.library[Math.floor(Math.random() * state.library.length)];
+      showToast(`Surprise Pick: ${pick.title}`, 'success');
+      quickPlay(pick.tmdbId);
+    }
+
+    function resetToHome() {
+      state.activeGenre = 'All';
+      renderGenreChips();
+      navigateTab('home');
+    }
+
     function renderCurrentView() {
       const heroSec = document.getElementById('heroSection');
+      const genreBar = document.getElementById('genreFilterBar');
       const rowsSec = document.getElementById('homeRowsSection');
       const gridSec = document.getElementById('gridViewSection');
-      const mobileSearchBox = document.getElementById('mobileSearchBox');
 
-      if (state.searchQuery.trim() || state.activeTab === 'search') {
-        stopBillboardTrailer();
-        heroSec.classList.add('hidden');
-        rowsSec.classList.add('hidden');
-        gridSec.classList.remove('hidden');
-        mobileSearchBox.classList.toggle('hidden', state.activeTab !== 'search');
-
-        const q = state.searchQuery.trim().toLowerCase();
-        const items = q
-          ? state.library.filter(i =>
-              i.title.toLowerCase().includes(q) ||
-              (i.genres || []).some(g => g.toLowerCase().includes(q)) ||
-              (i.year || '').includes(q)
-            )
-          : state.library;
-
-        renderGrid(q ? `Search: "${state.searchQuery}"` : 'Browse All Titles', `${items.length} title${items.length === 1 ? '' : 's'}`, items);
+      if (state.activeTab === 'home') {
+        genreBar.classList.remove('hidden');
+        if (state.activeGenre === 'All') {
+          if (state.heroItems.length) heroSec.classList.remove('hidden');
+          genreBar.classList.add('-mt-5', 'sm:-mt-8');
+          genreBar.classList.remove('pt-24');
+          rowsSec.classList.remove('hidden');
+          gridSec.classList.add('hidden');
+          renderHomeRows();
+        } else {
+          stopBillboardTrailer();
+          heroSec.classList.add('hidden');
+          genreBar.classList.remove('-mt-5', 'sm:-mt-8');
+          genreBar.classList.add('pt-24');
+          rowsSec.classList.add('hidden');
+          gridSec.classList.remove('hidden');
+          gridSec.classList.remove('pt-24', 'sm:pt-28');
+          gridSec.classList.add('pt-2');
+          const filtered = filterByGenreChip(state.library, state.activeGenre);
+          renderGrid(state.activeGenre, `${filtered.length} title${filtered.length === 1 ? '' : 's'} in your library`, filtered);
+        }
         return;
       }
 
-      mobileSearchBox.classList.add('hidden');
+      stopBillboardTrailer();
+      heroSec.classList.add('hidden');
+      genreBar.classList.add('hidden');
+      rowsSec.classList.add('hidden');
+      gridSec.classList.remove('hidden', 'pt-2');
+      gridSec.classList.add('pt-24', 'sm:pt-28');
 
-      if (state.activeTab === 'home') {
-        if (state.heroItems.length) heroSec.classList.remove('hidden');
-        rowsSec.classList.remove('hidden');
-        gridSec.classList.add('hidden');
-        renderHomeRows();
-      } else {
-        stopBillboardTrailer();
-        heroSec.classList.add('hidden');
-        rowsSec.classList.add('hidden');
-        gridSec.classList.remove('hidden');
-
-        if (state.activeTab === 'tv') {
-          const tv = state.library.filter(i => i.mediaType === 'tv');
-          renderGrid('TV Shows', `${tv.length} series organized by seasons & episodes`, tv);
-        } else if (state.activeTab === 'movie') {
-          const mv = state.library.filter(i => i.mediaType === 'movie');
-          renderGrid('Movies', `${mv.length} movies sorted by TMDB rating`, mv);
-        } else if (state.activeTab === 'mylist') {
-          const ml = state.library.filter(i => state.myList.includes(i.tmdbId));
-          renderGrid('My List', `${ml.length} saved title${ml.length === 1 ? '' : 's'}`, ml);
-        }
+      if (state.activeTab === 'tv') {
+        const tv = state.library.filter(i => i.mediaType === 'tv');
+        renderGrid('TV Shows', `${tv.length} series organized by seasons & episodes`, tv);
+      } else if (state.activeTab === 'movie') {
+        const mv = state.library.filter(i => i.mediaType === 'movie');
+        renderGrid('Movies', `${mv.length} movies sorted by TMDB rating`, mv);
+      } else if (state.activeTab === 'top10') {
+        const top10 = [...state.library].sort((a, b) => (b.rating || 0) - (a.rating || 0)).slice(0, 10);
+        renderGrid('Top 10 on Your Drive', 'Highest-rated movies & series by TMDB score', top10, true);
+      } else if (state.activeTab === 'mylist') {
+        const ml = state.library.filter(i => state.myList.includes(i.tmdbId));
+        renderGrid('My List', `${ml.length} saved title${ml.length === 1 ? '' : 's'}`, ml);
       }
     }
 
@@ -2077,13 +2347,13 @@
       cw.sort((a, b) => b.updatedAt - a.updatedAt);
       if (cw.length) rows.push({ id: 'cw', title: 'Continue Watching', kind: 'continue', items: cw });
 
-      // 2. My List
+      // 2. Top 10 on Your Drive (Netflix oversized SVG rank numbers)
+      const top10 = [...state.library].sort((a, b) => (b.rating || 0) - (a.rating || 0)).slice(0, 10);
+      if (top10.length) rows.push({ id: 'top10', title: 'Top 10 on Your Drive', kind: 'top10', items: top10 });
+
+      // 3. My List
       const myListItems = state.library.filter(i => state.myList.includes(i.tmdbId));
       if (myListItems.length) rows.push({ id: 'mylist', title: 'My List', kind: 'poster', items: myListItems });
-
-      // 3. Top Rated
-      const topRated = [...state.library].sort((a, b) => (b.rating || 0) - (a.rating || 0)).slice(0, 20);
-      if (topRated.length) rows.push({ id: 'top', title: 'Top Rated', kind: 'poster', items: topRated, showRank: true });
 
       // 4. TV Series
       const tvShows = state.library.filter(i => i.mediaType === 'tv');
@@ -2093,7 +2363,7 @@
       const movies = state.library.filter(i => i.mediaType === 'movie');
       if (movies.length) rows.push({ id: 'movies', title: 'Movies', kind: 'poster', items: movies });
 
-      // 6. Genre Rows
+      // 6. Dynamic Genre Rows
       const genreMap = new Map();
       state.library.forEach(item => {
         (item.genres || []).forEach(g => {
@@ -2110,9 +2380,10 @@
         .forEach(([g, arr], idx) => rows.push({ id: `g-${idx}`, title: g, kind: 'poster', items: arr }));
 
       container.innerHTML = rows.map(r => {
-        const cards = r.kind === 'continue'
-          ? r.items.map(buildContinueCard).join('')
-          : r.items.map((it, idx) => buildPosterCard(it, r.showRank ? idx + 1 : null, false)).join('');
+        let cards = '';
+        if (r.kind === 'continue') cards = r.items.map(buildContinueCard).join('');
+        else if (r.kind === 'top10') cards = r.items.map((it, idx) => buildTop10Card(it, idx + 1)).join('');
+        else cards = r.items.map(it => buildPosterCard(it, null, false)).join('');
 
         return `
           <div class="group/row relative">
@@ -2123,7 +2394,7 @@
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
               </button>
 
-              <div id="row-${r.id}" class="snap-row flex gap-3 sm:gap-4 overflow-x-auto no-scrollbar scroll-smooth py-2.5 px-0.5">
+              <div id="row-${r.id}" class="snap-row flex ${r.kind === 'top10' ? 'gap-4 sm:gap-6' : 'gap-3 sm:gap-4'} overflow-x-auto no-scrollbar scroll-smooth py-2.5 px-0.5">
                 ${cards}
               </div>
 
@@ -2137,12 +2408,39 @@
       }).join('');
     }
 
+    function buildTop10Card(item, rank) {
+      const primarySrc = item.poster || item.driveThumb || '';
+      const isDouble = rank >= 10;
+      return `
+        <div onclick="openDetailModal('${esc(item.tmdbId)}')"
+          class="top10-card snap-card shrink-0 flex items-end cursor-pointer select-none">
+          <svg class="${isDouble ? 'w-[82px] sm:w-[104px]' : 'w-[58px] sm:w-[76px]'} h-[135px] sm:h-[175px] -mr-4 sm:-mr-5 z-0 shrink-0 pointer-events-none" viewBox="${isDouble ? '0 0 130 150' : '0 0 95 150'}">
+            <text x="50%" y="136" text-anchor="middle" fill="#141414" stroke="#6b7280" stroke-width="4" font-family="Inter, sans-serif" font-weight="900" font-size="${isDouble ? '118' : '142'}" letter-spacing="-8">${rank}</text>
+          </svg>
+          <div class="poster-aspect relative z-10 w-[124px] sm:w-[152px] md:w-[168px] rounded-xl overflow-hidden bg-nf-surface border border-white/15 shadow-2xl">
+            ${primarySrc ? `
+              <img src="${esc(primarySrc)}" data-fb-step="0" data-fb-drive="${esc(item.driveThumb || '')}"
+                alt="${esc(item.title)}" loading="lazy" onerror="onPosterError(this)" class="poster-img" />
+            ` : ''}
+            <div class="typo-card ${primarySrc ? 'hidden' : 'flex'} absolute inset-0 flex-col justify-between p-3 bg-gradient-to-br from-[#35090e] via-[#18181b] to-[#141414]">
+              <span class="text-[9px] font-black text-nf-red">#${rank}</span>
+              <p class="text-xs font-extrabold text-white line-clamp-3">${esc(item.title)}</p>
+              <div class="h-0.5 w-6 bg-nf-red rounded-full"></div>
+            </div>
+            <div class="absolute top-2 right-2 px-1.5 py-0.5 rounded bg-black/75 text-amber-400 text-[10px] font-bold border border-white/10">
+              ${item.rating > 0 ? `★ ${item.rating}` : 'HD'}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
     function buildPosterCard(item, rank = null, isGrid = false) {
       const sizeCls = isGrid ? 'w-full' : 'snap-card shrink-0 w-[138px] sm:w-[172px] md:w-[192px]';
       const primarySrc = item.poster || item.driveThumb || '';
       const seasonCount = item.mediaType === 'tv' ? Object.keys(item.seasons || {}).length : 0;
       const rightBadge = rank
-        ? `<span class="px-1.5 py-0.5 rounded bg-white text-black text-[10px] font-black shadow">#${rank}</span>`
+        ? `<span class="px-1.5 py-0.5 rounded bg-nf-red text-white text-[10px] font-black shadow">#${rank}</span>`
         : (seasonCount > 0 ? `<span class="px-1.5 py-0.5 rounded bg-nf-red text-white text-[10px] font-bold">${seasonCount}S</span>` : '');
 
       return `
@@ -2225,14 +2523,14 @@
       showToast('Removed from Continue Watching', 'info');
     }
 
-    function renderGrid(title, subtitle, items) {
+    function renderGrid(title, subtitle, items, showRank = false) {
       document.getElementById('gridTitle').textContent = title;
       document.getElementById('gridSubtitle').textContent = subtitle;
       const grid = document.getElementById('gridCards');
       const empty = document.getElementById('gridEmpty');
       if (!items.length) { grid.innerHTML = ''; empty.classList.remove('hidden'); return; }
       empty.classList.add('hidden');
-      grid.innerHTML = items.map(it => buildPosterCard(it, null, true)).join('');
+      grid.innerHTML = items.map((it, idx) => buildPosterCard(it, showRank ? idx + 1 : null, true)).join('');
     }
 
     function scrollRow(id, dir) {
@@ -2242,14 +2540,6 @@
 
     function navigateTab(tab) {
       state.activeTab = tab;
-      if (tab !== 'search') {
-        state.searchQuery = '';
-        document.getElementById('desktopSearchInput').value = '';
-        document.getElementById('mobileSearchInput').value = '';
-        document.getElementById('desktopClearSearch').classList.add('hidden');
-        document.getElementById('mobileClearSearch').classList.add('hidden');
-      }
-
       document.querySelectorAll('.top-nav-btn').forEach(btn => {
         const active = btn.getAttribute('data-tab') === tab;
         btn.classList.toggle('text-white', active);
@@ -2267,21 +2557,6 @@
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
       renderCurrentView();
-      if (tab === 'search') setTimeout(() => document.getElementById('mobileSearchInput')?.focus(), 100);
-    }
-
-    function handleSearchInput(val) {
-      state.searchQuery = val;
-      document.getElementById('desktopSearchInput').value = val;
-      document.getElementById('mobileSearchInput').value = val;
-      document.getElementById('desktopClearSearch').classList.toggle('hidden', !val);
-      document.getElementById('mobileClearSearch').classList.toggle('hidden', !val);
-      renderCurrentView();
-    }
-
-    function clearSearch() {
-      handleSearchInput('');
-      if (state.activeTab === 'search') document.getElementById('mobileSearchInput').focus();
     }
 
     function toggleMyList(tmdbId) {
@@ -2293,9 +2568,61 @@
     }
 
     /* ==========================================================
-       11. DETAIL MODAL (CAST, TMDB REVIEWS, SEASONS, FIX MATCH)
+       11. LIVE SEARCH OVERLAY (TITLE, GENRE, CAST, YEAR)
+    ========================================================== */
+    function openSearchOverlay() {
+      stopBillboardTrailer();
+      const ov = document.getElementById('searchOverlay');
+      ov.classList.remove('hidden');
+      ov.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      const inp = document.getElementById('liveSearchInput');
+      renderLiveSearchResults(inp.value);
+      setTimeout(() => inp.focus(), 60);
+    }
+
+    function closeSearchOverlay() {
+      const ov = document.getElementById('searchOverlay');
+      ov.classList.add('hidden');
+      ov.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    function renderLiveSearchResults(query) {
+      const q = String(query || '').trim().toLowerCase();
+      document.getElementById('liveSearchClear').classList.toggle('hidden', !q);
+
+      const matches = q
+        ? state.library.filter(item => {
+            const inTitle = (item.title || '').toLowerCase().includes(q);
+            const inGenre = (item.genres || []).some(g => g.toLowerCase().includes(q));
+            const inYear = (item.year || '').toLowerCase().includes(q);
+            const inCast = (item.cast || []).some(c => (typeof c === 'string' ? c : c.name || '').toLowerCase().includes(q));
+            return inTitle || inGenre || inYear || inCast;
+          })
+        : state.library;
+
+      document.getElementById('liveSearchCount').textContent = q
+        ? `${matches.length} result${matches.length === 1 ? '' : 's'} for "${query.trim()}"`
+        : `All ${matches.length} titles in your library`;
+
+      const grid = document.getElementById('liveSearchGrid');
+      const empty = document.getElementById('liveSearchEmpty');
+
+      if (!matches.length) {
+        grid.innerHTML = '';
+        empty.classList.remove('hidden');
+        return;
+      }
+      empty.classList.add('hidden');
+      grid.innerHTML = matches.map(it => buildPosterCard(it, null, true)).join('');
+    }
+
+    /* ==========================================================
+       12. DETAIL MODAL (CAST AVATARS, REVIEWS, SEASONS, POSTER PICKER)
     ========================================================== */
     function openDetailModal(tmdbId) {
+      closeSearchOverlay();
       const item = state.library.find(i => i.tmdbId === tmdbId);
       if (!item) return;
 
@@ -2326,15 +2653,34 @@
       const rt = document.getElementById('detailRuntime');
       if (item.runtime) { rt.textContent = item.runtime; rt.classList.remove('hidden'); } else rt.classList.add('hidden');
 
-      const castRow = document.getElementById('detailCastRow');
-      if (item.cast?.length) {
-        document.getElementById('detailCast').textContent = item.cast.join(', ');
-        castRow.classList.remove('hidden');
-      } else castRow.classList.add('hidden');
-
       const fRow = document.getElementById('detailFolderRow');
       if (item.folderPathText) { document.getElementById('detailFolder').textContent = item.folderPathText; fRow.classList.remove('hidden'); }
       else fRow.classList.add('hidden');
+
+      // Cast Avatars Row
+      const castSec = document.getElementById('detailCastSection');
+      const castList = document.getElementById('detailCastList');
+      if (Array.isArray(item.cast) && item.cast.length) {
+        castSec.classList.remove('hidden');
+        castList.innerHTML = item.cast.map(c => {
+          const name = typeof c === 'string' ? c : (c.name || '');
+          const role = typeof c === 'string' ? '' : (c.character || '');
+          const av = typeof c === 'string' ? '' : (c.avatar || '');
+          const initials = name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+          return `
+            <div class="shrink-0 w-20 text-center space-y-1.5">
+              <div class="w-16 h-16 mx-auto rounded-full overflow-hidden bg-nf-elevated border border-white/15 flex items-center justify-center">
+                ${av
+                  ? `<img src="${esc(av)}" alt="${esc(name)}" loading="lazy" class="w-full h-full object-cover" onerror="this.outerHTML='<span class=\\'text-xs font-bold text-gray-300\\'>${esc(initials)}</span>'" />`
+                  : `<span class="text-xs font-bold text-gray-300">${esc(initials)}</span>`
+                }
+              </div>
+              <p class="text-[11px] font-semibold text-gray-100 leading-tight line-clamp-2">${esc(name)}</p>
+              ${role ? `<p class="text-[10px] text-gray-500 truncate">${esc(role)}</p>` : ''}
+            </div>
+          `;
+        }).join('');
+      } else castSec.classList.add('hidden');
 
       const trBtn = document.getElementById('detailTrailerBtn');
       if (item.trailerKey) { trBtn.classList.remove('hidden'); trBtn.classList.add('flex'); document.getElementById('detailTrailerBtnText').textContent = 'Trailer'; }
@@ -2542,7 +2888,7 @@
       }
     }
 
-    /* ----- FIX MATCH / CHANGE POSTER ----- */
+    /* ----- FIX MATCH + POSTER / BACKDROP ARTWORK PICKER ----- */
     function toggleFixMatch(force = null) {
       const box = document.getElementById('fixMatchBox');
       const open = force !== null ? force : box.classList.contains('hidden');
@@ -2553,8 +2899,69 @@
           document.getElementById('fixMatchInput').value = item.title;
           document.getElementById('fixMatchType').value = item.mediaType === 'tv' ? 'tv' : 'movie';
           searchFixMatch();
+          loadArtworkPicker(item);
         }
       }
+    }
+
+    async function loadArtworkPicker(item) {
+      const wrap = document.getElementById('artworkPickerWrap');
+      if (!item?.rawTmdbId) { wrap.classList.add('hidden'); return; }
+
+      const imgs = await tmdbFetch(`/${item.mediaType}/${item.rawTmdbId}/images`, {
+        noLanguage: true,
+        include_image_language: 'en,hi,null'
+      });
+      const posters = (imgs?.posters || []).slice(0, 12);
+      const backdrops = (imgs?.backdrops || []).slice(0, 10);
+      if (!posters.length && !backdrops.length) { wrap.classList.add('hidden'); return; }
+
+      wrap.classList.remove('hidden');
+      document.getElementById('posterPickerList').innerHTML = posters.map(p => {
+        const url = `${IMG_POSTER}${p.file_path}`;
+        const active = item.poster === url;
+        return `
+          <button type="button" onclick="pickCustomArtwork('poster', '${esc(url)}')"
+            class="shrink-0 w-16 aspect-[2/3] rounded-lg overflow-hidden border-2 transition active:scale-95 ${active ? 'border-nf-red' : 'border-white/15 hover:border-white/60'}">
+            <img src="${esc(url)}" loading="lazy" class="w-full h-full object-cover" />
+          </button>
+        `;
+      }).join('');
+
+      document.getElementById('backdropPickerList').innerHTML = backdrops.map(b => {
+        const fullUrl = `${IMG_BACKDROP_ORIG}${b.file_path}`;
+        const thumbUrl = `${IMG_BACKDROP_SM}${b.file_path}`;
+        const active = item.backdrop === fullUrl;
+        return `
+          <button type="button" onclick="pickCustomArtwork('backdrop', '${esc(fullUrl)}')"
+            class="shrink-0 w-32 aspect-video rounded-lg overflow-hidden border-2 transition active:scale-95 ${active ? 'border-nf-red' : 'border-white/15 hover:border-white/60'}">
+            <img src="${esc(thumbUrl)}" loading="lazy" class="w-full h-full object-cover" />
+          </button>
+        `;
+      }).join('');
+    }
+
+    function pickCustomArtwork(kind, url) {
+      const item = state.library.find(i => i.tmdbId === state.detailItemId);
+      if (!item) return;
+
+      if (kind === 'poster') item.poster = url;
+      else { item.backdrop = url; item.hasTmdbBackdrop = true; document.getElementById('detailBackdrop').src = url; }
+
+      if (item.groupKey) {
+        state.overrides[item.groupKey] = {
+          ...(state.overrides[item.groupKey] || { mediaType: item.mediaType, rawTmdbId: item.rawTmdbId }),
+          ...(kind === 'poster' ? { customPoster: url } : { customBackdrop: url })
+        };
+        lsSetJSON(KEYS.OVERRIDES, state.overrides);
+      }
+
+      persistCurrentLibrary();
+      state.heroItems = state.library.filter(i => i.hasTmdbBackdrop && i.backdrop).slice(0, 6);
+      renderHero();
+      renderCurrentView();
+      loadArtworkPicker(item);
+      showToast(`${kind === 'poster' ? 'Poster' : 'Backdrop'} updated & saved!`, 'success');
     }
 
     async function searchFixMatch() {
@@ -2635,7 +3042,7 @@
     }
 
     /* ==========================================================
-       12. RELIABLE VIDEO PLAYER (DEFAULT: DRIVE STREAM EMBED)
+       13. FULLSCREEN, IMMERSIVE & CRASH-FREE STREAMING PLAYER
     ========================================================== */
     function quickPlay(tmdbId) {
       const item = state.library.find(i => i.tmdbId === tmdbId);
@@ -2667,12 +3074,13 @@
       const isDrive = Boolean(srcObj.driveFileId);
 
       stopBillboardTrailer();
+      closeSearchOverlay();
       state.player.item = item;
       state.player.episode = ep;
-      // DEFAULT TO DRIVE STREAM EMBED FOR GOOGLE DRIVE FILES (Zero 00:00 stall / Zero iPad crash)
       state.player.engine = isDrive ? 'embed' : 'direct';
+      state.player.immersive = false;
 
-      // Clean title & subtitle ONLY — never display raw URLs or access_token
+      // Clean Movie/Episode title ONLY — NEVER display raw URLs or access_token
       document.getElementById('playerTitle').textContent = item.title;
       document.getElementById('playerSub').textContent = ep
         ? `Season ${ep.season} • Episode ${ep.episode} — ${ep.title}`
@@ -2692,17 +3100,76 @@
       nextBtn.classList.toggle('flex', hasNext);
 
       const overlay = document.getElementById('playerOverlay');
-      overlay.classList.remove('hidden');
+      overlay.classList.remove('hidden', 'immersive-mode');
       overlay.style.display = 'flex';
       document.body.style.overflow = 'hidden';
 
       loadPlayerEngine();
+      revealPlayerHud();
+    }
+
+    function revealPlayerHud() {
+      if (state.player.immersive) return;
+      const topBar = document.getElementById('playerTopBar');
+      const directHud = document.getElementById('directControlsHud');
+      topBar.classList.remove('hud-hidden');
+      if (state.player.engine === 'direct') directHud.classList.remove('hud-hidden');
+
+      clearTimeout(state.player.hudHideTimer);
+      state.player.hudHideTimer = setTimeout(() => {
+        const overlayOpen = !document.getElementById('playerOverlay').classList.contains('hidden');
+        if (!overlayOpen || state.player.immersive) return;
+        topBar.classList.add('hud-hidden');
+        if (state.player.engine === 'direct' && !document.getElementById('videoEl').paused) {
+          directHud.classList.add('hud-hidden');
+        }
+      }, 3000);
+    }
+
+    function toggleImmersiveMode(force = null) {
+      const overlay = document.getElementById('playerOverlay');
+      state.player.immersive = force !== null ? force : !state.player.immersive;
+      overlay.classList.toggle('immersive-mode', state.player.immersive);
+      if (state.player.immersive) {
+        clearTimeout(state.player.hudHideTimer);
+        showToast('Cinema Fill ON — tap "Show Controls" anytime', 'info');
+      } else {
+        revealPlayerHud();
+      }
+    }
+
+    function togglePlayerFullscreen() {
+      const overlay = document.getElementById('playerOverlay');
+      const video = document.getElementById('videoEl');
+
+      const isFs = Boolean(document.fullscreenElement || document.webkitFullscreenElement);
+      if (isFs) {
+        if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+        return;
+      }
+
+      // 1. Standard Fullscreen API on player container
+      if (overlay.requestFullscreen) {
+        overlay.requestFullscreen().catch(() => toggleImmersiveMode(true));
+      } else if (overlay.webkitRequestFullscreen) {
+        try { overlay.webkitRequestFullscreen(); } catch { toggleImmersiveMode(true); }
+      }
+      // 2. Native iOS/iPadOS video fullscreen when in Direct HTML5 mode
+      else if (state.player.engine === 'direct' && typeof video.webkitEnterFullscreen === 'function') {
+        try { video.webkitEnterFullscreen(); } catch { toggleImmersiveMode(true); }
+      }
+      // 3. Fallback for iPadOS Safari Drive iframe: True edge-to-edge Cinema Fill
+      else {
+        toggleImmersiveMode(true);
+      }
     }
 
     function updateEnginePills() {
       const embed = state.player.engine === 'embed';
-      document.getElementById('btnEngineEmbed').className = `px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold transition ${embed ? 'bg-nf-red text-white shadow' : 'text-gray-300 hover:text-white'}`;
-      document.getElementById('btnEngineDirect').className = `px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold transition ${!embed ? 'bg-nf-red text-white shadow' : 'text-gray-300 hover:text-white'}`;
+      document.getElementById('btnEngineEmbed').className = `px-2.5 py-1 rounded-full text-[11px] font-semibold transition ${embed ? 'bg-nf-red text-white shadow' : 'text-gray-300 hover:text-white'}`;
+      document.getElementById('btnEngineDirect').className = `px-2.5 py-1 rounded-full text-[11px] font-semibold transition ${!embed ? 'bg-nf-red text-white shadow' : 'text-gray-300 hover:text-white'}`;
+      document.getElementById('directControlsHud').classList.toggle('hidden', embed);
     }
 
     function toggleCinemaEnhance() {
@@ -2731,6 +3198,7 @@
       state.player.engine = engine;
       updateEnginePills();
       loadPlayerEngine();
+      revealPlayerHud();
     }
 
     function clearPlayerTimers() {
@@ -2741,6 +3209,7 @@
     function cleanupVideoElement(video) {
       video.pause();
       video.removeAttribute('src');
+      video.querySelectorAll('track').forEach(t => t.remove());
       video.load();
     }
 
@@ -2754,13 +3223,15 @@
 
       clearPlayerTimers();
       if (state.player.blobUrl) { URL.revokeObjectURL(state.player.blobUrl); state.player.blobUrl = null; }
+      if (state.player.subBlobUrl) { URL.revokeObjectURL(state.player.subBlobUrl); state.player.subBlobUrl = null; }
       cleanupVideoElement(video);
       iframe.src = 'about:blank';
 
-      // ENGINE 1 (DEFAULT): GOOGLE DRIVE EMBED PLAYER
+      // ENGINE 1 (DEFAULT): CRASH-FREE GOOGLE DRIVE EMBED PLAYER
       if (state.player.engine === 'embed' && srcObj.driveFileId) {
         video.classList.add('hidden');
         iframe.classList.remove('hidden');
+        document.getElementById('directControlsHud').classList.add('hidden');
         spinner.classList.remove('hidden');
         document.getElementById('playerSpinnerText').textContent = 'Opening Google Drive Stream...';
 
@@ -2770,9 +3241,12 @@
         return;
       }
 
-      // ENGINE 2: DIRECT HTML5 MODE (with 5-second auto-fallback to Drive Stream)
+      // ENGINE 2: DIRECT HTML5 MODE (5-sec auto-fallback + custom controls + .srt/.vtt)
       iframe.classList.add('hidden');
       video.classList.remove('hidden');
+      document.getElementById('directControlsHud').classList.remove('hidden');
+      document.getElementById('directSpeedSelect').value = '1';
+      video.playbackRate = 1;
       spinner.classList.remove('hidden');
       document.getElementById('playerSpinnerText').textContent = 'Starting Direct HTML5 Stream...';
 
@@ -2813,6 +3287,7 @@
       video.onloadedmetadata = () => {
         clearPlayerTimers();
         spinner.classList.add('hidden');
+        document.getElementById('directDurTime').textContent = fmtTime(video.duration);
         if (saved && saved.currentTime > 5 && saved.currentTime < (video.duration - 15)) {
           video.currentTime = saved.currentTime;
         }
@@ -2825,7 +3300,7 @@
         clearPlayerTimers();
         cleanupVideoElement(video);
         if (srcObj.driveFileId && state.player.engine === 'direct') {
-          showToast('Format unsupported in Direct HTML5 — switched to Drive Stream.', 'info');
+          showToast('Codec unsupported in Direct HTML5 — switched to Drive Stream.', 'info');
           state.player.engine = 'embed';
           updateEnginePills();
           loadPlayerEngine();
@@ -2834,6 +3309,69 @@
           showToast('Could not play this video in browser.', 'error');
         }
       };
+    }
+
+    /* ----- Direct HTML5 Custom Controls & .SRT/.VTT Subtitles ----- */
+    function toggleDirectPlayPause() {
+      const v = document.getElementById('videoEl');
+      if (state.player.engine !== 'direct') return;
+      if (v.paused) v.play().catch(() => {});
+      else v.pause();
+      revealPlayerHud();
+    }
+
+    function skipDirectVideo(delta) {
+      const v = document.getElementById('videoEl');
+      if (!v.duration) return;
+      v.currentTime = Math.max(0, Math.min(v.duration, v.currentTime + delta));
+      revealPlayerHud();
+    }
+
+    function seekDirectVideo(pct) {
+      const v = document.getElementById('videoEl');
+      if (!v.duration) return;
+      v.currentTime = (Number(pct) / 100) * v.duration;
+      revealPlayerHud();
+    }
+
+    function toggleDirectMute() {
+      const v = document.getElementById('videoEl');
+      v.muted = !v.muted;
+      document.getElementById('directMuteIcon').innerHTML = v.muted
+        ? '<path d="M11 5 6 9H2v6h4l5 4V5Z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>'
+        : '<path d="M11 5 6 9H2v6h4l5 4V5Z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>';
+    }
+
+    function setDirectSpeed(rate) {
+      document.getElementById('videoEl').playbackRate = Number(rate) || 1;
+      showToast(`Speed: ${rate}x`, 'info');
+    }
+
+    async function loadSubtitleFile(file) {
+      if (!file) return;
+      try {
+        let text = await file.text();
+        if (file.name.toLowerCase().endsWith('.srt') || !text.trim().startsWith('WEBVTT')) {
+          text = 'WEBVTT\n\n' + text.replace(/\r+/g, '').replace(/(\d{2}:\d{2}:\d{2}),(\d{3})/g, '$1.$2');
+        }
+        const blob = new Blob([text], { type: 'text/vtt' });
+        if (state.player.subBlobUrl) URL.revokeObjectURL(state.player.subBlobUrl);
+        state.player.subBlobUrl = URL.createObjectURL(blob);
+
+        const v = document.getElementById('videoEl');
+        v.querySelectorAll('track').forEach(t => t.remove());
+        const track = document.createElement('track');
+        track.kind = 'subtitles';
+        track.label = file.name;
+        track.srclang = 'en';
+        track.src = state.player.subBlobUrl;
+        track.default = true;
+        v.appendChild(track);
+        if (v.textTracks?.[0]) v.textTracks[0].mode = 'showing';
+        showToast(`Subtitles loaded: ${file.name}`, 'success');
+      } catch {
+        showToast('Failed to load subtitle file.', 'error');
+      }
     }
 
     function openCurrentInDrive() {
@@ -2866,21 +3404,26 @@
     function closePlayer() {
       const v = document.getElementById('videoEl');
       clearPlayerTimers();
+      clearTimeout(state.player.hudHideTimer);
       savePlaybackProgress();
       cleanupVideoElement(v);
       document.getElementById('driveEmbedIframe').src = 'about:blank';
       if (state.player.blobUrl) { URL.revokeObjectURL(state.player.blobUrl); state.player.blobUrl = null; }
+      if (state.player.subBlobUrl) { URL.revokeObjectURL(state.player.subBlobUrl); state.player.subBlobUrl = null; }
       if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+      else if (document.webkitFullscreenElement && document.webkitExitFullscreen) document.webkitExitFullscreen();
 
+      state.player.immersive = false;
       const overlay = document.getElementById('playerOverlay');
       overlay.classList.add('hidden');
+      overlay.classList.remove('immersive-mode');
       overlay.style.display = 'none';
       document.body.style.overflow = '';
       renderCurrentView();
     }
 
     /* ==========================================================
-       13. DRIVE & SETTINGS DRAWER
+       14. DRIVE & SETTINGS DRAWER
     ========================================================== */
     function openDriveDrawer(tab = 'oauth') {
       stopBillboardTrailer();
@@ -2938,7 +3481,7 @@
     }
 
     /* ==========================================================
-       14. DEMO LIBRARY
+       15. RICH DEMO LIBRARY
     ========================================================== */
     const DEMO_URLS = [
       'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
@@ -2951,11 +3494,13 @@
       { id: 'demo-1', name: '[Vegamovies.NL] Inception.2010.2160p.4K.BluRay.Dual.Audio.Hindi.Eng.x265.mp4', folderPath: ['Movies'], source: 'demo', url: DEMO_URLS[0] },
       { id: 'demo-2', name: 'HDHub4u.Interstellar.2014.2160p.4K.HDR10.ESubs.mp4', folderPath: ['Movies'], source: 'demo', url: DEMO_URLS[1] },
       { id: 'demo-3', name: 'Dune.Part.Two.2024.2160p.WEB-DL.MoviesMod.mp4', folderPath: ['Movies'], source: 'demo', url: DEMO_URLS[2] },
-      { id: 'demo-4', name: '3.Idiots.2009.1080p.BluRay.Hindi.BollyFlix.mp4', folderPath: ['Bollywood'], source: 'demo', url: DEMO_URLS[3] },
-      { id: 'demo-5', name: 'Breaking.Bad.S01E01.1080p.NF.WEB-DL.mp4', folderPath: ['TV Shows'], source: 'demo', url: DEMO_URLS[0] },
-      { id: 'demo-6', name: 'Breaking.Bad.S02E01.1080p.NF.WEB-DL.mp4', folderPath: ['TV Shows'], source: 'demo', url: DEMO_URLS[1] },
-      { id: 'demo-7', name: 'Mirzapur.S01E01.1080p.AMZN.WEB-DL.Hindi.mp4', folderPath: ['Web Series'], source: 'demo', url: DEMO_URLS[2] },
-      { id: 'demo-8', name: 'Stranger.Things.S01E01.2160p.4K.NF.mp4', folderPath: ['TV Shows'], source: 'demo', url: DEMO_URLS[3] }
+      { id: 'demo-4', name: 'The.Dark.Knight.2008.2160p.4K.BluRay.Hindi.mp4', folderPath: ['Movies'], source: 'demo', url: DEMO_URLS[3] },
+      { id: 'demo-5', name: '3.Idiots.2009.1080p.BluRay.Hindi.BollyFlix.mp4', folderPath: ['Bollywood'], source: 'demo', url: DEMO_URLS[0] },
+      { id: 'demo-6', name: 'Breaking.Bad.S01E01.1080p.NF.WEB-DL.mp4', folderPath: ['TV Shows'], source: 'demo', url: DEMO_URLS[1] },
+      { id: 'demo-7', name: 'Breaking.Bad.S02E01.1080p.NF.WEB-DL.mp4', folderPath: ['TV Shows'], source: 'demo', url: DEMO_URLS[2] },
+      { id: 'demo-8', name: 'Mirzapur.S01E01.1080p.AMZN.WEB-DL.Hindi.mp4', folderPath: ['Web Series'], source: 'demo', url: DEMO_URLS[3] },
+      { id: 'demo-9', name: 'Stranger.Things.S01E01.2160p.4K.NF.mp4', folderPath: ['TV Shows'], source: 'demo', url: DEMO_URLS[0] },
+      { id: 'demo-10', name: 'Panchayat.S01E01.1080p.AMZN.WEB-DL.Hindi.mp4', folderPath: ['Web Series'], source: 'demo', url: DEMO_URLS[1] }
     ];
 
     async function loadDemoLibrary(notify = false) {
@@ -2965,29 +3510,31 @@
     }
 
     /* ==========================================================
-       15. GLOBAL EVENTS & INSTANT (<100ms) BOOTSTRAP
+       16. GLOBAL EVENTS, KEYBOARD SHORTCUTS & <100ms BOOTSTRAP
     ========================================================== */
     window.addEventListener('scroll', () => {
-      const hdr = document.getElementById('topHeader');
-      if (window.scrollY > 30) {
-        hdr.classList.add('bg-[#141414]/95', 'backdrop-blur-xl', 'border-b', 'border-white/10', 'shadow-xl');
-        hdr.classList.remove('bg-gradient-to-b', 'from-[#141414]/95', 'via-[#141414]/60', 'to-transparent');
-      } else {
-        hdr.classList.remove('bg-[#141414]/95', 'backdrop-blur-xl', 'border-b', 'border-white/10', 'shadow-xl');
-        hdr.classList.add('bg-gradient-to-b', 'from-[#141414]/95', 'via-[#141414]/60', 'to-transparent');
-      }
+      document.getElementById('topHeader').classList.toggle('scrolled', window.scrollY > 28);
     }, { passive: true });
 
     const videoEl = document.getElementById('videoEl');
     videoEl.addEventListener('timeupdate', () => {
       if (!videoEl.duration) return;
+      document.getElementById('directCurTime').textContent = fmtTime(videoEl.currentTime);
+      document.getElementById('directSeekBar').value = (videoEl.currentTime / videoEl.duration) * 100;
       const now = Date.now();
       if (now - state.player.lastProgressSave >= 5000) {
         state.player.lastProgressSave = now;
         savePlaybackProgress();
       }
     });
-    videoEl.addEventListener('pause', savePlaybackProgress);
+    videoEl.addEventListener('play', () => {
+      document.getElementById('directPlayIcon').innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+    });
+    videoEl.addEventListener('pause', () => {
+      document.getElementById('directPlayIcon').innerHTML = '<path d="M8 5v14l11-7z"/>';
+      savePlaybackProgress();
+      revealPlayerHud();
+    });
     videoEl.addEventListener('waiting', () => {
       if (state.player.engine === 'direct') document.getElementById('playerSpinner').classList.remove('hidden');
     });
@@ -3000,12 +3547,32 @@
     document.getElementById('driveDrawerOverlay').addEventListener('click', e => { if (e.target.id === 'driveDrawerOverlay') closeDriveDrawer(); });
     document.getElementById('signOutModal').addEventListener('click', e => { if (e.target.id === 'signOutModal') closeSignOutConfirm(); });
 
+    // Keyboard Shortcuts: F (Fullscreen), Esc (Close), Space (Play/Pause Direct), M (Mute)
     document.addEventListener('keydown', (e) => {
+      const tag = (e.target?.tagName || '').toLowerCase();
+      const typing = tag === 'input' || tag === 'textarea' || tag === 'select';
+      const playerOpen = !document.getElementById('playerOverlay').classList.contains('hidden');
+
       if (e.key === 'Escape') {
-        if (!document.getElementById('playerOverlay').classList.contains('hidden')) closePlayer();
+        if (playerOpen) closePlayer();
+        else if (!document.getElementById('searchOverlay').classList.contains('hidden')) closeSearchOverlay();
         else if (!document.getElementById('signOutModal').classList.contains('hidden')) closeSignOutConfirm();
         else if (!document.getElementById('detailModal').classList.contains('hidden')) closeDetailModal();
         else if (!document.getElementById('driveDrawerOverlay').classList.contains('hidden')) closeDriveDrawer();
+        return;
+      }
+
+      if (typing) return;
+
+      if (playerOpen) {
+        if (e.key === 'f' || e.key === 'F') { e.preventDefault(); togglePlayerFullscreen(); }
+        else if (e.key === ' ' && state.player.engine === 'direct') { e.preventDefault(); toggleDirectPlayPause(); }
+        else if ((e.key === 'm' || e.key === 'M') && state.player.engine === 'direct') { e.preventDefault(); toggleDirectMute(); }
+      } else {
+        if (e.key === 'm' || e.key === 'M') {
+          const muteBtnVisible = !document.getElementById('trailerMuteBtn').classList.contains('hidden');
+          if (muteBtnVisible) { e.preventDefault(); toggleBillboardMute(); }
+        }
       }
     });
 
